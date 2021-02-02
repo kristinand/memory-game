@@ -10,13 +10,12 @@ const game = (props) => {
     cards = fillCards(cards);
     cards = shuffleList(cards);
     cards = listToArray(cards, 4);
-    console.log(cards);
     setCards(cards);
   }, [props.level]);
 
   const fillCards = (cards) => {
     let patterns = ['☯', '◑', '◐', '◒', '◓', '♡', '♥', '☁', '☀', '♨', '♦', '❀'];
-    const coverColor = generateRandomColor();
+    const coverColor = generateRandomColor(40, 40, 60, 60);
 
     for (let i = 0; i < props.level * 2; i++) {
       const color = generateRandomColor();
