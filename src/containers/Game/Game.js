@@ -10,6 +10,7 @@ const game = (props) => {
     cards = fillCards(cards);
     cards = shuffleList(cards);
     cards = listToArray(cards, 4);
+    console.log(cards);
     setCards(cards);
   }, [props.level]);
 
@@ -19,11 +20,12 @@ const game = (props) => {
 
     for (let i = 0; i < props.level * 2; i++) {
       const color = generateRandomColor();
+      const keyPart = Math.ceil(Math.random() * 100000);
       const patternNumber = getRandomNumber(0, patterns.length);
       const pattern = patterns[patternNumber];
       patterns = [...patterns.slice(0, patternNumber), ...patterns.slice(patternNumber + 1)];
-      cards.push({ key: '1' + i, color: color, pattern: pattern, coverColor: coverColor });
-      cards.push({ key: '2' + i, color: color, pattern: pattern, coverColor: coverColor });
+      cards.push({ key: '1' + props.level + i + keyPart, color: color, pattern: pattern, coverColor: coverColor });
+      cards.push({ key: '2' + props.level + i + keyPart, color: color, pattern: pattern, coverColor: coverColor });
     }
     return cards;
   };
