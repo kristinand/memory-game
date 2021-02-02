@@ -7,9 +7,15 @@
 
 	<style>
 		@font-face {
-			font-family: 'PottaOne';
-			src: url('./assets/fonts/PottaOne-Regular.ttf') format('truetype');
+			font-family: 'AveriaLibre';
+			src: url('./assets/fonts/AveriaLibre-Regular.ttf') format('truetype');
 		}
+
+		@font-face {
+			font-family: 'NotoSans';
+			src: url('./assets/fonts/NotoSansJP-Regular.otf') format('opentype');
+		}
+
 		* {
 			margin: 0;
 			padding: 0;
@@ -17,14 +23,16 @@
 		}
 		body {
 			background-color: #f8ebc6;
-			font-family: 'PottaOne', cursive;
+			font-family: 'AveriaLibre', 'Segoe UI', cursive;
 		}
-
 		#root {
 			margin: 0 auto;
-			padding: 1.5rem;
+			padding: 0 1.5rem;
 			min-width: 500px;
 			max-width: 1024px;
+		}
+		.pattern {
+			font-family: 'NotoSans', 'Segoe UI', cursive;
 		}
 	</style>
 	<title>Memo</title>

@@ -14,7 +14,7 @@ const card = (props) => {
     <div onClick={clicked} className={['Card', classes.Card].join(' ')}>
       <div className={classes.CardCover} style={{ backgroundColor: props.coverColor }}><span>?</span></div>
       <div className={classes.CardColor} style={{ backgroundColor: props.color}}>
-				<span>{props.pattern}</span>
+				<span className={'pattern'}>{props.pattern}</span>
 			</div>
     </div>
   );
