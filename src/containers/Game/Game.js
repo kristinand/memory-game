@@ -6,14 +6,13 @@ const game = (props) => {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    console.log('effect');
     let cards = [];
     cards = fillCards(cards);
     cards = shuffleList(cards);
     cards = listToArray(cards, 4);
     console.log(cards);
     setCards(cards);
-  }, []);
+  }, [props.level]);
 
   const fillCards = (cards) => {
     let patterns = ['☯', '◑', '◐', '◒', '◓', '♡', '♥', '☁', '☀', '♨', '♦', '❀'];

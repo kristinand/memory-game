@@ -1,7 +1,7 @@
 .Card {
 	position: relative;
 	padding: 0.2em;
-	width: 3em;
+	flex: 1;
 	height: 100%;
 	font-size: 4vw;
 	background-color: #fff;
@@ -34,13 +34,13 @@
 	justify-content: center;
 	align-items: center;
 	position: absolute;
-	top: 0.2em;
-	bottom: 0.2em;
-	left: 0.2em;
-	right: 0.2em;
+	top: 0.14em;
+	bottom: 0.14em;
+	left: 0.14em;
+	right: 0.14em;
 	font-size: 1.4em;
 	color: white;
-	border-radius: 0.1em;
+	border-radius: 0.14em;
 	backface-visibility: hidden;
 	transform: rotateY(180deg);
 }
