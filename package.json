@@ -1,7 +1,7 @@
 {
-  "name": "webpack",
+  "name": "memo",
   "version": "1.0.0",
-  "description": "webpack from scratch with js, css, scss, rect, babel, dev-server, images, fonts",
+  "description": "Memo — Memory Card Game",
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode development",
