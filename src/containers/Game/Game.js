@@ -16,10 +16,10 @@ const game = (props) => {
 
   const fillCards = (cards) => {
     let patterns = ['☯', '◑', '◐', '◒', '◓', '♡', '♥', '☁', '☀', '♨', '♦', '❀'];
-    const coverColor = generateRandomColor(100, 170);
+    const coverColor = generateRandomColor();
 
     for (let i = 0; i < props.level * 2; i++) {
-      const color = generateRandomColor(5, 250);
+      const color = generateRandomColor();
       const patternNumber = getRandomNumber(0, patterns.length);
       const pattern = patterns[patternNumber];
       patterns = [...patterns.slice(0, patternNumber), ...patterns.slice(patternNumber + 1)];

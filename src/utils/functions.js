@@ -19,11 +19,9 @@ export function listToArray(list, m) {
 	return array;
 }
 
-export function generateRandomColor(min = 0, max = 256) {
-	if (min < 0) min = 0;
-	if (max > 255) max = 256;
-	const first = getRandomNumber(min, max);
-	const second = getRandomNumber(min, max);
-	const third = getRandomNumber(min, max);
-	return `rgb(${first}, ${second}, ${third})`;
+export function generateRandomColor(sat1 = 50, sat2 = 55, light1 = 70, light2 = 75, hue1 = 0, hue2 = 360) {
+	const hue = getRandomNumber(hue1, hue2);
+	const sat = getRandomNumber(sat1, sat2);
+	const light = getRandomNumber(light1, light2);
+	return `hsl(${hue}, ${sat}%, ${light}%)`;
 };
