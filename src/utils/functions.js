@@ -25,3 +25,9 @@ export function generateRandomColor(sat1 = 50, sat2 = 55, light1 = 70, light2 = 
   const light = getRandomNumber(light1, light2);
   return `hsl(${hue}, ${sat}%, ${light}%)`;
 }
+
+export function formatTime(timer) {
+  const getSeconds = `0${timer % 60}`.slice(-2);
+  const getMinutes = `${Math.floor(timer / 60)}`;
+  return getMinutes !== '0' ? `${getMinutes}min ${getSeconds}s` : `${getSeconds}s`;
+}
