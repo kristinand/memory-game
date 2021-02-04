@@ -4,14 +4,15 @@ import CardRow from '../../components/CardRow';
 
 const game = (props) => {
   const [cards, setCards] = useState([]);
+  const [openCard, setOpenCard] = useState('');
 
   useEffect(() => {
     let cards = [];
     cards = fillCards(cards);
     cards = shuffleList(cards);
-    cards = listToArray(cards, 4);
-    console.log(cards);
+
     setCards(cards);
+    setOpenCard('');
   }, [props.level]);
 
   const fillCards = (cards) => {
@@ -28,21 +29,49 @@ const game = (props) => {
         color: color,
         pattern: pattern,
         coverColor: props.coverColor,
+        isOpen: false,
+        isGuessed: false,
       });
       cards.push({
         key: '2' + props.level + i + keyPart,
         color: color,
         pattern: pattern,
         coverColor: props.coverColor,
+        isOpen: false,
+        isGuessed: false,
       });
     }
     return cards;
   };
 
+  const onCardSelectHandler = (key) => {
+    const selectedCard = cards[cards.findIndex((card) => card.key === key)];
+    if (selectedCard.isGuessed || selectedCard.isOpen) return;
+
+    if (!openCard && !selectedCard.isOpen) {
+      setOpenCard(key);
+      selectedCard.isOpen = true;
+      return;
+    }
+
+    const oldCard = cards[cards.findIndex((card) => card.key === openCard)];
+    if (openCard.slice(1) == key.slice(1)) {
+      selectedCard.isOpen = true;
+      oldCard.isGuessed = true;
+      selectedCard.isGuessed = true;
+      setOpenCard('');
+    } else {
+      oldCard.isOpen = false;
+      selectedCard.isOpen = true;
+      setOpenCard(key);
+    }
+    // console.log(cards);
+  };
+
   return (
     <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column', height: '70vh', justifyContent: 'center' }}>
-      {cards.map((cardsRow, i) => (
-        <CardRow key={i} cards={cardsRow} />
+      {listToArray(cards, 4).map((cardsRow, i) => (
+        <CardRow key={i} cards={cardsRow} onCardClick={onCardSelectHandler} />
       ))}
     </div>
   );

@@ -1,20 +1,33 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import classes from './Card.css';
 
 const card = (props) => {
-  const clicked = (event) => {
-    const card = event.target.closest('.Card');
+  const cardRef = useRef();
+
+  useEffect(() => {
+    if (props.isOpen) {
+      // console.log(cardRef.current);
+      openCard(cardRef.current);
+    } else {
+      setTimeout(() => {
+        closeCard(cardRef.current);
+      }, 100);
+    }
+  }, [props.isOpen]);
+
+  const openCard = (card) => {
     card.style.transform = 'rotateY(180deg)';
     card.style.boxShadow = '-2px 2px 0.1em 3px hsla(0, 0%, 70%, 0.3)';
-    setTimeout(() => {
-      card.style.transform = 'rotateY(0deg)';
-      card.style.boxShadow = '2px 2px 0.1em 3px hsla(0, 0%, 70%, 0.3)';
-    }, 7000);
+  };
+
+  const closeCard = (card) => {
+    card.style.transform = 'rotateY(0deg)';
+    card.style.boxShadow = '2px 2px 0.1em 3px hsla(0, 0%, 70%, 0.3)';
   };
 
   return (
     <div className={classes.wrapper}>
-      <div onClick={clicked} className={['Card', classes.Card].join(' ')}>
+      <div ref={cardRef} onClick={props.onCardClick} className={['Card', classes.Card].join(' ')}>
         <div className={classes.CardCover} style={{ backgroundColor: props.coverColor }}>
           <span>?</span>
         </div>

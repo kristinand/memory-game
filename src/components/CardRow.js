@@ -14,7 +14,14 @@ const cardRow = (props) => {
   return (
     <CardRow>
       {props.cards.map((card) => (
-        <Card key={card.key} color={card.color} pattern={card.pattern} coverColor={card.coverColor} />
+        <Card
+          onCardClick={() => props.onCardClick(card.key)}
+          key={card.key}
+          color={card.color}
+          pattern={card.pattern}
+          coverColor={card.coverColor}
+          isOpen={card.isOpen}
+        />
       ))}
     </CardRow>
   );
