@@ -47,7 +47,7 @@ module.exports = {
             options: {
               modules: {
                 localIdentName: '[name]__[local]--[hash:base64:5]',
-              }
+              },
             },
           },
         ],
@@ -57,8 +57,12 @@ module.exports = {
         use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
-        test: /\.(png|jpg|svg|gif|mp3)$/,
+        test: /\.(png|jpg|gif|mp3)$/,
         type: 'asset/resource',
+      },
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack'],
       },
       {
         test: /\.(ttf|woff|woff2|eot)$/,
