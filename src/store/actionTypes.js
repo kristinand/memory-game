@@ -1,0 +1,3 @@
+export const CHANGE_LEVEL = 'CHANGE_LEVEL';
+export const LOAD_LEVEL = 'LOAD_LEVEL';
+export const CHANGE_CARD_STATUS = 'CHANGE_CARD_STATUS';

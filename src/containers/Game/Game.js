@@ -1,71 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { getRandomNumber, shuffleList, generateRandomColor, listToArray } from '../../utils/functions';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../../store/actions';
+import { listToArray } from '../../utils/functions';
 import CardRow from '../../components/CardRow';
 
 const game = (props) => {
-  const [cards, setCards] = useState([]);
-  const [openCard, setOpenCard] = useState('');
+  const dispatch = useDispatch();
+  const cards = useSelector((state) => state.cards);
 
   useEffect(() => {
-    let cards = [];
-    cards = fillCards(cards);
-    cards = shuffleList(cards);
-
-    setCards(cards);
-    setOpenCard('');
+    dispatch(actions.loadLevel());
   }, [props.level]);
 
-  const fillCards = (cards) => {
-    let patterns = ['☯', '◑', '◐', '◒', '◓', '♡', '♥', '☁', '☀', '♨', '♦', '❀'];
-
-    for (let i = 0; i < props.level * 2; i++) {
-      const color = generateRandomColor();
-      const keyPart = Math.ceil(Math.random() * 100000);
-      const patternNumber = getRandomNumber(0, patterns.length);
-      const pattern = patterns[patternNumber];
-      patterns = [...patterns.slice(0, patternNumber), ...patterns.slice(patternNumber + 1)];
-      cards.push({
-        key: '1' + props.level + i + keyPart,
-        color: color,
-        pattern: pattern,
-        coverColor: props.coverColor,
-        isOpen: false,
-        isGuessed: false,
-      });
-      cards.push({
-        key: '2' + props.level + i + keyPart,
-        color: color,
-        pattern: pattern,
-        coverColor: props.coverColor,
-        isOpen: false,
-        isGuessed: false,
-      });
-    }
-    return cards;
-  };
-
   const onCardSelectHandler = (key) => {
-    const selectedCard = cards[cards.findIndex((card) => card.key === key)];
-    if (selectedCard.isGuessed || selectedCard.isOpen) return;
+    const selectedCardIndex = cards.findIndex((card) => card.key === key);
+    const openedCardIndex = cards.findIndex((card) => card.status === 'opened');
+    const selectedCard = cards[selectedCardIndex];
+    const openedCard = cards[openedCardIndex];
 
-    if (!openCard && !selectedCard.isOpen) {
-      setOpenCard(key);
-      selectedCard.isOpen = true;
+    // избегаем нажатия, если карта не закрыта
+    if (selectedCard.status !== 'closed') return;
+
+    // открытие первой карты
+    if (openedCard === undefined && selectedCard.status !== 'guessed') {
+      dispatch(actions.changeCardStatus('opened', selectedCardIndex));
       return;
     }
 
-    const oldCard = cards[cards.findIndex((card) => card.key === openCard)];
-    if (openCard.slice(1) == key.slice(1)) {
-      selectedCard.isOpen = true;
-      oldCard.isGuessed = true;
-      selectedCard.isGuessed = true;
-      setOpenCard('');
+    if (openedCard.key.slice(1) == key.slice(1)) {
+      dispatch(actions.changeCardStatus('guessed', selectedCardIndex, openedCardIndex));
     } else {
-      oldCard.isOpen = false;
-      selectedCard.isOpen = true;
-      setOpenCard(key);
+      dispatch(actions.changeCardStatus('not-guessed', selectedCardIndex, openedCardIndex));
+      setTimeout(() => {
+        dispatch(actions.changeCardStatus('closed', selectedCardIndex, openedCardIndex));
+      }, 500);
     }
-    // console.log(cards);
   };
 
   return (

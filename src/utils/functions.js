@@ -31,3 +31,30 @@ export function formatTime(timer) {
   const getMinutes = `${Math.floor(timer / 60)}`;
   return getMinutes !== '0' ? `${getMinutes}min ${getSeconds}s` : `${getSeconds}s`;
 }
+
+export function fillCards(cards, level, coverColor) {
+  let patterns = ['☯', '◑', '◐', '◒', '◓', '♡', '♥', '☁', '☀', '♨', '♦', '❀'];
+
+  for (let i = 0; i < level * 2; i++) {
+    const color = generateRandomColor();
+    const keyPart = Math.ceil(Math.random() * 100000);
+    const patternNumber = getRandomNumber(0, patterns.length);
+    const pattern = patterns[patternNumber];
+    patterns = [...patterns.slice(0, patternNumber), ...patterns.slice(patternNumber + 1)];
+    cards.push({
+      key: '1' + level + i + keyPart,
+      color: color,
+      pattern: pattern,
+      coverColor: coverColor,
+      status: 'closed',
+    });
+    cards.push({
+      key: '2' + level + i + keyPart,
+      color: color,
+      pattern: pattern,
+      coverColor: coverColor,
+      status: 'closed',
+    });
+  }
+  return cards;
+};

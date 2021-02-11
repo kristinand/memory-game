@@ -20,7 +20,7 @@ const cardRow = (props) => {
           color={card.color}
           pattern={card.pattern}
           coverColor={card.coverColor}
-          isOpen={card.isOpen}
+          status={card.status}
         />
       ))}
     </CardRow>

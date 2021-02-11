@@ -5,15 +5,8 @@ const card = (props) => {
   const cardRef = useRef();
 
   useEffect(() => {
-    if (props.isOpen) {
-      // console.log(cardRef.current);
-      openCard(cardRef.current);
-    } else {
-      setTimeout(() => {
-        closeCard(cardRef.current);
-      }, 100);
-    }
-  }, [props.isOpen]);
+    props.status === 'closed' ?  closeCard(cardRef.current) : openCard(cardRef.current);
+  }, [props.status]);
 
   const openCard = (card) => {
     card.style.transform = 'rotateY(180deg)';

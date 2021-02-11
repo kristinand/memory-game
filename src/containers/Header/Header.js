@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import * as actions from '../../store/actions';
 import useTimer from '../../hooks/useTimer';
 import { formatTime } from '../../utils/functions';
 import classes from './Header.css';
 import IconButton from '../../components/IconButton';
-
 import Refresh from '@assets/icons/refresh.svg';
 import Pause from '@assets/icons/pause.svg';
 import Play from '@assets/icons/play.svg';
@@ -12,19 +13,19 @@ import Sound2 from '@assets/icons/sound2.svg';
 import Music2 from '@assets/icons/music2.svg';
 
 const header = (props) => {
+  const dispatch = useDispatch();
   const { timer, isActive, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer(0);
 
-  useEffect(() => {
-    handleReset();
-    handleStart();
-  }, [props.level]);
+  const onChangeLevelHandler = (param) => {
+    dispatch(actions.changeLevel(param))
+  };
 
   return (
     <div className={classes.Header}>
       <span>
-        <span onClick={() => props.changeLevel('dec')}>{'<'}</span>
+        <span onClick={() => onChangeLevelHandler('dec')}>{'<'}</span>
         <span className={classes.level}>level: {props.level}</span>
-        <span onClick={() => props.changeLevel('inc')}>{'>'}</span>
+        <span onClick={() => onChangeLevelHandler('inc')}>{'>'}</span>
       </span>
 
       <span className={classes.right}>
@@ -50,4 +51,4 @@ const header = (props) => {
   );
 };
 
-export default header;
+export default React.memo(header);

@@ -1,36 +1,29 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Game from './containers/Game/Game';
 import Header from './containers/Header/Header';
-import { generateRandomColor } from './utils/functions';
+import * as actions from './store/actions';
 
-class App extends Component {
-  state = {
-    level: 6,
-  };
-
-  onChangeLevelHandler(param) {
-    let level = this.state.level;
-    if (param === 'inc' && level < 6) {
-      level += 1;
-    } else if (param === 'dec' && level > 1) {
-      level -= 1;
+const app = () => {
+  const state = useSelector(state => state);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    if (state.cardsToWin === 0) {
+      console.log('we wanna next level!');
+      dispatch(actions.changeLevel('inc'))
     }
-    this.setState({ level: level });
-  }
+  }, [state.cardsToWin])
 
-  render() {
-    const color = generateRandomColor(40, 40, 60, 60);
-    return (
-      <Fragment>
-        <Header
-          buttonColor={color}
-          changeLevel={(param) => this.onChangeLevelHandler(param)}
-          level={this.state.level}
-        />
-        <Game coverColor={color} level={this.state.level} />
-      </Fragment>
-    );
-  }
+  return (
+    <Fragment>
+      <Header
+        buttonColor={state.coverColor}
+        level={state.level}
+      />
+      <Game coverColor={state.coverColor} level={state.level} />
+    </Fragment>
+  );
 }
 
-export default App;
+export default app;
