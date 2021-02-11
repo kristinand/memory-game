@@ -41,7 +41,7 @@ const gameReducer = (state = initState, action) => {
   switch (action.type) {
     case actionTypes.CHANGE_LEVEL: {
       let level = state.level;
-      if (action.param === 'inc' && level < 6) {
+      if (action.param === 'inc' && level < 5) {
         level += 1;
       } else if (action.param === 'dec' && level > 1) {
         level -= 1;

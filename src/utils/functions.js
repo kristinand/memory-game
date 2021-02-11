@@ -35,7 +35,7 @@ export function formatTime(timer) {
 export function fillCards(cards, level, coverColor) {
   let patterns = ['☯', '◑', '◐', '◒', '◓', '♡', '♥', '☁', '☀', '♨', '♦', '❀'];
 
-  for (let i = 0; i < level * 2; i++) {
+  for (let i = 0; i < level * 2 + 2; i++) {
     const color = generateRandomColor();
     const keyPart = Math.ceil(Math.random() * 100000);
     const patternNumber = getRandomNumber(0, patterns.length);
