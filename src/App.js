@@ -9,9 +9,14 @@ const app = () => {
   const dispatch = useDispatch();
   
   useEffect(() => {
+    let timer;
     if (state.cardsToWin === 0) {
-      console.log('we wanna next level!');
-      dispatch(actions.changeLevel('inc'))
+      timer = setTimeout(() => {
+        dispatch(actions.changeLevel('inc'))
+      }, 600)
+    }
+    return () => {
+      clearTimeout(timer);
     }
   }, [state.cardsToWin])
 
