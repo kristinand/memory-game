@@ -1,8 +1,8 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import * as actions from '../../store/actions';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import useTimer from '../../hooks/useTimer';
 import { formatTime } from '../../utils/functions';
+import * as actions from '../../store/actions';
 import classes from './Header.css';
 import IconButton from '../../components/IconButton';
 import Refresh from '@assets/icons/refresh.svg';
@@ -12,40 +12,60 @@ import Screen from '@assets/icons/screen.svg';
 import Sound2 from '@assets/icons/sound2.svg';
 import Music2 from '@assets/icons/music2.svg';
 
-const header = (props) => {
+const header = () => {
+  const state = useSelector((state) => state);
   const dispatch = useDispatch();
-  const { timer, isActive, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer(0);
+  const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer(0);
 
-  const onChangeLevelHandler = (param) => {
-    dispatch(actions.changeLevel(param))
+  useEffect(() => {
+    let timeoutTimer;
+    if (state.cardsToWin > 0) return;
+    dispatch(actions.endLevel(timer));
+    if (state.level < state.levels) {
+      timeoutTimer = setTimeout(() => {
+        dispatch(actions.loadLevel('inc'));
+      }, 1000);
+    } else {
+      dispatch(actions.endGame());
+    }
+    return () => {
+      clearTimeout(timeoutTimer);
+    };
+  }, [state.cardsToWin]);
+
+  useEffect(() => {
+    state.isLevelStarted ? handleStart() : handleReset();
+  }, [state.isLevelStarted]);
+
+  const onResetLevelHandler = () => {
+    handleReset();
+    dispatch(actions.resetLevel());
   };
+
+  const onPauseGameHandler = () => {
+    handlePause();
+  };
+
+  const onResumeGameHandler = () => {
+    handleResume();
+  };
+
 
   return (
     <div className={classes.Header}>
-      <span>
-        <span onClick={() => onChangeLevelHandler('dec')}>{'<'}</span>
-        <span className={classes.level}>level: {props.level}</span>
-        <span onClick={() => onChangeLevelHandler('inc')}>{'>'}</span>
-      </span>
+      <span className={classes.level}>level: {state.level}</span>
 
       <span className={classes.right}>
         <span className={classes.timer}>{formatTime(timer)}</span>
         {isPaused ? (
-          <IconButton onClick={handleResume} color={props.buttonColor} component={Play} />
+          <IconButton onClick={onResumeGameHandler} color={state.coverColor} component={Play} />
         ) : (
-          <IconButton onClick={handlePause} color={props.buttonColor} component={Pause} />
+          <IconButton onClick={onPauseGameHandler} color={state.coverColor} component={Pause} />
         )}
-        <IconButton
-          onClick={() => {
-            handleReset();
-            handleStart();
-          }}
-          color={props.buttonColor}
-          component={Refresh}
-        />
-        <IconButton color={props.buttonColor} component={Screen} />
-        <IconButton color={props.buttonColor} component={Sound2} />
-        <IconButton color={props.buttonColor} component={Music2} />
+        <IconButton onClick={onResetLevelHandler} color={state.coverColor} component={Refresh} />
+        <IconButton color={state.coverColor} component={Screen} />
+        <IconButton color={state.coverColor} component={Sound2} />
+        <IconButton color={state.coverColor} component={Music2} />
       </span>
     </div>
   );

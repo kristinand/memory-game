@@ -1,15 +1,22 @@
 import * as actionTypes from './actionTypes';
 
-export const changeLevel = (param, level) => {
+export const loadLevel = (param = '') => {
   return {
-    type: actionTypes.CHANGE_LEVEL,
+    type: actionTypes.LOAD_LEVEL,
     param,
   };
 };
 
-export const loadLevel = () => {
+export const resetLevel = () => {
   return {
-    type: actionTypes.LOAD_LEVEL,
+    type: actionTypes.RESET_LEVEL,
+  };
+};
+
+export const endLevel = (timer = 0) => {
+  return {
+    type: actionTypes.END_LEVEL,
+    timer,
   };
 };
 
@@ -19,5 +26,18 @@ export const changeCardStatus = (status, selectedCardIndex, oldCardindex) => {
     status,
     selectedCardIndex,
     oldCardindex,
+  };
+};
+
+export const startGame = (player) => {
+  return {
+    type: actionTypes.START_GAME,
+    player,
+  };
+};
+
+export const endGame = () => {
+  return {
+    type: actionTypes.END_GAME
   };
 };

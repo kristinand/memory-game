@@ -1,16 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/actions';
 import { listToArray } from '../../utils/functions';
 import CardRow from '../../components/CardRow';
 
-const game = (props) => {
+const game = () => {
   const dispatch = useDispatch();
   const cards = useSelector((state) => state.cards);
-
-  useEffect(() => {
-    dispatch(actions.loadLevel());
-  }, [props.level]);
 
   const onCardSelectHandler = (key) => {
     const selectedCardIndex = cards.findIndex((card) => card.key === key);

@@ -3,20 +3,26 @@ import { shuffleList, generateRandomColor, fillCards } from '../utils/functions'
 
 const initState = {
   level: 1,
+  levels: 5,
   cards: [],
   coverColor: generateRandomColor(40, 40, 60, 60),
   cardsToWin: 1,
+  isLevelStarted: false,
+  player: 'Player',
+  score: [],
 };
 
-const updateCardStatus = (state, status, selectedCardIndex, oldCardIndex = -1) => {
+const updateGameStatus = (state, status, selectedCardIndex, oldCardIndex = -1) => {
   let cards = state.cards;
   let selectedCard = cards[selectedCardIndex];
   let oldCard = cards[oldCardIndex];
   let cardsToWin = state.cardsToWin;
+  let isLevelStarted = state.isLevelStarted;
 
   if (status ===  'opened') {
     selectedCard.status = 'opened';
     cards = cards.slice(0, selectedCardIndex).concat([selectedCard, ...cards.slice(selectedCardIndex + 1)]);
+    isLevelStarted = true;
   } else if (status ===  'guessed') {
     selectedCard.status = 'guessed';
     oldCard.status = 'guessed';
@@ -34,31 +40,49 @@ const updateCardStatus = (state, status, selectedCardIndex, oldCardIndex = -1) =
     cards = cards.slice(0, selectedCardIndex).concat([selectedCard, ...cards.slice(selectedCardIndex + 1)]);
     cards = cards.slice(0, oldCardIndex).concat([oldCard, ...cards.slice(oldCardIndex + 1)]);
   }
-  return { cards, cardsToWin };
+  return { cards, cardsToWin, isLevelStarted };
 };
+
+const createCards = (level, coverColor) => {
+  let cards = [];
+  cards = fillCards(cards, level, coverColor);
+  cards = shuffleList(cards);
+  return cards;
+}
 
 const gameReducer = (state = initState, action) => {
   switch (action.type) {
-    case actionTypes.CHANGE_LEVEL: {
+    case actionTypes.START_GAME: return { ...state, player: action.player };
+    case actionTypes.END_GAME: {
+      console.log('Your scores: ' + state.score.join(", "));
+      return { ...initState, player: action.player };
+    }
+    case actionTypes.LOAD_LEVEL: {
       let level = state.level;
-      if (action.param === 'inc' && level < 5) {
+      if (action.param === 'inc' && level < state.levels) {
         level += 1;
       } else if (action.param === 'dec' && level > 1) {
         level -= 1;
       }
       const coverColor = generateRandomColor(40, 40, 60, 60);
-      return { ...state, level, coverColor };
+      let cards = createCards(level, state.coverColor);
+      return { 
+        ...state,
+        cards, level, coverColor,
+        cardsToWin: cards.length,
+        isLevelStarted: false
+      };
     }
-    case actionTypes.LOAD_LEVEL: {
-      let cards = [];
-      cards = fillCards(cards, state.level, state.coverColor);
-      cards = shuffleList(cards);
+    case actionTypes.RESET_LEVEL: {
+      return {...state, isLevelStarted: false, cards: createCards(state.level, state.coverColor) };
+    }
+    case actionTypes.END_LEVEL: {
+      return {...state, score: [...state.score, action.timer]};
+    }
 
-      return { ...state, cards: cards, cardsToWin: cards.length };
-    }
     case actionTypes.CHANGE_CARD_STATUS: {
-      const {cards, cardsToWin} = updateCardStatus(state, action.status, action.selectedCardIndex, action.oldCardindex);
-      return { ...state, cards, cardsToWin };
+      const { cards, cardsToWin, isLevelStarted } = updateGameStatus(state, action.status, action.selectedCardIndex, action.oldCardindex);
+      return { ...state, cards, cardsToWin, isLevelStarted };
     }
     default:
       return state;
