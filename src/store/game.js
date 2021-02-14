@@ -8,6 +8,7 @@ const initState = {
   coverColor: generateRandomColor(40, 40, 60, 60),
   cardsToWin: 1,
   isLevelStarted: false,
+  isGameStarted: false,
   player: 'Player',
   score: [],
 };

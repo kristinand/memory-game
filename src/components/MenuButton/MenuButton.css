@@ -2,8 +2,7 @@
 
 .Button {
   margin: 0.3em;
-	width: 30%;
-	min-width: 200px;
+	width: 100%;
   position: relative;
   display: inline-block;
   cursor: pointer;
@@ -13,9 +12,8 @@
   text-decoration: none;
   font-size: inherit;
   font-family: inherit;
-  font-weight: 600;
+  font-weight: inherit;
   color: #000;
-  text-transform: uppercase;
   padding: 1em 2em;
   background: #fff;
   border: 2px solid #555;
