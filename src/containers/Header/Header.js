@@ -19,7 +19,7 @@ const header = () => {
 
   useEffect(() => {
     let timeoutTimer;
-    if (state.cardsToWin > 0) return;
+    if (state.cardsToWin !== 0) return;
     dispatch(actions.endLevel(timer));
     if (state.level < state.levels) {
       timeoutTimer = setTimeout(() => {
