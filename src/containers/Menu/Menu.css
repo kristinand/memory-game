@@ -1,4 +1,4 @@
-.Menu {
+.menu {
   margin: 25vh auto;
   width: 30%;
   min-width: 200px;
@@ -7,9 +7,20 @@
   flex-direction: column;
   align-items: center;
 	font-weight: normal;
+  line-height: 1em;
 }
 
-.Input {
+.inputContainer {
+  width: 100%;
+  height: 80px;
+}
+
+.helperText {
+  padding: 0.3em 2em;
+  color: #9D3F46;
+}
+
+.input {
   display: block;
 	padding: 1em 2em;
   width: 100%;
@@ -21,6 +32,10 @@
   border-radius: 0.75em;
 }
 
-.Input:focus {
+.input:focus {
   outline: none;
+}
+
+.inputDanger {
+  border: 2px solid #9D3F46;
 }
