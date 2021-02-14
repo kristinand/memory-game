@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../store/actions';
-import { listToArray } from '../../utils/functions';
-import CardRow from '../../components/CardRow';
+import * as actions from '../store/actions';
+import { listToArray } from '../utils/functions';
+import CardRow from '../components/CardRow';
 
 const game = () => {
   const dispatch = useDispatch();
