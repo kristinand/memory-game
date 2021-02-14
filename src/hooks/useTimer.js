@@ -1,3 +1,5 @@
+// https://dev.to/emmaadesile/build-a-timer-using-react-hooks-3he2
+
 import { useState, useRef } from 'react';
 
 const useTimer = (initialState = 0) => {
