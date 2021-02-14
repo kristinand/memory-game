@@ -6,7 +6,7 @@ const Button = styled.span`
   position: relative;
   cursor: pointer;
   padding: 0.2em;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   transition: 0.1s ease-in-out;
@@ -50,6 +50,7 @@ const iconButton = (props) => {
         style={{ fontSize: '1.8rem' }}
         viewBox="0 0 100 100"
       />
+      {props.text}
       {props.color ? <Back /> : ''}
     </Button>
   );
