@@ -6,7 +6,7 @@ const initState = {
   levels: 5,
   cards: [],
   coverColor: generateRandomColor(40, 40, 60, 60),
-  cardsToWin: 1,
+  cardsToWin: null,
   isLevelStarted: false,
   isGameStarted: false,
   player: 'Player',
@@ -53,7 +53,10 @@ const createCards = (level, coverColor) => {
 
 const gameReducer = (state = initState, action) => {
   switch (action.type) {
-    case actionTypes.START_GAME: return { ...state, player: action.player };
+    case actionTypes.START_GAME: {
+      let cards = createCards(state.level, state.coverColor);
+      return { ...state, player: action.player, isGameStarted: true, cards, cardsToWin: cards.length }
+    };
     case actionTypes.END_GAME: {
       console.log('Your scores: ' + state.score.join(", "));
       return { ...initState, player: action.player };
@@ -75,7 +78,7 @@ const gameReducer = (state = initState, action) => {
       };
     }
     case actionTypes.RESET_LEVEL: {
-      return {...state, isLevelStarted: false, cards: createCards(state.level, state.coverColor) };
+      return {...state, isLevelStarted: false, cards: createCards(state.level, state.coverColor), cardsToWin: cards.length };
     }
     case actionTypes.END_LEVEL: {
       return {...state, score: [...state.score, action.timer]};
