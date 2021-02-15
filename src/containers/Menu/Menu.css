@@ -28,14 +28,14 @@
 	font-size: inherit;
 	font-weight: inherit;
 	background-color: #fff;
-  border: 2px solid #555;
-  border-radius: 0.75em;
+  border: 0px solid rgba(0,0,0,0);
+  border-radius: 0.3em;
 }
 
 .input:focus {
   outline: none;
 }
 
-.inputDanger {
-  border: 2px solid #9D3F46;
+.inputDanger::placeholder {
+  color: rgba(157, 63, 70, 0.7);
 }
