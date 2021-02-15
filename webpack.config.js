@@ -27,7 +27,6 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         { from: path.resolve(__dirname, 'src/assets/favicon.ico'), to: path.resolve(__dirname, 'public/assets') },
-        { from: path.resolve(__dirname, 'src/assets/fonts'), to: path.resolve(__dirname, 'public/assets/fonts') },
       ],
     }),
   ],
@@ -57,7 +56,7 @@ module.exports = {
         use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
-        test: /\.(png|jpg|gif|mp3)$/,
+        test: /\.(png|jpg|gif|mp3|ogg)$/,
         type: 'asset/resource',
       },
       {
