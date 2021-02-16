@@ -1,0 +1,25 @@
+.Header {
+  position: relative;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.6rem;
+  height: 70px;
+  width: 100%;
+}
+
+.level {
+  margin: 0 0.5rem;
+}
+
+.timer {
+  position: relative;
+  top: 0.2em;
+  margin-right: 0.5rem;
+}
+
+.right {
+  display: flex;
+  gap: 0.5rem;
+}
