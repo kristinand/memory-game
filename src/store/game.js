@@ -10,7 +10,7 @@ const initState = {
   isLevelStarted: false,
   isGameStarted: false,
   player: '',
-  score: [],
+  score: 0,
   musicVolume: 0.5,
   soundVolume: 0.5,
 };
@@ -58,11 +58,11 @@ const gameReducer = (state = initState, action) => {
     case actionTypes.START_GAME: {
       let cards = createCards(state.level, state.coverColor);
       if (action.player === '') return;
-      return { ...state, player: action.player, isGameStarted: true, cards, cardsToWin: cards.length }
+      return { ...state, player: action.player, isGameStarted: true, cards, cardsToWin: cards.length, level: 1 }
     };
     case actionTypes.END_GAME: {
       console.log('Your scores: ' + state.score.join(", "));
-      return { ...initState, player: action.player };
+      return { ...initState, player: state.player };
     }
     case actionTypes.LOAD_LEVEL: {
       let level = state.level;
@@ -84,7 +84,7 @@ const gameReducer = (state = initState, action) => {
       return {...state, isLevelStarted: false, cards: createCards(state.level, state.coverColor), cardsToWin: state.cards.length };
     }
     case actionTypes.END_LEVEL: {
-      return {...state, score: [...state.score, action.timer]};
+      return {...state, score: state.score + action.timer};
     }
 
     case actionTypes.CHANGE_CARD_STATUS: {
