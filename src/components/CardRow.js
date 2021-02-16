@@ -1,18 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
 import Card from './Card/Card';
 
-const CardRow = styled.div`
-  display: flex;
-  gap: 1rem;
-  flex: 1;
-  max-height: 250px;
-  justifycontent: space-between;
-`;
+const styles = {
+  display: 'flex',
+  gap: '1rem',
+  flex: 1,
+  maxHeight: '250px',
+  justifyContent: 'space-between',
+};
 
 const cardRow = (props) => {
   return (
-    <CardRow>
+    <div style={styles}>
       {props.cards.map((card) => (
         <Card
           onCardClick={() => props.onCardClick(card.key)}
@@ -23,7 +22,7 @@ const cardRow = (props) => {
           status={card.status}
         />
       ))}
-    </CardRow>
+    </div>
   );
 };
 
