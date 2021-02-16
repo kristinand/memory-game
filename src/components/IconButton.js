@@ -69,7 +69,7 @@ const iconButton = (props) => {
         style={{ fontSize: '1.8rem' }}
         viewBox="0 0 100 100"
       />
-      {props.text}
+      <span style={{fontSize: '1rem'}}>{props.text}</span>
       {props.color ? <Back /> : ''}
     </Button>
   );
