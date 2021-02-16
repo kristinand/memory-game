@@ -1,9 +1,12 @@
 import React from 'react';
-import classes from './MenuButton.css'
+import { Link } from 'react-router-dom';
+import classes from './MenuButton.css';
 
 const menuButton = (props) => {
 	return (
-		<button disabled={props.disabled} onClick={props.onClick} className={classes.Button}>{props.title}</button>
+		<Link to={props.path} style={{width: '100%'}}>
+			<button disabled={props.disabled} onClick={props.onClick} className={classes.Button}>{props.title}</button>
+		</Link>
 	)
 }
 

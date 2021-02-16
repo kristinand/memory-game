@@ -1,7 +1,7 @@
 /* https://codepen.io/kathykato/pen/gOOjgmP */
 
 .Button {
-  margin: 0.3em;
+  margin: 0.3em 0;
   width: 100%;
   position: relative;
   display: inline-block;
