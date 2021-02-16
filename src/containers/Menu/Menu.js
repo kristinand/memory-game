@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/actions';
 import classes from './Menu.css';
 import MenuButton from '../../components/MenuButton/MenuButton';
-import menuSound from '@assets/menu-click.opus';
 
 const menu = (props) => {
   const dispatch = useDispatch();
@@ -11,8 +10,7 @@ const menu = (props) => {
   const [player, setPlayer] = useState(store.player);
   const [isHelperTextVisible, setIsHelperTextVisible] = useState(false);
   let inputClasses = isHelperTextVisible ? [classes.input, classes.inputDanger].join(' ') : classes.input;
-  const menuClickSound = new Audio(menuSound);
-  menuClickSound.volume = store.soundVolume;
+
 
   if (player.length > 0 && isHelperTextVisible) setIsHelperTextVisible(false);
 
@@ -20,14 +18,11 @@ const menu = (props) => {
     if (player.length === 0) { 
       setIsHelperTextVisible(true);
     } else {
-      menuClickSound.play();
       dispatch(actions.startGame(player))
     }
   }
 
   const onContinueGameHandler = () => {
-    console.log(this);
-    menuClickSound.play();
     if (store.isGameStarted) return;
   }
 
@@ -48,8 +43,8 @@ const menu = (props) => {
       <span className="separator">♥ ☀ ♦</span>
       <MenuButton onClick={onNewGameHandler} disabled={isHelperTextVisible} path="/game" title="New Game" />
       <MenuButton onClick={onContinueGameHandler.bind(this)} path="/game" disabled={!store.isGameStarted || isHelperTextVisible} title="Continue" />
-      <MenuButton onClick={() => {menuClickSound.play()}} path="/rating" title="Rating" />
-      <MenuButton onClick={() => {menuClickSound.play()}} path="/settings" title="Settings" />
+      <MenuButton path="/rating" title="Rating" />
+      <MenuButton path="/settings" title="Settings" />
     </div>
   );
 };
