@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import classes from './Card.css';
-import audio from '@assets/card-click.ogg';
+import audio from '@assets/card-click.opus';
 
 const card = (props) => {
   const soundVolume = useSelector(state => state.soundVolume);

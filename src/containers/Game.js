@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../store/actions';
 import { listToArray } from '../utils/functions';
+import Header from './GameHeader/GameHeader';
 import CardRow from '../components/CardRow';
-import music from '@assets/music.mp3';
+import music from '@assets/music.opus';
 
 const game = () => {
   const [musicSound] = useState(new Audio(music));
-  const {cards, musicVolume} = useSelector((state) => state);
+  const { cards, musicVolume } = useSelector((state) => state);
   musicSound.volume = musicVolume;
-  
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     musicSound.play();
     musicSound.loop = true;
+    return () => {
+      musicSound.pause();
+    }
   }, []);
-
-
 
   const onCardSelectHandler = (key) => {
     const selectedCardIndex = cards.findIndex((card) => card.key === key);
@@ -45,11 +47,14 @@ const game = () => {
   };
 
   return (
-    <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column', height: '70vh', justifyContent: 'center' }}>
-      {listToArray(cards, 4).map((cardsRow, i) => (
-        <CardRow key={i} cards={cardsRow} onCardClick={onCardSelectHandler} />
-      ))}
-    </div>
+    <Fragment>
+      <Header />
+      <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column', height: '70vh', justifyContent: 'center' }}>
+        {listToArray(cards, 4).map((cardsRow, i) => (
+          <CardRow key={i} cards={cardsRow} onCardClick={onCardSelectHandler} />
+        ))}
+      </div>
+    </Fragment>
   );
 };
 

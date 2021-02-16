@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/actions';
 import classes from './Menu.css';
 import MenuButton from '../../components/MenuButton/MenuButton';
-import menuSound from '@assets/menu-click.ogg';
+import menuSound from '@assets/menu-click.opus';
 
 const menu = (props) => {
   const dispatch = useDispatch();
@@ -15,6 +15,21 @@ const menu = (props) => {
   menuClickSound.volume = store.soundVolume;
 
   if (player.length > 0 && isHelperTextVisible) setIsHelperTextVisible(false);
+
+  const onNewGameHandler = () => {
+    if (player.length === 0) { 
+      setIsHelperTextVisible(true);
+    } else {
+      menuClickSound.play();
+      dispatch(actions.startGame(player))
+    }
+  }
+
+  const onContinueGameHandler = () => {
+    console.log(this);
+    menuClickSound.play();
+    if (store.isGameStarted) return;
+  }
 
   return (
     <div className={classes.menu}>
@@ -31,17 +46,10 @@ const menu = (props) => {
         {isHelperTextVisible ? <p className={classes.helperText}>Please, enter your name</p> : ''}
       </div>
       <span className="separator">♥ ☀ ♦</span>
-      <MenuButton onClick={() => {
-        if (player.length === 0) { 
-          setIsHelperTextVisible(true);
-        } else {
-          menuClickSound.play();
-          dispatch(actions.startGame(player))
-        }
-        }} title="New Game" />
-      <MenuButton onClick={() => {menuClickSound.currentTime = 0; menuClickSound.play()}} disabled={true} title="Continue" />
-      <MenuButton onClick={() => {menuClickSound.currentTime = 0; menuClickSound.play()}} title="Rating" />
-      <MenuButton onClick={() => {menuClickSound.currentTime = 0; menuClickSound.play()}} title="Settings" />
+      <MenuButton onClick={onNewGameHandler} disabled={isHelperTextVisible} path="/game" title="New Game" />
+      <MenuButton onClick={onContinueGameHandler.bind(this)} path="/game" disabled={!store.isGameStarted || isHelperTextVisible} title="Continue" />
+      <MenuButton onClick={() => {menuClickSound.play()}} path="/rating" title="Rating" />
+      <MenuButton onClick={() => {menuClickSound.play()}} path="/settings" title="Settings" />
     </div>
   );
 };
