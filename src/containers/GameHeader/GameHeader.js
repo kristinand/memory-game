@@ -4,7 +4,7 @@ import * as actions from '../../store/actions';
 import useTimer from '../../hooks/useTimer';
 import { formatTime } from '../../utils/functions';
 import classes from './GameHeader.css';
-import IconButton from '../../components/IconButton';
+import IconButton from '../../components/IconButton/IconButton';
 
 import menuSound from '@assets/menu-click.opus';
 import Refresh from '@assets/icons/refresh.svg';

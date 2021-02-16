@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './Header.css';
 import { useHistory } from 'react-router-dom';
 import Back from '@assets/icons/left.svg';
-import IconButton from '../../components/IconButton';
+import IconButton from '../../components/IconButton/IconButton';
 
 const Header = (props) => {
   const history = useHistory();
