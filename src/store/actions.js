@@ -41,3 +41,11 @@ export const endGame = () => {
     type: actionTypes.END_GAME
   };
 };
+
+export const changeVolume = (audio, volume) => {
+  return {
+    type: actionTypes.CHANGE_VOLUME,
+    audio,
+    volume,
+  }
+}

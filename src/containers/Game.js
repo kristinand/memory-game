@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../store/actions';
 import { listToArray } from '../utils/functions';
 import CardRow from '../components/CardRow';
+import music from '@assets/music.mp3';
 
 const game = () => {
+  const [musicSound] = useState(new Audio(music));
+  const {cards, musicVolume} = useSelector((state) => state);
+  musicSound.volume = musicVolume;
+  
   const dispatch = useDispatch();
-  const cards = useSelector((state) => state.cards);
+
+  useEffect(() => {
+    musicSound.play();
+    musicSound.loop = true;
+  }, []);
+
+
 
   const onCardSelectHandler = (key) => {
     const selectedCardIndex = cards.findIndex((card) => card.key === key);

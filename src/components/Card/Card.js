@@ -1,7 +1,11 @@
 import React, { useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import classes from './Card.css';
+import audio from '@assets/card-click.ogg';
 
 const card = (props) => {
+  const soundVolume = useSelector(state => state.soundVolume);
+  const clickAudio = new Audio(audio);
   const cardRef = useRef();
 
   useEffect(() => {
@@ -9,6 +13,8 @@ const card = (props) => {
   }, [props.status]);
 
   const openCard = (card) => {
+    clickAudio.volume = soundVolume;
+    clickAudio.play();
     card.style.transform = 'rotateY(180deg)';
     card.style.boxShadow = '-2px 2px 0.1em 3px hsla(0, 0%, 70%, 0.3)';
   };

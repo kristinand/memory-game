@@ -9,8 +9,10 @@ const initState = {
   cardsToWin: null,
   isLevelStarted: false,
   isGameStarted: false,
-  player: 'Player',
+  player: '',
   score: [],
+  musicVolume: 0.5,
+  soundVolume: 0.5,
 };
 
 const updateGameStatus = (state, status, selectedCardIndex, oldCardIndex = -1) => {
@@ -55,6 +57,7 @@ const gameReducer = (state = initState, action) => {
   switch (action.type) {
     case actionTypes.START_GAME: {
       let cards = createCards(state.level, state.coverColor);
+      if (action.player === '') return;
       return { ...state, player: action.player, isGameStarted: true, cards, cardsToWin: cards.length }
     };
     case actionTypes.END_GAME: {
@@ -78,7 +81,7 @@ const gameReducer = (state = initState, action) => {
       };
     }
     case actionTypes.RESET_LEVEL: {
-      return {...state, isLevelStarted: false, cards: createCards(state.level, state.coverColor), cardsToWin: cards.length };
+      return {...state, isLevelStarted: false, cards: createCards(state.level, state.coverColor), cardsToWin: state.cards.length };
     }
     case actionTypes.END_LEVEL: {
       return {...state, score: [...state.score, action.timer]};
@@ -87,6 +90,13 @@ const gameReducer = (state = initState, action) => {
     case actionTypes.CHANGE_CARD_STATUS: {
       const { cards, cardsToWin, isLevelStarted } = updateGameStatus(state, action.status, action.selectedCardIndex, action.oldCardindex);
       return { ...state, cards, cardsToWin, isLevelStarted };
+    }
+    case actionTypes.CHANGE_VOLUME: {
+      if (action.audio === 'music') {
+        return {...state, musicVolume: action.volume}
+      } else {
+        return {...state, soundVolume: action.volume}
+      }
     }
     default:
       return state;

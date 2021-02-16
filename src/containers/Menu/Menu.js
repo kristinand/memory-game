@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/actions';
 import classes from './Menu.css';
 import MenuButton from '../../components/MenuButton/MenuButton';
+import menuSound from '@assets/menu-click.ogg';
 
 const menu = (props) => {
   const dispatch = useDispatch();
@@ -10,6 +11,8 @@ const menu = (props) => {
   const [player, setPlayer] = useState(store.player);
   const [isHelperTextVisible, setIsHelperTextVisible] = useState(false);
   let inputClasses = isHelperTextVisible ? [classes.input, classes.inputDanger].join(' ') : classes.input;
+  const menuClickSound = new Audio(menuSound);
+  menuClickSound.volume = store.soundVolume;
 
   if (player.length > 0 && isHelperTextVisible) setIsHelperTextVisible(false);
 
@@ -32,12 +35,13 @@ const menu = (props) => {
         if (player.length === 0) { 
           setIsHelperTextVisible(true);
         } else {
+          menuClickSound.play();
           dispatch(actions.startGame(player))
         }
         }} title="New Game" />
-      <MenuButton onClick={() => {}} disabled={true} title="Continue" />
-      <MenuButton onClick={() => {}} title="Rating" />
-      <MenuButton onClick={() => {}} title="Settings" />
+      <MenuButton onClick={() => {menuClickSound.currentTime = 0; menuClickSound.play()}} disabled={true} title="Continue" />
+      <MenuButton onClick={() => {menuClickSound.currentTime = 0; menuClickSound.play()}} title="Rating" />
+      <MenuButton onClick={() => {menuClickSound.currentTime = 0; menuClickSound.play()}} title="Settings" />
     </div>
   );
 };
