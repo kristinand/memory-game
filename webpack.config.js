@@ -10,7 +10,7 @@ module.exports = {
   entry: ['@babel/polyfill', './index.js'],
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve(__dirname, '/public/'),
   },
   resolve: {
     extensions: ['.js', '.json'],
@@ -57,7 +57,7 @@ module.exports = {
         use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
-        test: /\.(png|jpg|gif|mp3|ogg)$/,
+        test: /\.(png|jpg|gif|opus)$/,
         type: 'asset/resource',
       },
       {
