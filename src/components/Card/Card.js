@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import classes from './Card.css';
 import audio from '@assets/card-click.opus';
 
-const card = (props) => {
+const Card = (props) => {
   const soundVolume = useSelector(state => state.soundVolume);
   const clickAudio = new Audio(audio);
   const cardRef = useRef();
@@ -38,4 +38,4 @@ const card = (props) => {
   );
 };
 
-export default card;
+export default Card;

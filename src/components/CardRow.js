@@ -9,7 +9,7 @@ const styles = {
   justifyContent: 'space-between',
 };
 
-const cardRow = (props) => {
+const CardRow = (props) => {
   return (
     <div style={styles}>
       {props.cards.map((card) => (
@@ -26,4 +26,4 @@ const cardRow = (props) => {
   );
 };
 
-export default cardRow;
+export default CardRow;

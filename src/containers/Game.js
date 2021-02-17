@@ -6,7 +6,7 @@ import Header from './GameHeader/GameHeader';
 import CardRow from '../components/CardRow';
 import music from '@assets/music.opus';
 
-const game = () => {
+const Game = () => {
   const [musicSound] = useState(new Audio(music));
   const { cards, musicVolume } = useSelector((state) => state);
   musicSound.volume = musicVolume;
@@ -58,4 +58,4 @@ const game = () => {
   );
 };
 
-export default game;
+export default Game;

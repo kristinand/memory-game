@@ -18,7 +18,7 @@ import Music0 from '@assets/icons/music0.svg';
 import Music1 from '@assets/icons/music1.svg';
 import Music2 from '@assets/icons/music2.svg';
 
-const header = () => {
+const GameHeader = () => {
   const state = useSelector((state) => state);
   const [menuClickSound] = useState(new Audio(menuSound));
   let soundVolume = state.soundVolume;
@@ -80,7 +80,7 @@ const header = () => {
   };
 
   return (
-    <div className={classes.Header}>
+    <div className={classes.GameHeader}>
       <span className={classes.level}>level: {state.level}</span>
 
       <span className={classes.right}>
@@ -107,4 +107,4 @@ const header = () => {
   );
 };
 
-export default React.memo(header);
+export default GameHeader;

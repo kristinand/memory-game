@@ -6,7 +6,7 @@ import Menu from './containers/Menu/Menu';
 import Rating from './containers/Rating/Rating';
 import Settings from './containers/Settings/Settings';
 
-const app = () => {
+const App = () => {
   const player = useSelector(state => state.player);
 
   let routes = (
@@ -37,4 +37,4 @@ const app = () => {
   );
 };
 
-export default app;
+export default App;

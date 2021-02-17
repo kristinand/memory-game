@@ -5,7 +5,7 @@ import classes from './Menu.css';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import NameInput from '../../components/NameInput/NameInput';
 
-const menu = (props) => {
+const Menu = (props) => {
   const dispatch = useDispatch();
   const store = useSelector((store) => store);
   const [player, setPlayer] = useState(store.player);
@@ -36,4 +36,4 @@ const menu = (props) => {
   );
 };
 
-export default menu;
+export default Menu;

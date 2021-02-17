@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import classes from './MenuButton.css';
 import sound from '@assets/menu-click.opus';
 
-const menuButton = (props) => {
+const MenuButton = (props) => {
 	const clickSound = new Audio(sound);
 	const soundVolume = useSelector((store) => store.soundVolume);
   clickSound.volume = soundVolume;
@@ -24,4 +24,4 @@ const menuButton = (props) => {
 	)
 }
 
-export default menuButton;
+export default MenuButton;
