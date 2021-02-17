@@ -99,7 +99,6 @@ const gameReducer = (state = initState, action) => {
       }
     }
     case actionTypes.CHANGE_PAUSE_STATUS: {
-      console.log(action.isPaused)
       return {...state, isTimerPaused: action.isPaused}
     }
     default:
