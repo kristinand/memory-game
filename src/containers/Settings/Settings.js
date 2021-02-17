@@ -3,14 +3,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/actions';
 import classes from './Settings.css';
 import Header from '../Header/Header';
+import menuSound from '@assets/menu-click.opus'
 
 const Settings = () => {
+  const sound = new Audio(menuSound);
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const onVolumeChangeHandler = (type, value) => {
     if (value < 0 || value > 1 || isNaN(+value)) return;
     dispatch(actions.changeVolume(type, +value));
+    sound.volume = value;
+    sound.currentTime = 0;
+    sound.play();
   };
 
   return (
