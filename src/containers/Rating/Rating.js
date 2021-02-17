@@ -3,22 +3,21 @@ import classes from './Rating.css';
 import { formatTime } from '../../utils/functions';
 import Header from '../Header/Header';
 
+let ratingData = [
+	{ name: 'Bob', score: 261, date: new Date('2020','02','20', '11','12') },
+	{ name: 'Tom', score: 297, date: new Date('2021','01','02', '13','34') },
+	{ name: 'Jess', score: 212, date: new Date('2019','05','12', '12','01') },
+	{ name: 'Lily', score: 184, date: new Date('2020','11','31', '23','42') },
+];
+
 const Rating = () => {
-  const today = new Date();
-  let data = [
-    { name: 'Bob', score: 123, date: today },
-    { name: 'Tom', score: 243, date: today },
-    { name: 'Jess', score: 231, date: today, current: true },
-    { name: 'Lily', score: 100, date: today },
-  ];
+  ratingData = ratingData.sort((prev, cur) => prev.score - cur.score);
 
-  data = data.sort((prev, cur) => prev.score - cur.score);
-
-  const playersData = data.map((player, i) => {
+  const playersData = ratingData.map((player, i) => {
     const playerClass = player.current ? [classes.player, classes.current].join(' ') : classes.player;
-    const formattedDate = `${player.date.getDate().toString().padStart(2, 0)}-${(player.date.getMonth() + 1)
+    const formattedDate = `${player.date.getDate().toString().padStart(2, 0)}.${(player.date.getMonth() + 1)
       .toString()
-      .padStart(2, 0)}-${player.date.getFullYear()}
+      .padStart(2, 0)}.${player.date.getFullYear()}
     ${player.date.getHours().toString().padStart(2, 0)}:${player.date.getMinutes().toString().padStart(2, 0)}`;
     return (
       <div key={player.name} className={playerClass}>
