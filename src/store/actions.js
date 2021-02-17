@@ -49,3 +49,10 @@ export const changeVolume = (audio, volume) => {
     volume,
   }
 }
+
+export const setIsTimerPaused = (isPaused) => {
+  return {
+    type: actionTypes.CHANGE_PAUSE_STATUS,
+    isPaused
+  }
+}

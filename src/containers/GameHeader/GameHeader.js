@@ -47,17 +47,16 @@ const GameHeader = () => {
     };
   }, [state.cardsToWin]);
 
-  useEffect(() => {
-    state.isLevelStarted ? handleStart() : handleReset();
+	useEffect(() => {
+    if (state.isTimerPaused) {
+      handlePause();
+    } else {
+      timer === 0 ? handleStart() : handleResume();
+    }
     return () => {
       handlePause();
-    }
-  }, [state.isLevelStarted]);
-
-  const onResetLevelHandler = () => {
-    handleReset();
-    dispatch(actions.resetLevel());
-  };
+    };
+  }, [state.isTimerPaused]);
 
   const onChangeAudioVolumeHandler = (type) => {
     let volume = type === 'sound' ? soundVolume : musicVolume;
@@ -89,12 +88,12 @@ const GameHeader = () => {
       <span className={classes.right}>
         <span className={classes.timer}>{formatTime(timer)}</span>
         <IconButton
-          onClick={isPaused ? handleResume : handlePause}
+          onClick={() => dispatch(actions.setIsTimerPaused(!isPaused))}
           color={state.coverColor}
           title={isPaused ? 'Play' : 'Pause'}
           component={isPaused ? Play : Pause}
         />
-        <IconButton onClick={onResetLevelHandler} color={state.coverColor} component={Refresh} title="Reset Level" />
+        <IconButton onClick={() => dispatch(actions.resetLevel())} color={state.coverColor} component={Refresh} title="Reset Level" />
         <IconButton
           onClick={toggleFullscreenHandler}
           color={state.coverColor}

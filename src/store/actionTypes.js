@@ -8,5 +8,5 @@ export const RESET_LEVEL = 'RESET_LEVEL';
 export const END_LEVEL = 'END_LEVEL';
 
 export const CHANGE_CARD_STATUS = 'CHANGE_CARD_STATUS';
-
 export const CHANGE_VOLUME = 'CHANGE_VOLUME';
+export const CHANGE_PAUSE_STATUS = 'CHANGE_PAUSE_STATUS';

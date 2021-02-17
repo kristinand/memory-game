@@ -7,8 +7,8 @@ const initState = {
   cards: [],
   coverColor: generateRandomColor(40, 40, 60, 60),
   cardsToWin: null,
-  isLevelStarted: false,
   isGameStarted: false,
+  isTimerPaused: true,
   player: '',
   score: 0,
   musicVolume: 0.5,
@@ -20,12 +20,12 @@ const updateGameStatus = (state, status, selectedCardIndex, oldCardIndex = -1) =
   let selectedCard = cards[selectedCardIndex];
   let oldCard = cards[oldCardIndex];
   let cardsToWin = state.cardsToWin;
-  let isLevelStarted = state.isLevelStarted;
+  let isTimerPaused = state.isTimerPaused;
 
   if (status ===  'opened') {
     selectedCard.status = 'opened';
     cards = cards.slice(0, selectedCardIndex).concat([selectedCard, ...cards.slice(selectedCardIndex + 1)]);
-    isLevelStarted = true;
+    isTimerPaused = false;
   } else if (status ===  'guessed') {
     selectedCard.status = 'guessed';
     oldCard.status = 'guessed';
@@ -43,7 +43,7 @@ const updateGameStatus = (state, status, selectedCardIndex, oldCardIndex = -1) =
     cards = cards.slice(0, selectedCardIndex).concat([selectedCard, ...cards.slice(selectedCardIndex + 1)]);
     cards = cards.slice(0, oldCardIndex).concat([oldCard, ...cards.slice(oldCardIndex + 1)]);
   }
-  return { cards, cardsToWin, isLevelStarted };
+  return { cards, cardsToWin, isTimerPaused };
 };
 
 const createCards = (level, coverColor) => {
@@ -77,19 +77,19 @@ const gameReducer = (state = initState, action) => {
         ...state,
         cards, level, coverColor,
         cardsToWin: cards.length,
-        isLevelStarted: false
+        isTimerPaused: true,
       };
     }
     case actionTypes.RESET_LEVEL: {
-      return {...state, isLevelStarted: false, cards: createCards(state.level, state.coverColor), cardsToWin: state.cards.length };
+      return {...state, cards: createCards(state.level, state.coverColor), cardsToWin: state.cards.length };
     }
     case actionTypes.END_LEVEL: {
-      return {...state, score: state.score + action.timer};
+      return {...state, score: action.timer};
     }
 
     case actionTypes.CHANGE_CARD_STATUS: {
-      const { cards, cardsToWin, isLevelStarted } = updateGameStatus(state, action.status, action.selectedCardIndex, action.oldCardindex);
-      return { ...state, cards, cardsToWin, isLevelStarted };
+      const { cards, cardsToWin, isTimerPaused } = updateGameStatus(state, action.status, action.selectedCardIndex, action.oldCardindex);
+      return { ...state, cards, cardsToWin, isTimerPaused };
     }
     case actionTypes.CHANGE_VOLUME: {
       if (action.audio === 'music') {
@@ -97,6 +97,10 @@ const gameReducer = (state = initState, action) => {
       } else {
         return {...state, soundVolume: action.volume}
       }
+    }
+    case actionTypes.CHANGE_PAUSE_STATUS: {
+      console.log(action.isPaused)
+      return {...state, isTimerPaused: action.isPaused}
     }
     default:
       return state;
