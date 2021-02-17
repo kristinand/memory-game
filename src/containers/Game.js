@@ -4,10 +4,10 @@ import * as actions from '../store/actions';
 import { listToArray } from '../utils/functions';
 import Header from './GameHeader/GameHeader';
 import CardRow from '../components/CardRow';
-import music from '@assets/music.opus';
+// import music from '@assets/music.opus';
 
 const Game = () => {
-  const [musicSound] = useState(new Audio(music));
+  const [musicSound] = useState(new Audio('http://soundimage.org/wp-content/uploads/2017/05/High-Altitude-Bliss.mp3'));
   const { cards, musicVolume } = useSelector((state) => state);
   musicSound.volume = musicVolume;
 
