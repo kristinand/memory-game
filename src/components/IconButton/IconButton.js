@@ -7,6 +7,7 @@ const IconButton = (props) => {
 
   return (
     <span
+      title={props.title}
       className={classes.button}
       onClick={props.onClick}
       ref={buttonRef}

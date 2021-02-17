@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import * as actions from '../../store/actions';
 import useTimer from '../../hooks/useTimer';
 import { formatTime } from '../../utils/functions';
@@ -10,6 +11,7 @@ import menuSound from '@assets/menu-click.opus';
 import Refresh from '@assets/icons/refresh.svg';
 import Pause from '@assets/icons/pause.svg';
 import Play from '@assets/icons/play.svg';
+import Back from '@assets/icons/left.svg';
 import Screen from '@assets/icons/screen.svg';
 import Sound0 from '@assets/icons/sound0.svg';
 import Sound1 from '@assets/icons/sound1.svg';
@@ -19,6 +21,7 @@ import Music1 from '@assets/icons/music1.svg';
 import Music2 from '@assets/icons/music2.svg';
 
 const GameHeader = () => {
+  const history = useHistory();
   const state = useSelector((state) => state);
   const [menuClickSound] = useState(new Audio(menuSound));
   let soundVolume = state.soundVolume;
@@ -88,20 +91,29 @@ const GameHeader = () => {
         <IconButton
           onClick={isPaused ? handleResume : handlePause}
           color={state.coverColor}
+          title={isPaused ? 'Play' : 'Pause'}
           component={isPaused ? Play : Pause}
         />
-        <IconButton onClick={onResetLevelHandler} color={state.coverColor} component={Refresh} />
-        <IconButton onClick={toggleFullscreenHandler} color={state.coverColor} component={Screen} />
+        <IconButton onClick={onResetLevelHandler} color={state.coverColor} component={Refresh} title="Reset Level" />
+        <IconButton
+          onClick={toggleFullscreenHandler}
+          color={state.coverColor}
+          component={Screen}
+          title="Toggle Fullscreen"
+        />
         <IconButton
           onClick={() => onChangeAudioVolumeHandler('sound')}
           color={state.coverColor}
+          title="Sound Volume"
           component={soundVolume === 0 ? Sound0 : soundVolume <= 0.5 ? Sound1 : Sound2}
         />
         <IconButton
           onClick={() => onChangeAudioVolumeHandler('music')}
           color={state.coverColor}
+          title="Music Volume"
           component={musicVolume === 0 ? Music0 : musicVolume <= 0.5 ? Music1 : Music2}
         />
+        <IconButton onClick={() => history.push('/')} color={state.coverColor} component={Back} title="Back to Menu" />
       </span>
     </div>
   );
