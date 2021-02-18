@@ -24,12 +24,10 @@ const GameHeader = () => {
   const history = useHistory();
   const state = useSelector((state) => state);
   const [menuClickSound] = useState(new Audio(menuSound));
-  let soundVolume = state.soundVolume;
-  let musicVolume = state.musicVolume;
-  menuClickSound.volume = soundVolume;
+  menuClickSound.volume = state.soundVolume;
 
   const dispatch = useDispatch();
-  const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer(0);
+  const { timer, isPaused, handleStart, handlePause, handleResume } = useTimer(0);
 
   useEffect(() => {
     let timeoutTimer;
@@ -93,7 +91,7 @@ const GameHeader = () => {
           title={isPaused ? 'Play' : 'Pause'}
           component={isPaused ? Play : Pause}
         />
-        <IconButton onClick={() => dispatch(actions.resetLevel())} color={state.coverColor} component={Refresh} title="Reset Level" />
+        <IconButton onClick={() => dispatch(actions.startGame(state.player))} color={state.coverColor} component={Refresh} title="Reload Game" />
         <IconButton
           onClick={toggleFullscreenHandler}
           color={state.coverColor}

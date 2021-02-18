@@ -7,8 +7,8 @@ import NameInput from '../../components/NameInput/NameInput';
 
 const Menu = (props) => {
   const dispatch = useDispatch();
-  const store = useSelector((store) => store);
-  const [player, setPlayer] = useState(localStorage.getItem('player') || store.player);
+  const state = useSelector((state) => state);
+  const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
   const [isHelperTextVisible, setIsHelperTextVisible] = useState(false);
   if (player.length > 0 && isHelperTextVisible) setIsHelperTextVisible(false);
 
@@ -21,7 +21,7 @@ const Menu = (props) => {
   };
 
   const onContinueGameHandler = () => {
-    if (store.isGameStarted || player !== store.player) return;
+    if (state.isGameStarted || player !== state.player) return;
   };
 
   const savePlayerName = (player) => {
@@ -41,7 +41,7 @@ const Menu = (props) => {
       <MenuButton
         onClick={onContinueGameHandler.bind(this)}
         path="/game"
-        disabled={!store.isGameStarted || isHelperTextVisible || player !== store.player}
+        disabled={!state.isGameStarted || isHelperTextVisible || player !== state.player}
         title="Continue"
       />
       <MenuButton path="/rating" title="Rating" />

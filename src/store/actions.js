@@ -7,12 +7,6 @@ export const loadLevel = (param = '') => {
   };
 };
 
-export const resetLevel = () => {
-  return {
-    type: actionTypes.RESET_LEVEL,
-  };
-};
-
 export const endLevel = (timer = 0) => {
   return {
     type: actionTypes.END_LEVEL,
@@ -20,12 +14,12 @@ export const endLevel = (timer = 0) => {
   };
 };
 
-export const changeCardStatus = (status, selectedCardIndex, oldCardindex) => {
+export const changeCardStatus = (status, selectedCardIndex, oldCardIndex) => {
   return {
     type: actionTypes.CHANGE_CARD_STATUS,
     status,
     selectedCardIndex,
-    oldCardindex,
+    oldCardIndex,
   };
 };
 
