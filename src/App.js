@@ -1,5 +1,6 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from './store/actions';
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Game from './containers/Game';
 import Menu from './containers/Menu/Menu';
@@ -8,6 +9,16 @@ import Settings from './containers/Settings/Settings';
 
 const App = () => {
   const player = useSelector(state => state.player);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const localData = {};
+    if (localStorage.getItem('player') !== null) localData.player = localStorage.getItem('player');
+    if (localStorage.getItem('music') !== null) localData.musicVolume = localStorage.getItem('music');
+    if (localStorage.getItem('sound') !== null) localData.soundVolume = localStorage.getItem('sound');
+
+    dispatch(actions.loadLocalData(localData));
+  }, [])
 
   let routes = (
     <Switch>

@@ -8,7 +8,7 @@ import NameInput from '../../components/NameInput/NameInput';
 const Menu = (props) => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
+  const [player, setPlayer] = useState(localStorage.getItem('player'));
   const [isHelperTextVisible, setIsHelperTextVisible] = useState(false);
   if (player.length > 0 && isHelperTextVisible) setIsHelperTextVisible(false);
 

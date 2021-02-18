@@ -13,6 +13,7 @@ const Settings = () => {
   const onVolumeChangeHandler = (type, value) => {
     if (value < 0 || value > 1 || isNaN(+value)) return;
     dispatch(actions.changeVolume(type, +value));
+    localStorage.setItem(type, value);
     sound.volume = value;
     sound.currentTime = 0;
     sound.play();

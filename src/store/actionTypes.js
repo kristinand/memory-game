@@ -3,6 +3,8 @@ export const PAUSE_GAME = 'PAUSE_GAME';
 export const RESUME_GAME = 'RESUME_GAME';
 export const END_GAME = 'END_GAME';
 
+export const LOAD_LOCAL_DATA = 'LOAD_LOCAL_DATA';
+
 export const LOAD_LEVEL = 'LOAD_LEVEL';
 export const RESET_LEVEL = 'RESET_LEVEL';
 export const END_LEVEL = 'END_LEVEL';

@@ -50,3 +50,10 @@ export const setIsTimerPaused = (isPaused) => {
     isPaused
   }
 }
+
+export const loadLocalData = (data) => {
+  return {
+    type: actionTypes.LOAD_LOCAL_DATA,
+    data
+  }
+}

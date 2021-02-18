@@ -17,6 +17,7 @@ const initState = {
 
 const gameReducer = (state = initState, action) => {
   switch (action.type) {
+    case actionTypes.LOAD_LOCAL_DATA: return {...state, ...action.data};
     case actionTypes.START_GAME: return startGame(state, action);
     case actionTypes.END_GAME: return endGame(state, action);
     case actionTypes.LOAD_LEVEL: return loadLevel(state, action);
