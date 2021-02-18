@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/actions';
 import classes from './Settings.css';
-import Header from '../Header/Header';
+import Header from '../../components/Header/Header';
 import menuSound from '@assets/menu-click.opus'
 
 const Settings = () => {

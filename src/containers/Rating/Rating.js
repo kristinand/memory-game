@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import classes from './Rating.css';
 import { formatTime } from '../../utils/functions';
-import Header from '../Header/Header';
+import Header from '../../components/Header/Header';
 
 let ratingData = [
 	{ name: 'Hacker', score: 1101, date: new Date() },
