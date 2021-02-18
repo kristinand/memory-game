@@ -57,7 +57,7 @@ const GameHeader = () => {
   }, [state.isTimerPaused]);
 
   const onChangeAudioVolumeHandler = (type) => {
-    let volume = type === 'sound' ? soundVolume : musicVolume;
+    let volume = type === 'sound' ? state.soundVolume : state.musicVolume;
     if (volume < 0.5) volume = 0.5;
     else if (volume >= 0.5 && volume < 1) volume = 1;
     else volume = 0;
@@ -102,13 +102,13 @@ const GameHeader = () => {
           onClick={() => onChangeAudioVolumeHandler('sound')}
           color={state.coverColor}
           title="Sound Volume"
-          component={soundVolume === 0 ? Sound0 : soundVolume <= 0.5 ? Sound1 : Sound2}
+          component={state.soundVolume === 0 ? Sound0 : state.soundVolume <= 0.5 ? Sound1 : Sound2}
         />
         <IconButton
           onClick={() => onChangeAudioVolumeHandler('music')}
           color={state.coverColor}
           title="Music Volume"
-          component={musicVolume === 0 ? Music0 : musicVolume <= 0.5 ? Music1 : Music2}
+          component={state.musicVolume === 0 ? Music0 : state.musicVolume <= 0.5 ? Music1 : Music2}
         />
         <IconButton onClick={() => history.push('/')} color={state.coverColor} component={Back} title="Back to Menu" />
       </span>
