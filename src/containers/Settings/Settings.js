@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/actions';
 import classes from './Settings.css';
@@ -9,7 +9,10 @@ import IconButton from '../../components/IconButton/IconButton';
 
 const Settings = () => {
   const sound = new Audio(menuSound);
+  const player = useSelector((state) => state.player);
   const state = useSelector((state) => state.settings);
+  const [bgColor, setBgColor] = useState(localStorage.getItem('bgColor') || state.bgColor);
+
   const dispatch = useDispatch();
 
   const onVolumeChangeHandler = (type, value) => {
@@ -34,12 +37,34 @@ const Settings = () => {
 
   const setDefaultSettingsHandler = () => {
     dispatch(actions.setDefaultSettings());
+    localStorage.clear();
+    localStorage.setItem('player', player);
+  };
+
+  const changeBgColorHandler = (value) => {
+    if (value[0] !== '#' || value.length > 7) return;
+    setBgColor(value);
+    if (value.length === 7 || value.length === 4) {
+      dispatch(actions.changeBgColor(value));
+      localStorage.setItem('bgColor', value);
+    }
   };
 
   return (
     <Fragment>
       <Header title="Game Settings" />
       <div className={classes.Settings}>
+        <div className={classes.settingsElement}>
+          <span>HEX Background Color</span>
+          <div className={classes.inputContainer}>
+            <input
+              className={classes.input}
+              type="text"
+              onChange={(event) => changeBgColorHandler(event.target.value)}
+              value={bgColor}
+            />
+          </div>
+        </div>
         <div className={classes.settingsElement}>
           <span>Music Volume</span>
           <div className={classes.inputContainer}>
