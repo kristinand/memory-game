@@ -8,7 +8,7 @@ import NameInput from '../../components/NameInput/NameInput';
 const Menu = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [player, setPlayer] = useState(localStorage.getItem('player'));
+  const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
   const [isHelperTextVisible, setIsHelperTextVisible] = useState(false);
   if (player && player.length > 0 && isHelperTextVisible) setIsHelperTextVisible(false);
 
@@ -25,7 +25,8 @@ const Menu = () => {
   };
 
   const savePlayerName = (player) => {
-    localStorage.setItem('player', player);
+    if (player.length > 0 ) localStorage.setItem('player', player);
+    else localStorage.removeItem('player');
     setPlayer(player);
   };
 
