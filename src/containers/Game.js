@@ -7,9 +7,10 @@ import CardRow from '../components/CardRow';
 // import music from '@assets/music.opus';
 
 const Game = () => {
-  const musicSound = new Audio('http://soundimage.org/wp-content/uploads/2017/05/High-Altitude-Bliss.mp3');
+  const [musicSound] = useState(new Audio('http://soundimage.org/wp-content/uploads/2017/05/High-Altitude-Bliss.mp3'));
   const [focusRef, setFocusRef] = useState();
   const { cards, musicVolume } = useSelector((state) => state);
+  console.log(musicVolume);
   musicSound.volume = musicVolume;
 
   const dispatch = useDispatch();

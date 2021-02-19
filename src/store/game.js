@@ -34,6 +34,8 @@ const gameReducer = (state = initState, action) => {
     case actionTypes.CHANGE_CARD_STATUS: return updateGameStatus(state, action);
     case actionTypes.CHANGE_VOLUME: return changeVolume(state, action);
     case actionTypes.CHANGE_PAUSE_STATUS:  return {...state, isTimerPaused: action.isPaused};
+    case actionTypes.CHANGE_HOTKEY:  return changeHotkey(state, action);
+    case actionTypes.CHANGE_GAME_LEVELS:  return {...state, levels: action.value};
     default: return state;
   }
 };
@@ -80,12 +82,10 @@ const updateGameStatus = (state, action) => {
   let selectedCard = cards[selectedCardIndex];
   let oldCard = cards[oldCardIndex];
   let cardsToWin = state.cardsToWin;
-  let isTimerPaused = state.isTimerPaused;
 
   if (status ===  'opened') {
     selectedCard.status = 'opened';
     cards = cards.slice(0, selectedCardIndex).concat([selectedCard, ...cards.slice(selectedCardIndex + 1)]);
-    isTimerPaused = false;
   } else if (status ===  'guessed') {
     selectedCard.status = 'guessed';
     oldCard.status = 'guessed';
@@ -103,7 +103,7 @@ const updateGameStatus = (state, action) => {
     cards = cards.slice(0, selectedCardIndex).concat([selectedCard, ...cards.slice(selectedCardIndex + 1)]);
     cards = cards.slice(0, oldCardIndex).concat([oldCard, ...cards.slice(oldCardIndex + 1)]);
   }
-  return { ...state, cards, cardsToWin, isTimerPaused };
+  return { ...state, cards, cardsToWin, isTimerPaused: false };
 };
 
 const createCards = (level, coverColor) => {
@@ -111,6 +111,13 @@ const createCards = (level, coverColor) => {
   cards = fillCards(cards, level, coverColor);
   cards = shuffleList(cards);
   return cards;
+}
+
+const changeHotkey = (state, action) => {
+  const keyType = action.keyType;
+  const keyValue = action.value;
+  console.log(keyType + ": " + keyValue);
+  return {...state, keys: {...state.keys, [keyType]: keyValue}};
 }
 
 export default gameReducer;

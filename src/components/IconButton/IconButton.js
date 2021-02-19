@@ -26,7 +26,7 @@ const IconButton = (props) => {
         style={{ fontSize: '1.8rem' }}
         viewBox="0 0 100 100"
       />
-      <span style={{fontSize: '1rem'}}>{props.text}</span>
+      <span style={{fontSize: '1.1rem'}}>{props.text}</span>
     </span>
   );
 };
