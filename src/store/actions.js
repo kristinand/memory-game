@@ -51,10 +51,11 @@ export const setIsTimerPaused = (isPaused) => {
   };
 };
 
-export const loadLocalData = (data) => {
+export const loadLocalData = (player, settings) => {
   return {
     type: actionTypes.LOAD_LOCAL_DATA,
-    data,
+    player,
+    settings
   };
 };
 
@@ -76,5 +77,12 @@ export const changeGameLevels = (value) => {
 export const setDefaultSettings = () => {
   return {
     type: actionTypes.SET_DEFAULT_SETTINGS,
+  };
+};
+
+export const changeBgColor = (bgColor) => {
+  return {
+    type: actionTypes.CHANGE_BG_COLOR,
+    bgColor
   };
 };

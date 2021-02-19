@@ -13,6 +13,7 @@ const initState = {
   score: 0,
   timer: 0,
   settings: {
+    bgColor: '#f8ebc6',
     musicVolume: 0.5,
     soundVolume: 0.5,
     levels: 5,
@@ -28,7 +29,7 @@ const initState = {
 
 const gameReducer = (state = initState, action) => {
   switch (action.type) {
-    case actionTypes.LOAD_LOCAL_DATA: return { ...state, ...action.data };
+    case actionTypes.LOAD_LOCAL_DATA: return { ...state, player: action.player, settings: {...state.settings, ...action.settings} };
     case actionTypes.START_GAME: return startGame(state, action);
     case actionTypes.END_GAME: return endGame(state, action);
     case actionTypes.LOAD_LEVEL: return loadLevel(state, action);
@@ -38,6 +39,7 @@ const gameReducer = (state = initState, action) => {
     case actionTypes.CHANGE_PAUSE_STATUS: return { ...state, isTimerPaused: action.isPaused };
     case actionTypes.CHANGE_HOTKEY: return changeHotkey(state, action);
     case actionTypes.CHANGE_GAME_LEVELS: return { ...state, settings: { ...state.settings, levels: action.value } };
+    case actionTypes.CHANGE_BG_COLOR:   return { ...state, settings: {...state.settings, bgColor: action.bgColor }};
     case actionTypes.SET_DEFAULT_SETTINGS: return { ...state, settings: initState.settings };
     default: return state;
   }

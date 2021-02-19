@@ -6,45 +6,38 @@ import Game from './containers/Game';
 import Menu from './containers/Menu/Menu';
 import Rating from './containers/Rating/Rating';
 import Settings from './containers/Settings/Settings';
+import classes from './App.css';
 
 const App = () => {
-  const player = useSelector(state => state.player);
+  const player = useSelector((state) => state.player);
+  const bgColor = useSelector((state) => state.settings.bgColor);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const localData = {};
-    if (localStorage.getItem('player') !== null) localData.player = localStorage.getItem('player');
-    if (localStorage.getItem('music') !== null) localData.musicVolume = localStorage.getItem('music');
-    if (localStorage.getItem('sound') !== null) localData.soundVolume = localStorage.getItem('sound');
+    let localPlayer = '';
+    const playerSettings = {};
+    if (localStorage.getItem('player') !== null) localPlayer = localStorage.getItem('player');
+    if (localStorage.getItem('music') !== null) JSON.parse(playerSettings.musicVolume = localStorage.getItem('music'));
+    if (localStorage.getItem('sound') !== null) JSON.parse(playerSettings.soundVolume = localStorage.getItem('sound'));
+    if (localStorage.getItem('bgColor') !== null) playerSettings.bgColor = localStorage.getItem('bgColor');
 
-    dispatch(actions.loadLocalData(localData));
-  }, [])
-
-  let routes = (
-    <Switch>
-      <Route path="/rating" component={Rating} />
-      <Route path="/settings" component={Settings} />
-      <Route path="/" component={Menu} />
-      <Redirect to="/" />
-    </Switch>
-  );
-
-  if (player.length > 0) {
-    routes = (
-      <Switch>
-        <Route path="/game" component={Game} />
-        <Route path="/rating" component={Rating} />
-        <Route path="/settings" component={Settings} />
-        <Route path="/" component={Menu} />
-        <Redirect to="/" />
-      </Switch>
-    )
-  }
+    dispatch(actions.loadLocalData(localPlayer, playerSettings));
+  }, []);
 
   return (
-    <HashRouter>
-      {routes}
-    </HashRouter>
+    <div className={classes.App} style={{backgroundColor: bgColor}}>
+      <div className={classes.wrapper}>
+        <HashRouter>
+          <Switch>
+            {player.length > 0 ? <Route path="/game" component={Game}/> : '' }
+            <Route path="/rating" component={Rating} />
+            <Route path="/settings" component={Settings} />
+            <Route path="/" component={Menu} />
+            <Redirect to="/" />
+          </Switch>
+        </HashRouter>
+      </div>
+    </div>
   );
 };
 
