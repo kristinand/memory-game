@@ -4,7 +4,7 @@ import classes from './Card.css';
 import audio from '@assets/card-click.opus';
 
 const Card = (props) => {
-  const soundVolume = useSelector(state => state.soundVolume);
+  const soundVolume = useSelector(state => state.settings.soundVolume);
   const clickAudio = new Audio(audio);
   const cardRef = useRef();
 
