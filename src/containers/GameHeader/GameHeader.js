@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import * as actions from '../../store/actions';
 import useTimer from '../../hooks/useTimer';
 import { formatTime } from '../../utils/functions';
@@ -45,6 +45,7 @@ const GameHeader = (props) => {
       }, 1000);
     } else {
       dispatch(actions.endGame());
+      history.push('/rating');
     }
     return () => {
       clearTimeout(timeoutTimer);

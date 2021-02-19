@@ -16,7 +16,7 @@ const initState = {
     bgColor: '#f8ebc6',
     musicVolume: 0.5,
     soundVolume: 0.5,
-    levels: 5,
+    levels: 1,
     keys: {
       music: 'm',
       sounds: 's',
@@ -53,7 +53,7 @@ const startGame = (state, action) => {
 };
 
 const endGame = (state, action) => {
-  console.log('Your scores: ' + state.score.join(', '));
+  console.log('Your scores: ' + state.score);
   return { ...initState, player: state.player };
 };
 
