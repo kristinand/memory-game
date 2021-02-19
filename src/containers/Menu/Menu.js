@@ -5,12 +5,12 @@ import classes from './Menu.css';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import NameInput from '../../components/NameInput/NameInput';
 
-const Menu = (props) => {
+const Menu = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const [player, setPlayer] = useState(localStorage.getItem('player'));
   const [isHelperTextVisible, setIsHelperTextVisible] = useState(false);
-  if (player.length > 0 && isHelperTextVisible) setIsHelperTextVisible(false);
+  if (player && player.length > 0 && isHelperTextVisible) setIsHelperTextVisible(false);
 
   const onNewGameHandler = () => {
     if (player.length === 0) {

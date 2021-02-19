@@ -9,10 +9,19 @@ const initState = {
   cardsToWin: null,
   isGameStarted: false,
   isTimerPaused: true,
+  isKeyPressed: false,
   player: '',
   score: 0,
+  timer: 0,
   musicVolume: 0.5,
   soundVolume: 0.5,
+  keys: {
+    music: "m",
+    sounds: "s",
+    reload: "r",
+    fullscreen: "f",
+    pause: "p",
+  }
 };
 
 const gameReducer = (state = initState, action) => {
@@ -24,7 +33,7 @@ const gameReducer = (state = initState, action) => {
     case actionTypes.END_LEVEL: return {...state, score: action.timer};
     case actionTypes.CHANGE_CARD_STATUS: return updateGameStatus(state, action);
     case actionTypes.CHANGE_VOLUME: return changeVolume(state, action);
-    case actionTypes.CHANGE_PAUSE_STATUS:  return {...state, isTimerPaused: action.isPaused} 
+    case actionTypes.CHANGE_PAUSE_STATUS:  return {...state, isTimerPaused: action.isPaused};
     default: return state;
   }
 };
@@ -32,7 +41,7 @@ const gameReducer = (state = initState, action) => {
 const startGame = (state, action) => {
   let cards = createCards(state.level, state.coverColor);
   if (action.player === '') return;
-  return { ...state, player: action.player, isGameStarted: true, cards, cardsToWin: cards.length, level: 1 }
+  return { ...state, player: action.player, isGameStarted: true, cards, cardsToWin: cards.length, level: 1, timer: 0 }
 }
 
 const endGame = (state, action) => {

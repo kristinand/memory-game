@@ -2,12 +2,13 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../store/actions';
 import { listToArray } from '../utils/functions';
-import Header from './GameHeader/GameHeader';
+import GameHeader from './GameHeader/GameHeader';
 import CardRow from '../components/CardRow';
 // import music from '@assets/music.opus';
 
 const Game = () => {
-  const [musicSound] = useState(new Audio('http://soundimage.org/wp-content/uploads/2017/05/High-Altitude-Bliss.mp3'));
+  const musicSound = new Audio('http://soundimage.org/wp-content/uploads/2017/05/High-Altitude-Bliss.mp3');
+  const [focusRef, setFocusRef] = useState();
   const { cards, musicVolume } = useSelector((state) => state);
   musicSound.volume = musicVolume;
 
@@ -22,6 +23,7 @@ const Game = () => {
   }, []);
 
   const onCardSelectHandler = (key) => {
+    focusRef.focus();
     const selectedCardIndex = cards.findIndex((card) => card.key === key);
     const openedCardIndex = cards.findIndex((card) => card.status === 'opened');
     const selectedCard = cards[selectedCardIndex];
@@ -46,9 +48,11 @@ const Game = () => {
     }
   };
 
+
+
   return (
     <Fragment>
-      <Header />
+      <GameHeader getFocusRef={(ref) => setFocusRef(ref)} />
       <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column', height: '70vh', justifyContent: 'center' }}>
         {listToArray(cards, 4).map((cardsRow, i) => (
           <CardRow key={i} cards={cardsRow} onCardClick={onCardSelectHandler} />

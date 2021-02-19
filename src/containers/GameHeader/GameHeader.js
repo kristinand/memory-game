@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import * as actions from '../../store/actions';
@@ -20,14 +20,20 @@ import Music0 from '@assets/icons/music0.svg';
 import Music1 from '@assets/icons/music1.svg';
 import Music2 from '@assets/icons/music2.svg';
 
-const GameHeader = () => {
+const GameHeader = (props) => {
   const history = useHistory();
+  const focusRef = useRef();
   const state = useSelector((state) => state);
   const [menuClickSound] = useState(new Audio(menuSound));
   menuClickSound.volume = state.soundVolume;
 
   const dispatch = useDispatch();
   const { timer, isPaused, handleStart, handlePause, handleResume } = useTimer(0);
+
+  useEffect(() => {
+    props.getFocusRef(focusRef.current);
+    focusRef.current.focus();
+  }, []);
 
   useEffect(() => {
     let timeoutTimer;
@@ -45,7 +51,7 @@ const GameHeader = () => {
     };
   }, [state.cardsToWin]);
 
-	useEffect(() => {
+  useEffect(() => {
     if (state.isTimerPaused) {
       handlePause();
     } else {
@@ -55,6 +61,15 @@ const GameHeader = () => {
       handlePause();
     };
   }, [state.isTimerPaused]);
+
+  const handleKeyPress = (event) => {
+    let key = event.key;
+    if (key === state.keys.fullscreen) toggleFullscreenHandler();
+    else if (key === state.keys.reload) onGameReloadHandler();
+    else if (key === state.keys.sounds) onChangeAudioVolumeHandler('sound');
+    else if (key === state.keys.music ) onChangeAudioVolumeHandler('music');
+    else if (key === state.keys.pause ) onGamePauseHandler();
+  };
 
   const onChangeAudioVolumeHandler = (type) => {
     let volume = type === 'sound' ? state.soundVolume : state.musicVolume;
@@ -79,19 +94,28 @@ const GameHeader = () => {
     }
   };
 
+  const onGamePauseHandler = () => dispatch(actions.setIsTimerPaused(!isPaused));
+  const onGameReloadHandler = () => dispatch(actions.startGame(state.player));
+
   return (
     <div className={classes.GameHeader}>
+      <div ref={focusRef} className={classes.screen} tabIndex={0} onKeyPress={handleKeyPress}></div>
       <span className={classes.level}>level: {state.level}</span>
 
       <span className={classes.right}>
         <span className={classes.timer}>{formatTime(timer)}</span>
         <IconButton
-          onClick={() => dispatch(actions.setIsTimerPaused(!isPaused))}
+          onClick={onGamePauseHandler}
           color={state.coverColor}
           title={isPaused ? 'Play' : 'Pause'}
           component={isPaused ? Play : Pause}
         />
-        <IconButton onClick={() => dispatch(actions.startGame(state.player))} color={state.coverColor} component={Refresh} title="Reload Game" />
+        <IconButton
+          onClick={onGameReloadHandler}
+          color={state.coverColor}
+          component={Refresh}
+          title='Reload Game'
+        />
         <IconButton
           onClick={toggleFullscreenHandler}
           color={state.coverColor}
