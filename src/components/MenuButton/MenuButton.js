@@ -6,7 +6,7 @@ import sound from '@assets/menu-click.opus';
 
 const MenuButton = (props) => {
 	const clickSound = new Audio(sound);
-	const soundVolume = useSelector((state) => state.soundVolume);
+	const soundVolume = useSelector((state) => state.settings.soundVolume);
   clickSound.volume = soundVolume;
 
 	const onClickButtonHandler = () => {

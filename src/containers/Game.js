@@ -9,8 +9,7 @@ import CardRow from '../components/CardRow';
 const Game = () => {
   const [musicSound] = useState(new Audio('http://soundimage.org/wp-content/uploads/2017/05/High-Altitude-Bliss.mp3'));
   const [focusRef, setFocusRef] = useState();
-  const { cards, musicVolume } = useSelector((state) => state);
-  console.log(musicVolume);
+  const { cards, settings: {musicVolume} } = useSelector((state) => state);
   musicSound.volume = musicVolume;
 
   const dispatch = useDispatch();

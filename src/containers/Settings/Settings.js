@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/actions';
 import classes from './Settings.css';
@@ -9,8 +9,7 @@ import IconButton from '../../components/IconButton/IconButton';
 
 const Settings = () => {
   const sound = new Audio(menuSound);
-  const state = useSelector((state) => state);
-  const [hotkeys, setHotkeys] = useState(state.keys);
+  const state = useSelector((state) => state.settings);
   const dispatch = useDispatch();
 
   const onVolumeChangeHandler = (type, value) => {
@@ -24,8 +23,7 @@ const Settings = () => {
 
   const onHotkeyChangeHandler = (keyType, value) => {
     if (value.length > 1) value = value.slice(1);
-    if (Object.values(hotkeys).includes(value)) return;
-    setHotkeys({ ...hotkeys, [keyType]: value });
+    if (Object.values(state.keys).includes(value)) return;
     dispatch(actions.changeHotkey(keyType, value));
   };
 
@@ -40,7 +38,7 @@ const Settings = () => {
 
   return (
     <Fragment>
-      <Header title="Settings" />
+      <Header title="Game Settings" />
       <div className={classes.Settings}>
         <div className={classes.settingsElement}>
           <span>Music Volume</span>
@@ -77,7 +75,7 @@ const Settings = () => {
               className={classes.input}
               type="text"
               onChange={(event) => onHotkeyChangeHandler('pause', event.target.value)}
-              value={hotkeys.pause}
+              value={state.keys.pause}
             />
           </div>
         </div>
@@ -88,7 +86,7 @@ const Settings = () => {
               className={classes.input}
               type="text"
               onChange={(event) => onHotkeyChangeHandler('reload', event.target.value)}
-              value={hotkeys.reload}
+              value={state.keys.reload}
             />
           </div>
         </div>
@@ -99,7 +97,7 @@ const Settings = () => {
               className={classes.input}
               type="text"
               onChange={(event) => onHotkeyChangeHandler('fullscreen', event.target.value)}
-              value={hotkeys.fullscreen}
+              value={state.keys.fullscreen}
             />
           </div>
         </div>
@@ -110,7 +108,7 @@ const Settings = () => {
               className={classes.input}
               type="text"
               onChange={(event) => onHotkeyChangeHandler('music', event.target.value)}
-              value={hotkeys.music}
+              value={state.keys.music}
             />
           </div>
         </div>
@@ -121,7 +119,7 @@ const Settings = () => {
               className={classes.input}
               type="text"
               onChange={(event) => onHotkeyChangeHandler('sounds', event.target.value)}
-              value={hotkeys.sounds}
+              value={state.keys.sounds}
             />
           </div>
         </div>

@@ -25,10 +25,10 @@ const GameHeader = (props) => {
   const focusRef = useRef();
   const state = useSelector((state) => state);
   const [menuClickSound] = useState(new Audio(menuSound));
-  menuClickSound.volume = state.soundVolume;
+  menuClickSound.volume = state.settings.soundVolume;
 
   const dispatch = useDispatch();
-  const { timer, isPaused, handleStart, handlePause, handleResume } = useTimer(0);
+  const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer(0);
 
   useEffect(() => {
     props.getFocusRef(focusRef.current);
@@ -39,7 +39,7 @@ const GameHeader = (props) => {
     let timeoutTimer;
     if (state.cardsToWin !== 0) return;
     dispatch(actions.endLevel(timer));
-    if (state.level < state.levels) {
+    if (state.level < state.settings.levels) {
       timeoutTimer = setTimeout(() => {
         dispatch(actions.loadLevel('inc'));
       }, 1000);
@@ -64,15 +64,15 @@ const GameHeader = (props) => {
 
   const handleKeyPress = (event) => {
     let key = event.key;
-    if (key === state.keys.fullscreen) toggleFullscreenHandler();
-    else if (key === state.keys.reload) onGameReloadHandler();
-    else if (key === state.keys.sounds) onChangeAudioVolumeHandler('sound');
-    else if (key === state.keys.music ) onChangeAudioVolumeHandler('music');
-    else if (key === state.keys.pause ) onGamePauseHandler();
+    if (key === state.settings.keys.fullscreen) toggleFullscreenHandler();
+    else if (key === state.settings.keys.reload) onGameReloadHandler();
+    else if (key === state.settings.keys.sounds) onChangeAudioVolumeHandler('sound');
+    else if (key === state.settings.keys.music ) onChangeAudioVolumeHandler('music');
+    else if (key === state.settings.keys.pause ) onGamePauseHandler();
   };
 
   const onChangeAudioVolumeHandler = (type) => {
-    let volume = type === 'sound' ? state.soundVolume : state.musicVolume;
+    let volume = type === 'sound' ? state.settings.soundVolume : state.settings.musicVolume;
     if (volume < 0.5) volume = 0.5;
     else if (volume >= 0.5 && volume < 1) volume = 1;
     else volume = 0;
@@ -95,7 +95,10 @@ const GameHeader = (props) => {
   };
 
   const onGamePauseHandler = () => dispatch(actions.setIsTimerPaused(!isPaused));
-  const onGameReloadHandler = () => dispatch(actions.startGame(state.player));
+  const onGameReloadHandler = () => {
+    handleReset();
+    dispatch(actions.startGame(state.player));
+  };
 
   return (
     <div className={classes.GameHeader}>
@@ -126,13 +129,13 @@ const GameHeader = (props) => {
           onClick={() => onChangeAudioVolumeHandler('sound')}
           color={state.coverColor}
           title="Sound Volume"
-          component={state.soundVolume === 0 ? Sound0 : state.soundVolume <= 0.5 ? Sound1 : Sound2}
+          component={state.settings.soundVolume === 0 ? Sound0 : state.settings.soundVolume <= 0.5 ? Sound1 : Sound2}
         />
         <IconButton
           onClick={() => onChangeAudioVolumeHandler('music')}
           color={state.coverColor}
           title="Music Volume"
-          component={state.musicVolume === 0 ? Music0 : state.musicVolume <= 0.5 ? Music1 : Music2}
+          component={state.settings.musicVolume === 0 ? Music0 : state.settings.musicVolume <= 0.5 ? Music1 : Music2}
         />
         <IconButton onClick={() => history.push('/')} color={state.coverColor} component={Back} title="Back to Menu" />
       </span>
