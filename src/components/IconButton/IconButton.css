@@ -7,7 +7,7 @@
   align-items: center;
   vertical-align: middle;
   transform-style: preserve-3d;
-  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1);
 }
 
 .button:hover {
