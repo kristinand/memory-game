@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/actions';
 import classes from './Menu.css';
@@ -12,13 +12,23 @@ const Menu = () => {
   const state = useSelector((state) => state);
   const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
   const [isHelperTextVisible, setIsHelperTextVisible] = useState(false);
-  if (player && player.length > 0 && isHelperTextVisible) setIsHelperTextVisible(false);
+  const [isInputTouhced, setIsInputTouhced] = useState(false);
+  const playerRegEx = new RegExp(/^[a-zA-Z]{1,10}$/);
 
-  const onNewGameHandler = () => {
-    if (player.length === 0) {
+  useEffect(() => {
+    if (isInputTouhced && (player.length === 0 || player.match(playerRegEx) === null)) {
       setIsHelperTextVisible(true);
     } else {
+      setIsHelperTextVisible(false);
+    }
+  }, [player]);
+
+  const onNewGameHandler = () => {
+    if (player.length !== 0 && player.match(playerRegEx) !== null) {
+      localStorage.setItem('player', player);
       dispatch(actions.startGame(player));
+    } else {
+      setIsHelperTextVisible(true);
     }
   };
 
@@ -27,8 +37,13 @@ const Menu = () => {
   };
 
   const savePlayerName = (player) => {
-    if (player.length > 0) localStorage.setItem('player', player);
-    else localStorage.removeItem('player');
+    player = player.trim();
+    if (player.length > 0) {
+      setIsInputTouhced(true);
+    }
+    else {
+      localStorage.removeItem('player');
+    }
     setPlayer(player);
   };
 
@@ -41,7 +56,7 @@ const Menu = () => {
           isHelperTextVisible={isHelperTextVisible}
         />
         <span className="separator">♥ ☀ ♦</span>
-        <MenuButton onClick={onNewGameHandler} disabled={isHelperTextVisible} path="/game" title="New Game" />
+        <MenuButton onClick={onNewGameHandler} disabled={isHelperTextVisible} path={player.length === 0 ? "/" : "/game"} title="New Game" />
         <MenuButton
           onClick={onContinueGameHandler.bind(this)}
           path="/game"

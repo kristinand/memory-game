@@ -14,7 +14,7 @@ const Input = (props) => {
         placeholder="Your name"
         autoComplete="off"
       />
-      {props.isHelperTextVisible ? <p className={classes.helperText}>Please, enter your name</p> : ''}
+      {props.isHelperTextVisible ? <p className={classes.helperText}>Please, enter your name. Only latin letters allowed.</p> : ''}
     </div>
   );
 };
