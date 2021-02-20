@@ -17,19 +17,19 @@ const App = () => {
     let localPlayer = '';
     const playerSettings = {};
     if (localStorage.getItem('player') !== null) localPlayer = localStorage.getItem('player');
-    if (localStorage.getItem('music') !== null) JSON.parse(playerSettings.musicVolume = localStorage.getItem('music'));
-    if (localStorage.getItem('sound') !== null) JSON.parse(playerSettings.soundVolume = localStorage.getItem('sound'));
+    if (localStorage.getItem('music') !== null) JSON.parse((playerSettings.musicVolume = localStorage.getItem('music')));
+    if (localStorage.getItem('sound') !== null) JSON.parse((playerSettings.soundVolume = localStorage.getItem('sound')));
     if (localStorage.getItem('bgColor') !== null) playerSettings.bgColor = localStorage.getItem('bgColor');
 
     dispatch(actions.loadLocalData(localPlayer, playerSettings));
   }, []);
 
   return (
-    <div className={classes.App} style={{backgroundColor: bgColor}}>
+    <div className={classes.App} style={{ backgroundColor: bgColor }}>
       <div className={classes.wrapper}>
         <HashRouter>
           <Switch>
-            {player.length > 0 ? <Route path="/game" component={Game}/> : '' }
+            {player.length > 0 ? <Route path="/game" component={Game} /> : ''}
             <Route path="/rating" component={Rating} />
             <Route path="/settings" component={Settings} />
             <Route path="/" component={Menu} />
