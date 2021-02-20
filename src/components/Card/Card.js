@@ -4,12 +4,12 @@ import classes from './Card.css';
 import audio from '@assets/card-click.opus';
 
 const Card = (props) => {
-  const soundVolume = useSelector(state => state.settings.soundVolume);
+  const { soundVolume, isPatternShown } = useSelector((state) => state.settings);
   const clickAudio = new Audio(audio);
   const cardRef = useRef();
 
   useEffect(() => {
-    props.status === 'closed' ?  closeCard(cardRef.current) : openCard(cardRef.current);
+    props.status === 'closed' ? closeCard(cardRef.current) : openCard(cardRef.current);
   }, [props.status]);
 
   const openCard = (card) => {
@@ -31,7 +31,7 @@ const Card = (props) => {
           <span>?</span>
         </div>
         <div className={classes.CardColor} style={{ backgroundColor: props.color }}>
-          <span className={'pattern'}>{props.pattern}</span>
+          {isPatternShown ? <span className={'pattern'}>{props.pattern}</span> : ''}
         </div>
       </div>
     </div>

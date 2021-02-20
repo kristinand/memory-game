@@ -14,9 +14,10 @@ const initState = {
   timer: 0,
   settings: {
     bgColor: '#f8ebc6',
+    isPatternShown: true,
     musicVolume: 0.5,
     soundVolume: 0.5,
-    levels: 1,
+    levels: 5,
     keys: {
       music: 'm',
       sounds: 's',
@@ -39,7 +40,8 @@ const gameReducer = (state = initState, action) => {
     case actionTypes.CHANGE_PAUSE_STATUS: return { ...state, isTimerPaused: action.isPaused };
     case actionTypes.CHANGE_HOTKEY: return changeHotkey(state, action);
     case actionTypes.CHANGE_GAME_LEVELS: return { ...state, settings: { ...state.settings, levels: action.value } };
-    case actionTypes.CHANGE_BG_COLOR:   return { ...state, settings: {...state.settings, bgColor: action.bgColor }};
+    case actionTypes.CHANGE_BG_COLOR: return { ...state, settings: {...state.settings, bgColor: action.bgColor }};
+    case actionTypes.TOGGLE_PATTERN: return { ...state, settings: {...state.settings, isPatternShown: !state.settings.isPatternShown }};
     case actionTypes.SET_DEFAULT_SETTINGS: return { ...state, settings: initState.settings };
     default: return state;
   }
@@ -54,7 +56,7 @@ const startGame = (state, action) => {
 
 const endGame = (state, action) => {
   console.log('Your scores: ' + state.score);
-  return { ...initState, player: state.player };
+  return { ...state, player: state.player };
 };
 
 const changeVolume = (state, action) => {

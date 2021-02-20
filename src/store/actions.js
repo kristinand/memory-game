@@ -86,3 +86,9 @@ export const changeBgColor = (bgColor) => {
     bgColor
   };
 };
+
+export const togglePattern = () => {
+  return {
+    type: actionTypes.TOGGLE_PATTERN,
+  };
+};

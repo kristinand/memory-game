@@ -6,6 +6,7 @@ import Header from '../../components/Header/Header';
 import menuSound from '@assets/menu-click.opus';
 import Reset from '@assets/icons/reset.svg';
 import IconButton from '../../components/IconButton/IconButton';
+import Switch from '@material-ui/core/Switch';
 
 const Settings = () => {
   const sound = new Audio(menuSound);
@@ -49,6 +50,10 @@ const Settings = () => {
       localStorage.setItem('bgColor', value);
     }
   };
+
+  const onToggleCardPatternHandler = () => {
+    dispatch(actions.togglePattern());
+  }
 
   return (
     <Fragment>
@@ -148,7 +153,8 @@ const Settings = () => {
             />
           </div>
         </div>
-        <div className={classes.settingsElement}>
+        {/* may be later */}
+        {/* <div className={classes.settingsElement}>
           <span>
             Increase Max Game Level*
             <br />
@@ -165,8 +171,15 @@ const Settings = () => {
               step={1}
             />
           </div>
+        </div> */}
+        <div className={classes.settingsElement}>
+          <span>Card Pattern Enabled</span>
+          <div className={classes.inputContainer}>
+            <Switch checked={state.isPatternShown} onChange={onToggleCardPatternHandler} color="default"/>
+          </div>
         </div>
       </div>
+
       <div className={classes.buttonWrapper}>
         <IconButton onClick={setDefaultSettingsHandler} component={Reset} text="Set Default" />
       </div>
