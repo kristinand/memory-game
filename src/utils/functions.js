@@ -27,11 +27,9 @@ export function generateRandomColor(sat1 = 50, sat2 = 55, light1 = 70, light2 = 
 }
 
 export function formatTime(timer) {
-  const seconds = parseInt(timer / 10);
-  const fractional = (timer / 10).toString().slice(-1);
-  const getSeconds = `0${seconds % 60}`.slice(-2);
-  const getMinutes = `${Math.floor(seconds / 60)}`;
-  return getMinutes !== '0' ? `${getMinutes}min ${getSeconds},${fractional}s` : `${getSeconds},${fractional}s`;
+  const getSeconds = `0${timer % 60}`.slice(-2);
+  const getMinutes = `${Math.floor(timer / 60)}`;
+  return getMinutes !== '0' ? `${getMinutes}min ${getSeconds}s` : `${getSeconds}s`;
 }
 
 export function fillCards(cards, level, coverColor) {

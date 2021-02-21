@@ -4,11 +4,11 @@ import { formatTime } from '../../utils/functions';
 import Header from '../../components/Header/Header';
 
 let ratingData = [
-	{ name: 'Hacker', score: 1101, date: new Date() },
-	{ name: 'Bob', score: 2614, date: new Date('2020','02','20', '11','12') },
-	{ name: 'Tom', score: 2972, date: new Date('2021','01','02', '13','34') },
-	{ name: 'Jess', score: 2124, date: new Date('2019','05','12', '12','01') },
-	{ name: 'Lily', score: 1845, date: new Date('2020','11','31', '23','42') },
+	{ name: 'Hacker', score: 110, date: new Date() },
+	{ name: 'Bob', score: 261, date: new Date('2020','02','20', '11','12') },
+	{ name: 'Tom', score: 297, date: new Date('2021','01','02', '13','34') },
+	{ name: 'Jess', score: 212, date: new Date('2019','05','12', '12','01') },
+	{ name: 'Lily', score: 184, date: new Date('2020','11','31', '23','42') },
 ];
 
 const Rating = () => {
