@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import classes from './Rating.css';
+import { useSelector } from 'react-redux';
 import { formatTime } from '../../utils/functions';
 import Header from '../../components/Header/Header';
 
@@ -12,6 +13,15 @@ let ratingData = [
 ];
 
 const Rating = () => {
+  const {player: playerName, score, isGameEnded} = useSelector(state => state);
+  if (score > 0 && isGameEnded) {
+    const data = {name: playerName, score, date: new Date(), current: true};
+    const playerIndex = ratingData.findIndex(player => player.name === playerName);
+    console.log(playerIndex, data);
+    if (playerIndex >= 0) ratingData[playerIndex] = data;
+    else ratingData.push(data);
+  }
+
   ratingData = ratingData.sort((prev, cur) => prev.score - cur.score);
 
   const playersData = ratingData.map((player, i) => {
