@@ -8,26 +8,24 @@ import CardRow from '../components/CardRow';
 
 const Game = () => {
   const [musicSound] = useState(new Audio('http://soundimage.org/wp-content/uploads/2017/05/High-Altitude-Bliss.mp3'));
+  const state = useSelector((state) => state);
   const [focusRef, setFocusRef] = useState();
-  const { cards, settings: {musicVolume} } = useSelector((state) => state);
-  musicSound.volume = musicVolume;
+  musicSound.volume = state.settings.musicVolume;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     musicSound.play();
     musicSound.loop = true;
-    return () => {
-      musicSound.pause();
-    }
+    return () => musicSound.pause();
   }, []);
 
   const onCardSelectHandler = (key) => {
     focusRef.focus();
-    const selectedCardIndex = cards.findIndex((card) => card.key === key);
-    const openedCardIndex = cards.findIndex((card) => card.status === 'opened');
-    const selectedCard = cards[selectedCardIndex];
-    const openedCard = cards[openedCardIndex];
+    const selectedCardIndex = state.cards.findIndex((card) => card.key === key);
+    const openedCardIndex = state.cards.findIndex((card) => card.status === 'opened');
+    const selectedCard = state.cards[selectedCardIndex];
+    const openedCard = state.cards[openedCardIndex];
 
     // избегаем нажатия, если карта не закрыта
     if (selectedCard.status !== 'closed') return;
@@ -48,13 +46,11 @@ const Game = () => {
     }
   };
 
-
-
   return (
     <Fragment>
-      <GameHeader getFocusRef={(ref) => setFocusRef(ref)} />
+      <GameHeader getFocusRef={(ref) => setFocusRef(ref)} autoplay={() => {}} />
       <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column', height: '70vh', justifyContent: 'center' }}>
-        {listToArray(cards, 4).map((cardsRow, i) => (
+        {listToArray(state.cards, 4).map((cardsRow, i) => (
           <CardRow key={i} cards={cardsRow} onCardClick={onCardSelectHandler} />
         ))}
       </div>
