@@ -33,7 +33,7 @@ const Menu = () => {
   };
 
   const onContinueGameHandler = () => {
-    if (player !== state.player) return;
+    if (localStorage.getItem('gameData') === null || localStorage.getItem('player') !== player) return;
   };
 
   const savePlayerName = (player) => {
@@ -58,9 +58,9 @@ const Menu = () => {
         <span className="separator">♥ ☀ ♦</span>
         <MenuButton onClick={onNewGameHandler} disabled={isHelperTextVisible} path={player.length === 0 ? "/" : "/game"} title="New Game" />
         <MenuButton
-          onClick={onContinueGameHandler.bind(this)}
-          path="/game"
-          disabled={isHelperTextVisible || player !== state.player}
+          onClick={onContinueGameHandler}
+          path={(localStorage.getItem('gameData') !== null && localStorage.getItem('player') === player) ? "/game" : "/"}
+          disabled={localStorage.getItem('gameData') === null || localStorage.getItem('player') !== player}
           title="Continue"
         />
         <MenuButton path="/rating" title="Rating" />
