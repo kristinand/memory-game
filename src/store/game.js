@@ -6,8 +6,7 @@ const initState = {
   cards: [],
   coverColor: generateRandomColor(40, 40, 60, 60),
   cardsToWin: null,
-  isGameStarted: false,
-  isTimerPaused: true,
+  isGamePaused: true,
   isKeyPressed: false,
   player: '',
   score: 0,
@@ -37,9 +36,8 @@ const gameReducer = (state = initState, action) => {
     case actionTypes.END_LEVEL: return { ...state, score: action.timer };
     case actionTypes.CHANGE_CARD_STATUS: return updateGameStatus(state, action);
     case actionTypes.CHANGE_VOLUME: return changeVolume(state, action);
-    case actionTypes.CHANGE_PAUSE_STATUS: return { ...state, isTimerPaused: action.isPaused };
+    case actionTypes.CHANGE_PAUSE_STATUS: return { ...state, isGamePaused: action.isPaused };
     case actionTypes.CHANGE_HOTKEY: return changeHotkey(state, action);
-    case actionTypes.CHANGE_GAME_LEVELS: return { ...state, settings: { ...state.settings, levels: action.value } };
     case actionTypes.CHANGE_BG_COLOR: return { ...state, settings: {...state.settings, bgColor: action.bgColor }};
     case actionTypes.TOGGLE_PATTERN: return { ...state, settings: {...state.settings, isPatternShown: !state.settings.isPatternShown }};
     case actionTypes.SET_DEFAULT_SETTINGS: return { ...state, settings: initState.settings };
@@ -51,7 +49,7 @@ const startGame = (state, action) => {
   const coverColor = generateRandomColor(40, 40, 60, 60);
   let cards = createCards(1, coverColor);
   if (action.player === '') return;
-  return { ...state, player: action.player, coverColor: coverColor, isGameStarted: true, cards, cardsToWin: cards.length, level: 1, timer: 0 };
+  return { ...state, player: action.player || state.player, coverColor: coverColor,  cards, cardsToWin: cards.length, level: 1, timer: 0 };
 };
 
 const endGame = (state, action) => {
@@ -82,7 +80,7 @@ const loadLevel = (state, action) => {
     level,
     coverColor,
     cardsToWin: cards.length,
-    isTimerPaused: true,
+    isGamePaused: true,
   };
 };
 
@@ -113,7 +111,7 @@ const updateGameStatus = (state, action) => {
     cards = cards.slice(0, selectedCardIndex).concat([selectedCard, ...cards.slice(selectedCardIndex + 1)]);
     cards = cards.slice(0, oldCardIndex).concat([oldCard, ...cards.slice(oldCardIndex + 1)]);
   }
-  return { ...state, cards, cardsToWin, isTimerPaused: false };
+  return { ...state, cards, cardsToWin, isGamePaused: false };
 };
 
 const createCards = (level, coverColor) => {

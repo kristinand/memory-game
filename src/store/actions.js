@@ -44,7 +44,7 @@ export const changeVolume = (audio, volume) => {
   };
 };
 
-export const setIsTimerPaused = (isPaused) => {
+export const setIsGamePaused = (isPaused) => {
   return {
     type: actionTypes.CHANGE_PAUSE_STATUS,
     isPaused,
@@ -63,13 +63,6 @@ export const changeHotkey = (keyType, value) => {
   return {
     type: actionTypes.CHANGE_HOTKEY,
     keyType,
-    value,
-  };
-};
-
-export const changeGameLevels = (value) => {
-  return {
-    type: actionTypes.CHANGE_GAME_LEVELS,
     value,
   };
 };

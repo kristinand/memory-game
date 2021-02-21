@@ -33,7 +33,7 @@ const Menu = () => {
   };
 
   const onContinueGameHandler = () => {
-    if (state.isGameStarted || player !== state.player) return;
+    if (player !== state.player) return;
   };
 
   const savePlayerName = (player) => {
@@ -60,7 +60,7 @@ const Menu = () => {
         <MenuButton
           onClick={onContinueGameHandler.bind(this)}
           path="/game"
-          disabled={!state.isGameStarted || isHelperTextVisible || player !== state.player}
+          disabled={isHelperTextVisible || player !== state.player}
           title="Continue"
         />
         <MenuButton path="/rating" title="Rating" />

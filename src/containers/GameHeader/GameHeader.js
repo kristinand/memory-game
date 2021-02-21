@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory, Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import * as actions from '../../store/actions';
 import useTimer from '../../hooks/useTimer';
 import { formatTime } from '../../utils/functions';
@@ -33,6 +33,8 @@ const GameHeader = (props) => {
   useEffect(() => {
     props.getFocusRef(focusRef.current);
     focusRef.current.focus();
+    handleStart();
+    handlePause();
   }, []);
 
   useEffect(() => {
@@ -47,21 +49,13 @@ const GameHeader = (props) => {
       dispatch(actions.endGame());
       history.push('/rating');
     }
-    return () => {
-      clearTimeout(timeoutTimer);
-    };
+    return () => clearTimeout(timeoutTimer);
   }, [state.cardsToWin]);
 
   useEffect(() => {
-    if (state.isTimerPaused) {
-      handlePause();
-    } else {
-      timer === 0 ? handleStart() : handleResume();
-    }
-    return () => {
-      handlePause();
-    };
-  }, [state.isTimerPaused]);
+    state.isGamePaused ? handlePause() : handleResume();
+    return () => handlePause();
+  }, [state.isGamePaused]);
 
   const handleKeyPress = (event) => {
     let key = event.key;
@@ -95,11 +89,11 @@ const GameHeader = (props) => {
     }
   };
 
-  const onGamePauseHandler = () => dispatch(actions.setIsTimerPaused(!isPaused));
+  const onGamePauseHandler = () => dispatch(actions.setIsGamePaused(!isPaused));
   const onGameReloadHandler = () => {
     handleReset();
-    dispatch(actions.startGame(state.player));
-  };
+    dispatch(actions.startGame());
+  }
 
   return (
     <div className={classes.GameHeader}>
