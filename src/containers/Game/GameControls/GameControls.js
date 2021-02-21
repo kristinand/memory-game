@@ -46,7 +46,7 @@ const GameControls = (props) => {
   useEffect(() => {
     let timeoutTimer;
     if (state.cardsToWin !== 0) return;
-    if (state.level < state.settings.levels) {
+    if (state.level < state.levels) {
       timeoutTimer = setTimeout(() => {
         dispatch(actions.loadLevel('inc'));
       }, 1000);

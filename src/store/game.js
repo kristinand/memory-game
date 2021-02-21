@@ -10,12 +10,12 @@ const initState = {
   isGameEnded: false,
   player: '',
   score: 0,
+  levels: 5,
   settings: {
     bgColor: '#f8ebc6',
     isPatternShown: true,
     musicVolume: 0.5,
     soundVolume: 0.5,
-    levels: 5,
     keys: {
       music: 'm',
       sounds: 's',
@@ -86,7 +86,7 @@ const changeVolume = (state, action) => {
 
 const loadLevel = (state, action) => {
   let level = state.level;
-  if (action.param === 'inc' && level < state.settings.levels) {
+  if (action.param === 'inc' && level < state.levels) {
     level += 1;
   } else if (action.param === 'dec' && level > 1) {
     level -= 1;
