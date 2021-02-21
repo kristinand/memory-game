@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from './store/actions';
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
-import Game from './containers/Game';
+import Game from './containers/Game/Game';
 import Menu from './containers/Menu/Menu';
 import Rating from './containers/Rating/Rating';
 import Settings from './containers/Settings/Settings';
@@ -14,14 +14,13 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let localPlayer = '';
-    const playerSettings = {};
-    if (localStorage.getItem('player') !== null) localPlayer = localStorage.getItem('player');
-    if (localStorage.getItem('music') !== null) JSON.parse((playerSettings.musicVolume = localStorage.getItem('music')));
-    if (localStorage.getItem('sound') !== null) JSON.parse((playerSettings.soundVolume = localStorage.getItem('sound')));
-    if (localStorage.getItem('bgColor') !== null) playerSettings.bgColor = localStorage.getItem('bgColor');
-
-    dispatch(actions.loadLocalData(localPlayer, playerSettings));
+    const player = localStorage.getItem('player');
+    let gameData = localStorage.getItem('gameData') || "{}";
+    if (player !== null) {
+      gameData = JSON.parse(gameData);
+      dispatch(actions.loadLocalGameData(player, gameData));
+      // подгружаем его настройки с сервера
+    }
   }, []);
 
   return (

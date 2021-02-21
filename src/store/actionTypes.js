@@ -1,10 +1,10 @@
 export const START_GAME = 'START_GAME';
 export const END_GAME = 'END_GAME';
 
-export const LOAD_LOCAL_DATA = 'LOAD_LOCAL_DATA';
+export const LOAD_LOCAL_GAME_DATA = 'LOAD_LOCAL_GAME_DATA';
 
 export const LOAD_LEVEL = 'LOAD_LEVEL';
-export const END_LEVEL = 'END_LEVEL';
+export const SAVE_SCORE = 'SAVE_SCORE';
 
 export const CHANGE_CARD_STATUS = 'CHANGE_CARD_STATUS';
 export const CHANGE_PAUSE_STATUS = 'CHANGE_PAUSE_STATUS';

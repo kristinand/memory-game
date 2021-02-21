@@ -7,10 +7,9 @@ const initState = {
   coverColor: generateRandomColor(40, 40, 60, 60),
   cardsToWin: null,
   isGamePaused: true,
-  isKeyPressed: false,
+  isGameEnded: false,
   player: '',
   score: 0,
-  timer: 0,
   settings: {
     bgColor: '#f8ebc6',
     isPatternShown: true,
@@ -29,11 +28,11 @@ const initState = {
 
 const gameReducer = (state = initState, action) => {
   switch (action.type) {
-    case actionTypes.LOAD_LOCAL_DATA: return { ...state, player: action.player, settings: {...state.settings, ...action.settings} };
+    case actionTypes.LOAD_LOCAL_GAME_DATA: return loadLocalGameData(state, action);
     case actionTypes.START_GAME: return startGame(state, action);
-    case actionTypes.END_GAME: return endGame(state, action);
+    case actionTypes.END_GAME: return { ...state, player: state.player, isGameEnded: true };
     case actionTypes.LOAD_LEVEL: return loadLevel(state, action);
-    case actionTypes.END_LEVEL: return { ...state, score: action.timer };
+    case actionTypes.SAVE_SCORE: return { ...state, score: action.timer };
     case actionTypes.CHANGE_CARD_STATUS: return updateGameStatus(state, action);
     case actionTypes.CHANGE_VOLUME: return changeVolume(state, action);
     case actionTypes.CHANGE_PAUSE_STATUS: return { ...state, isGamePaused: action.isPaused };
@@ -45,16 +44,34 @@ const gameReducer = (state = initState, action) => {
   }
 };
 
+const loadLocalGameData = (state, action) => {
+  const data = action.data;
+  return {
+    ...state,
+    player: action.player,
+    level: data.level,
+    cards: data.cards,
+    coverColor: data.coverColor,
+    cardsToWin: data.cardsToWin,
+    isGamePaused: data.isGamePaused,
+    score: data.timer,
+    isGamePaused: true,
+  };
+}
+
 const startGame = (state, action) => {
   const coverColor = generateRandomColor(40, 40, 60, 60);
   let cards = createCards(1, coverColor);
   if (action.player === '') return;
-  return { ...state, player: action.player || state.player, coverColor: coverColor,  cards, cardsToWin: cards.length, level: 1, timer: 0 };
-};
-
-const endGame = (state, action) => {
-  console.log('Your scores: ' + state.score);
-  return { ...state, player: state.player };
+  return {
+    ...state,
+    player: action.player || state.player,
+    coverColor: coverColor,
+    cards,
+    cardsToWin: cards.length,
+    level: 1,
+    score: 0,
+    isGamePaused: true };
 };
 
 const changeVolume = (state, action) => {

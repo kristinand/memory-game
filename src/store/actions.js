@@ -7,13 +7,6 @@ export const loadLevel = (param = '') => {
   };
 };
 
-export const endLevel = (timer = 0) => {
-  return {
-    type: actionTypes.END_LEVEL,
-    timer,
-  };
-};
-
 export const changeCardStatus = (status, selectedCardIndex, oldCardIndex) => {
   return {
     type: actionTypes.CHANGE_CARD_STATUS,
@@ -51,11 +44,11 @@ export const setIsGamePaused = (isPaused) => {
   };
 };
 
-export const loadLocalData = (player, settings) => {
+export const loadLocalGameData = (player, data) => {
   return {
-    type: actionTypes.LOAD_LOCAL_DATA,
+    type: actionTypes.LOAD_LOCAL_GAME_DATA,
     player,
-    settings
+    data
   };
 };
 
@@ -83,5 +76,12 @@ export const changeBgColor = (bgColor) => {
 export const togglePattern = () => {
   return {
     type: actionTypes.TOGGLE_PATTERN,
+  };
+};
+
+export const saveScore = (timer) => {
+  return {
+    type: actionTypes.SAVE_SCORE,
+    timer
   };
 };

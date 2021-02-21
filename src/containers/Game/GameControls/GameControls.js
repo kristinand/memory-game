@@ -29,25 +29,30 @@ const GameControls = (props) => {
   menuClickSound.volume = state.settings.soundVolume;
 
   const dispatch = useDispatch();
-  const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer(0);
+  const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer(state.score);
 
   useEffect(() => {
     props.getFocusRef(focusRef.current);
     focusRef.current.focus();
-    handleStart();
-    handlePause();
+    if (state.score === 0) {
+      handleStart();
+      handlePause();
+    }
+    else {
+      handlePause();
+    }
   }, []);
 
   useEffect(() => {
     let timeoutTimer;
     if (state.cardsToWin !== 0) return;
-    dispatch(actions.endLevel(timer));
     if (state.level < state.settings.levels) {
       timeoutTimer = setTimeout(() => {
         dispatch(actions.loadLevel('inc'));
       }, 1000);
     } else {
       dispatch(actions.endGame());
+      localStorage.removeItem('gameData');
       history.push('/rating');
     }
     return () => clearTimeout(timeoutTimer);
@@ -57,6 +62,22 @@ const GameControls = (props) => {
     state.isGamePaused ? handlePause() : handleResume();
     return () => handlePause();
   }, [state.isGamePaused]);
+
+  useEffect(() => {
+    saveData();
+    dispatch(actions.saveScore(timer));
+  }, [timer]);
+
+  const saveData = () => {
+    let localData = {
+      cards: state.cards,
+      level: state.level,
+      coverColor: state.coverColor,
+      cardsToWin: state.cardsToWin,
+      score: timer,
+    }
+    localStorage.setItem('gameData', JSON.stringify(localData));
+  }
 
   const handleKeyPress = (event) => {
     let key = event.key;
