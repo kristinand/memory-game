@@ -1,9 +1,9 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../store/actions';
-import { listToArray } from '../utils/functions';
-import GameHeader from './GameHeader/GameHeader';
-import CardRow from '../components/CardRow';
+import * as actions from '../../store/actions';
+import { listToArray } from '../../utils/functions';
+import GameControls from './GameControls/GameControls';
+import CardRow from '../../components/CardRow';
 // import music from '@assets/music.opus';
 
 const Game = () => {
@@ -48,7 +48,7 @@ const Game = () => {
 
   return (
     <Fragment>
-      <GameHeader getFocusRef={(ref) => setFocusRef(ref)} autoplay={() => {}} />
+      <GameControls getFocusRef={(ref) => setFocusRef(ref)} autoplay={() => {}} />
       <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column', height: '70vh', justifyContent: 'center' }}>
         {listToArray(state.cards, 4).map((cardsRow, i) => (
           <CardRow key={i} cards={cardsRow} onCardClick={onCardSelectHandler} />

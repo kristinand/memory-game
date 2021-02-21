@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import * as actions from '../../store/actions';
-import useTimer from '../../hooks/useTimer';
-import { formatTime } from '../../utils/functions';
-import classes from './GameHeader.css';
-import IconButton from '../../components/IconButton/IconButton';
+import * as actions from '../../../store/actions';
+import useTimer from '../../../hooks/useTimer';
+import { formatTime } from '../../../utils/functions';
+import classes from './GameControls.css';
+import IconButton from '../../../components/IconButton/IconButton';
 
 import menuSound from '@assets/menu-click.opus';
 import Refresh from '@assets/icons/refresh.svg';
@@ -21,7 +21,7 @@ import Music1 from '@assets/icons/music1.svg';
 import Music2 from '@assets/icons/music2.svg';
 import Autoplay from '@assets/icons/autoplay.svg';
 
-const GameHeader = (props) => {
+const GameControls = (props) => {
   const history = useHistory();
   const focusRef = useRef();
   const state = useSelector((state) => state);
@@ -97,7 +97,7 @@ const GameHeader = (props) => {
   }
 
   return (
-    <div className={classes.GameHeader}>
+    <div className={classes.GameControls}>
       <div ref={focusRef} className={classes.screen} tabIndex={0} onKeyPress={handleKeyPress}></div>
       <span className={classes.level}>level: {state.level}</span>
 
@@ -145,4 +145,4 @@ const GameHeader = (props) => {
   );
 };
 
-export default GameHeader;
+export default GameControls;
