@@ -17,6 +17,7 @@ const Game = () => {
   useEffect(() => {
     musicSound.play();
     musicSound.loop = true;
+    if (state.cards.length === 0) dispatch(actions.startGame());
     return () => musicSound.pause();
   }, []);
 
