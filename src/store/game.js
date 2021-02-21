@@ -71,7 +71,9 @@ const startGame = (state, action) => {
     cardsToWin: cards.length,
     level: 1,
     score: 0,
-    isGamePaused: true };
+    isGamePaused: true,
+    isGameEnded: false
+  };
 };
 
 const changeVolume = (state, action) => {
