@@ -15,7 +15,7 @@ const App = () => {
 
   useEffect(() => {
     const player = localStorage.getItem('player');
-    let gameData = localStorage.getItem('gameData') || "{}";
+    let gameData = localStorage.getItem('gameData') || '{}';
     if (player !== null) {
       gameData = JSON.parse(gameData);
       dispatch(actions.loadLocalGameData(player, gameData));

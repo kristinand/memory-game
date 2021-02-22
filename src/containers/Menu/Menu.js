@@ -3,68 +3,86 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/actions';
 import classes from './Menu.css';
 import MenuButton from '../../components/MenuButton/MenuButton';
-import NameInput from '../../components/NameInput/NameInput';
+import IconButton from '../../components/IconButton/IconButton';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Logo from '@assets/icons/rss_logo.svg';
+import Login from '@assets/icons/right.svg';
+import Logout from '@assets/icons/left.svg';
 
 const Menu = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
   const [isHelperTextVisible, setIsHelperTextVisible] = useState(false);
-  const [isInputTouhced, setIsInputTouhced] = useState(false);
-  const playerRegEx = new RegExp(/^[a-zA-Z]{1,10}$/);
-
-  useEffect(() => {
-    if (isInputTouhced && (player.length === 0 || player.match(playerRegEx) === null)) {
-      setIsHelperTextVisible(true);
-    } else {
-      setIsHelperTextVisible(false);
-    }
-  }, [player]);
-
-  const onNewGameHandler = () => {
-    if (player.length !== 0 && player.match(playerRegEx) !== null) {
-      localStorage.setItem('player', player);
-      dispatch(actions.startGame(player));
-    } else {
-      setIsHelperTextVisible(true);
-    }
-  };
+  const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
 
   const onContinueGameHandler = () => {
     if (localStorage.getItem('gameData') === null || localStorage.getItem('player') !== player) return;
   };
 
-  const savePlayerName = (player) => {
+  const onInputValueChangeHandler = (player) => {
     player = player.trim();
-    if (player.length > 0) {
-      setIsInputTouhced(true);
-    }
-    else {
-      localStorage.removeItem('player');
-    }
     setPlayer(player);
+  };
+
+  const login = async () => {
+    const playerRegEx = new RegExp(/^[a-zA-Z]{3,10}$/);
+    if (player.length !== 0 && player.match(playerRegEx) !== null) {
+      localStorage.setItem('player', player);
+      dispatch(actions.login(player));
+      setIsHelperTextVisible(false);
+    } else {
+      setIsHelperTextVisible(true);
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem('player');
+    setPlayer('');
+    setIsHelperTextVisible(false);
+    dispatch(actions.logout());
   };
 
   return (
     <Fragment>
       <div className={classes.menu}>
-        <NameInput
-          player={player}
-          onInputValueChangeHandler={(player) => savePlayerName(player)}
-          isHelperTextVisible={isHelperTextVisible}
-        />
+        <div className={classes.NameInput}>
+          <div className={classes.inputContainer}>
+            <input
+              className={isHelperTextVisible ? [classes.input, classes.inputDanger].join(' ') : classes.input}
+              type="text"
+              id="name"
+              value={player}
+              onChange={(event) => onInputValueChangeHandler(event.target.value)}
+              placeholder="Your name"
+              autoComplete="off"
+            />
+            <IconButton
+              component={state.isLoggedIn ? Logout : Login}
+              onClick={state.isLoggedIn ? logout : login}
+              title={state.isLoggedIn ? 'Logout' : 'Login'}
+            />
+          </div>
+          {isHelperTextVisible ? <p className={classes.helperText}>Please, enter your name. Only latin letters allowed.</p> : ''}
+        </div>
+
         <span className="separator">♥ ☀ ♦</span>
-        <MenuButton onClick={onNewGameHandler} disabled={isHelperTextVisible} path={player.length === 0 ? "/" : "/game"} title="New Game" />
+
+        <MenuButton
+          onClick={() => dispatch(actions.startGame())}
+          disabled={!state.isLoggedIn}
+          path={player.length === 0 ? '/' : '/game'}
+          title="New Game"
+        />
         <MenuButton
           onClick={onContinueGameHandler}
-          path={(localStorage.getItem('gameData') !== null && localStorage.getItem('player') === player) ? "/game" : "/"}
-          disabled={localStorage.getItem('gameData') === null || localStorage.getItem('player') !== player}
+          path={localStorage.getItem('gameData') !== null && localStorage.getItem('player') === player ? '/game' : '/'}
+          disabled={
+            !state.isLoggedIn || localStorage.getItem('gameData') === null || localStorage.getItem('player') !== player
+          }
           title="Continue"
         />
         <MenuButton path="/rating" title="Rating" />
-        <MenuButton path="/settings" title="Settings" />
+        <MenuButton disabled={!state.isLoggedIn} path="/settings" title="Settings" />
       </div>
       <p className={classes.footer}>
         Created by{' '}
