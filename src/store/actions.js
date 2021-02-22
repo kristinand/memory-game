@@ -1,4 +1,5 @@
 import * as actionTypes from './actionTypes';
+import axios from 'axios';
 
 export const loadLevel = (param = '') => {
   return {
@@ -23,10 +24,22 @@ export const startGame = (player) => {
   };
 };
 
-export const endGame = () => {
-  return {
-    type: actionTypes.END_GAME,
-  };
+export const endGame = (player, score) => async dispatch => {
+
+    const config = {
+      headers: {'Content-Type': 'application/json'}
+    }
+    const body = JSON.stringify({player, score});
+    
+    try {
+      const res = await axios.put('http://localhost:5000/game', body, config);
+      dispatch({
+      type: actionTypes.END_GAME,
+      payload: res.data,
+    })
+  } catch(err) {
+    console.error(err);
+  }
 };
 
 export const changeVolume = (audio, volume) => {

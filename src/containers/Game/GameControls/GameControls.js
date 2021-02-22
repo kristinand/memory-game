@@ -51,7 +51,7 @@ const GameControls = (props) => {
         dispatch(actions.loadLevel('inc'));
       }, 1000);
     } else {
-      dispatch(actions.endGame());
+      dispatch(actions.endGame(state.player, state.score));
       localStorage.removeItem('gameData');
       history.push('/rating');
     }

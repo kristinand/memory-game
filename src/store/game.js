@@ -33,7 +33,7 @@ const gameReducer = (state = initState, action) => {
     case actionTypes.LOGOUT: return initState;
     case actionTypes.LOAD_LOCAL_GAME_DATA: return loadLocalGameData(state, action);
     case actionTypes.START_GAME: return startGame(state, action);
-    case actionTypes.END_GAME: return { ...state, isGameEnded: true };
+    case actionTypes.END_GAME: return endGame(state, action);
     case actionTypes.LOAD_LEVEL: return loadLevel(state, action);
     case actionTypes.SAVE_SCORE: return { ...state, score: action.timer };
     case actionTypes.CHANGE_CARD_STATUS: return updateGameStatus(state, action);
@@ -56,6 +56,7 @@ const loadLocalGameData = (state, action) => {
   return {
     ...state,
     player: action.player,
+    isLoggedIn: action.player !== undefined,
     level: data.level,
     cards: data.cards,
     coverColor: data.coverColor,
@@ -81,6 +82,11 @@ const startGame = (state, action) => {
     isGameEnded: false
   };
 };
+
+const endGame = (state, action) => {
+  console.log(action.payload);
+  return { ...state, isGameEnded: true };
+}
 
 const changeVolume = (state, action) => {
   if (action.audio === 'music') {
