@@ -48,7 +48,7 @@ export const loadLocalGameData = (player, data) => {
   return {
     type: actionTypes.LOAD_LOCAL_GAME_DATA,
     player,
-    data
+    data,
   };
 };
 
@@ -69,7 +69,7 @@ export const setDefaultSettings = () => {
 export const changeBgColor = (bgColor) => {
   return {
     type: actionTypes.CHANGE_BG_COLOR,
-    bgColor
+    bgColor,
   };
 };
 
@@ -82,6 +82,19 @@ export const togglePattern = () => {
 export const saveScore = (timer) => {
   return {
     type: actionTypes.SAVE_SCORE,
-    timer
+    timer,
+  };
+};
+
+export const login = (player) => {
+  return {
+    type: actionTypes.LOGIN,
+    player,
+  };
+};
+
+export const logout = () => {
+  return {
+    type: actionTypes.LOGOUT
   };
 };

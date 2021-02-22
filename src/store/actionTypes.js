@@ -1,6 +1,9 @@
 export const START_GAME = 'START_GAME';
 export const END_GAME = 'END_GAME';
 
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
+
 export const LOAD_LOCAL_GAME_DATA = 'LOAD_LOCAL_GAME_DATA';
 
 export const LOAD_LEVEL = 'LOAD_LEVEL';

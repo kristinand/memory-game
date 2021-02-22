@@ -8,6 +8,7 @@ const initState = {
   cardsToWin: null,
   isGamePaused: true,
   isGameEnded: false,
+  isLoggedIn: false,
   player: '',
   score: 0,
   levels: 5,
@@ -28,9 +29,11 @@ const initState = {
 
 const gameReducer = (state = initState, action) => {
   switch (action.type) {
+    case actionTypes.LOGIN: return login(state, action);
+    case actionTypes.LOGOUT: return initState;
     case actionTypes.LOAD_LOCAL_GAME_DATA: return loadLocalGameData(state, action);
     case actionTypes.START_GAME: return startGame(state, action);
-    case actionTypes.END_GAME: return { ...state, player: state.player, isGameEnded: true };
+    case actionTypes.END_GAME: return { ...state, isGameEnded: true };
     case actionTypes.LOAD_LEVEL: return loadLevel(state, action);
     case actionTypes.SAVE_SCORE: return { ...state, score: action.timer };
     case actionTypes.CHANGE_CARD_STATUS: return updateGameStatus(state, action);
@@ -43,6 +46,10 @@ const gameReducer = (state = initState, action) => {
     default: return state;
   }
 };
+
+const login = (state, action) => {
+  return { ...state, isLoggedIn: true, player: action.player};
+}
 
 const loadLocalGameData = (state, action) => {
   const data = action.data;
@@ -65,7 +72,6 @@ const startGame = (state, action) => {
   if (action.player === '') return;
   return {
     ...state,
-    player: action.player || state.player,
     coverColor: coverColor,
     cards,
     cardsToWin: cards.length,
