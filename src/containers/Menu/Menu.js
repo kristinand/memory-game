@@ -20,6 +20,7 @@ const Menu = () => {
   };
 
   const onInputValueChangeHandler = (player) => {
+    if (state.isLoggedIn) return;
     player = player.trim();
     setPlayer(player);
   };

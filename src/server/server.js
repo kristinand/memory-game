@@ -23,6 +23,7 @@ app.put('/game', (req, res) => {
       {
         $set: {
           score: req.body.score,
+          date: Date.now()
         },
       },
       {

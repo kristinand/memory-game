@@ -11,7 +11,7 @@ const initState = {
   isLoggedIn: false,
   player: '',
   score: 0,
-  levels: 5,
+  levels: 1,
   settings: {
     bgColor: '#f8ebc6',
     isPatternShown: true,
@@ -53,18 +53,22 @@ const login = (state, action) => {
 
 const loadLocalGameData = (state, action) => {
   const data = action.data;
-  return {
-    ...state,
-    player: action.player,
-    isLoggedIn: action.player !== undefined,
-    level: data.level,
-    cards: data.cards,
-    coverColor: data.coverColor,
-    cardsToWin: data.cardsToWin,
-    isGamePaused: data.isGamePaused,
-    score: data.score,
-    isGamePaused: true,
-  };
+  if (Object.keys(data).length === 0 ) {
+    return {...state, player: action.player}
+  } else {
+    return {
+      ...state,
+      player: action.player,
+      isLoggedIn: action.player !== undefined,
+      level: data.level,
+      cards: data.cards,
+      coverColor: data.coverColor,
+      cardsToWin: data.cardsToWin,
+      isGamePaused: data.isGamePaused,
+      score: data.score,
+      isGamePaused: true,
+    };
+  }
 }
 
 const startGame = (state, action) => {
