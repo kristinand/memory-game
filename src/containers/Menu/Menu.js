@@ -12,7 +12,7 @@ import Logout from '@assets/icons/left.svg';
 const Menu = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [isHelperTextVisible, setIsHelperTextVisible] = useState(false);
+  const [helperText, setHelperText] = useState('');
   const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
 
   const onContinueGameHandler = () => {
@@ -24,21 +24,25 @@ const Menu = () => {
     setPlayer(player);
   };
 
-  const login = async () => {
+  const login = () => {
     const playerRegEx = new RegExp(/^[a-zA-Z]{3,10}$/);
-    if (player.length !== 0 && player.match(playerRegEx) !== null) {
+    if (player.length === 0) {
+      setHelperText('Please, enter your name')
+    } else if (player.length < 3) {
+      setHelperText('Your name should contain at least 3 characters')
+    } else if (player.match(playerRegEx) === null) {
+      setHelperText('Only latin characters allowed')
+    } else {
       localStorage.setItem('player', player);
       dispatch(actions.login(player));
-      setIsHelperTextVisible(false);
-    } else {
-      setIsHelperTextVisible(true);
+      setHelperText('');
     }
   };
 
   const logout = () => {
     localStorage.removeItem('player');
     setPlayer('');
-    setIsHelperTextVisible(false);
+    setHelperText('');
     dispatch(actions.logout());
   };
 
@@ -48,7 +52,7 @@ const Menu = () => {
         <div className={classes.NameInput}>
           <div className={classes.inputContainer}>
             <input
-              className={isHelperTextVisible ? [classes.input, classes.inputDanger].join(' ') : classes.input}
+              className={helperText.length > 0 ? [classes.input, classes.inputDanger].join(' ') : classes.input}
               type="text"
               id="name"
               value={player}
@@ -62,8 +66,8 @@ const Menu = () => {
               title={state.isLoggedIn ? 'Logout' : 'Login'}
             />
           </div>
-          {isHelperTextVisible ? (
-            <p className={classes.helperText}>Please, enter your name. Only latin letters allowed.</p>
+          {helperText.length > 0 ? (
+            <p className={classes.helperText}>{helperText}</p>
           ) : (
             ''
           )}
