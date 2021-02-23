@@ -62,7 +62,11 @@ const Menu = () => {
               title={state.isLoggedIn ? 'Logout' : 'Login'}
             />
           </div>
-          {isHelperTextVisible ? <p className={classes.helperText}>Please, enter your name. Only latin letters allowed.</p> : ''}
+          {isHelperTextVisible ? (
+            <p className={classes.helperText}>Please, enter your name. Only latin letters allowed.</p>
+          ) : (
+            ''
+          )}
         </div>
 
         <span className="separator">♥ ☀ ♦</span>
@@ -83,6 +87,7 @@ const Menu = () => {
         />
         <MenuButton path="/rating" title="Rating" />
         <MenuButton disabled={!state.isLoggedIn} path="/settings" title="Settings" />
+        <MenuButton path="/about" title="About" />
       </div>
       <p className={classes.footer}>
         Created by{' '}

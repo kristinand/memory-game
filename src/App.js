@@ -6,6 +6,7 @@ import Game from './containers/Game/Game';
 import Menu from './containers/Menu/Menu';
 import Rating from './containers/Rating/Rating';
 import Settings from './containers/Settings/Settings';
+import About from './containers/About/About';
 import classes from './App.css';
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
         <HashRouter>
           <Switch>
             {player.length > 0 ? <Route path="/game" component={Game} /> : ''}
+            <Route path="/about" component={About} />
             <Route path="/rating" component={Rating} />
             <Route path="/settings" component={Settings} />
             <Route path="/" component={Menu} />
