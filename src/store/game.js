@@ -30,7 +30,7 @@ const initState = {
 const gameReducer = (state = initState, action) => {
   switch (action.type) {
     case actionTypes.LOGIN: return login(state, action);
-    case actionTypes.LOGOUT: return initState;
+    case actionTypes.LOGOUT: return {...state, player: '', isLoggedIn: false};
     case actionTypes.LOAD_LOCAL_GAME_DATA: return loadLocalGameData(state, action);
     case actionTypes.START_GAME: return startGame(state, action);
     case actionTypes.END_GAME: return endGame(state, action);
@@ -62,7 +62,7 @@ const loadLocalGameData = (state, action) => {
     coverColor: data.coverColor,
     cardsToWin: data.cardsToWin,
     isGamePaused: data.isGamePaused,
-    score: data.timer,
+    score: data.score,
     isGamePaused: true,
   };
 }

@@ -19,7 +19,6 @@ import Sound2 from '@assets/icons/sound2.svg';
 import Music0 from '@assets/icons/music0.svg';
 import Music1 from '@assets/icons/music1.svg';
 import Music2 from '@assets/icons/music2.svg';
-import Autoplay from '@assets/icons/autoplay.svg';
 
 const GameControls = (props) => {
   const history = useHistory();
@@ -75,6 +74,7 @@ const GameControls = (props) => {
       coverColor: state.coverColor,
       cardsToWin: state.cardsToWin,
       score: timer,
+      player: state.player,
     }
     localStorage.setItem('gameData', JSON.stringify(localData));
   }
@@ -153,12 +153,6 @@ const GameControls = (props) => {
           color={state.coverColor}
           title="Music Volume"
           component={state.settings.musicVolume === 0 ? Music0 : state.settings.musicVolume <= 0.5 ? Music1 : Music2}
-        />
-        <IconButton
-          onClick={props.autoplay}
-          color={state.coverColor}
-          title="Autoplay"
-          component={Autoplay}
         />
         <IconButton onClick={() => history.push('/')} color={state.coverColor} component={Back} title="Back to Menu" />
       </span>

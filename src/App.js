@@ -20,7 +20,6 @@ const App = () => {
     if (player !== null) {
       gameData = JSON.parse(gameData);
       dispatch(actions.loadLocalGameData(player, gameData));
-      // подгружаем его настройки с сервера
     }
   }, []);
 
