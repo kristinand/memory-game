@@ -10,7 +10,7 @@ import About from './containers/About/About';
 import classes from './App.css';
 
 const App = () => {
-  const player = useSelector((state) => state.player);
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const bgColor = useSelector((state) => state.settings.bgColor);
   const dispatch = useDispatch();
 
@@ -30,10 +30,10 @@ const App = () => {
       <div className={classes.wrapper}>
         <BrowserRouter>
           <Switch>
-            {player.length > 0 ? <Route path="/game" component={Game} /> : ''}
+            {isLoggedIn ? <Route path="/game" component={Game} /> : ''}
             <Route path="/about" component={About} />
             <Route path="/rating" component={Rating} />
-            <Route path="/settings" component={Settings} />
+            {isLoggedIn ? <Route path="/settings" component={Settings} /> : ''}
             <Route path="/" component={Menu} />
             <Redirect to="/" />
           </Switch>
