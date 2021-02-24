@@ -32,6 +32,7 @@ const gameReducer = (state = initState, action) => {
     case actionTypes.LOGIN: return login(state, action);
     case actionTypes.LOGOUT: return {...state, player: '', isLoggedIn: false};
     case actionTypes.LOAD_LOCAL_GAME_DATA: return loadLocalGameData(state, action);
+    case actionTypes.LOAD_LOCAL_SETTINGS_DATA: return loadLocalSettingsData(state, action);
     case actionTypes.START_GAME: return startGame(state, action);
     case actionTypes.END_GAME: return endGame(state, action);
     case actionTypes.LOAD_LEVEL: return loadLevel(state, action);
@@ -69,6 +70,17 @@ const loadLocalGameData = (state, action) => {
       isGamePaused: true,
     };
   }
+}
+
+const loadLocalSettingsData = (state, action) => {
+  console.log(action.data);
+  return {
+    ...state,
+    settings: {
+      ...state.settings,
+      ...action.data
+    }
+  };
 }
 
 const startGame = (state, action) => {

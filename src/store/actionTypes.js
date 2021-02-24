@@ -5,6 +5,7 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 
 export const LOAD_LOCAL_GAME_DATA = 'LOAD_LOCAL_GAME_DATA';
+export const LOAD_LOCAL_SETTINGS_DATA = 'LOAD_LOCAL_SETTINGS_DATA';
 
 export const LOAD_LEVEL = 'LOAD_LEVEL';
 export const SAVE_SCORE = 'SAVE_SCORE';

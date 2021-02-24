@@ -17,10 +17,12 @@ const App = () => {
   useEffect(() => {
     const player = localStorage.getItem('player');
     let gameData = localStorage.getItem('gameData') || '{}';
+    let settingsData = localStorage.getItem('settingsData');
     if (player !== null) {
       gameData = JSON.parse(gameData);
       dispatch(actions.loadLocalGameData(player, gameData));
     }
+    if (settingsData !== null) dispatch(actions.loadLocalSettingsData(JSON.parse(settingsData)))
   }, []);
 
   return (

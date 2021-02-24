@@ -65,6 +65,13 @@ export const loadLocalGameData = (player, data) => {
   };
 };
 
+export const loadLocalSettingsData = (data) => {
+  return {
+    type: actionTypes.LOAD_LOCAL_SETTINGS_DATA,
+    data,
+  };
+};
+
 export const changeHotkey = (keyType, value) => {
   return {
     type: actionTypes.CHANGE_HOTKEY,

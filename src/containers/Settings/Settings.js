@@ -13,6 +13,15 @@ const Settings = () => {
   const state = useSelector((state) => state.settings);
   const [bgColor, setBgColor] = useState(state.bgColor);
 
+  let settingsData = { ...state };
+  const saveLocalData = (key, value) => {
+    settingsData = {
+      ...settingsData,
+      [key]: value
+    }
+    localStorage.setItem('settingsData', JSON.stringify(settingsData));
+  }
+
   const dispatch = useDispatch();
 
   const onVolumeChangeHandler = (type, value) => {
@@ -21,16 +30,22 @@ const Settings = () => {
     sound.volume = value;
     sound.currentTime = 0;
     sound.play();
+    saveLocalData(type + 'Volume', +value);
   };
 
   const onHotkeyChangeHandler = (keyType, value) => {
     if (value.length > 1) value = value.slice(1);
     if (Object.values(state.keys).includes(value)) return;
     dispatch(actions.changeHotkey(keyType, value));
+    saveLocalData('keys', {
+      ...state.keys,
+      [keyType]: value,
+    })
   };
 
   const setDefaultSettingsHandler = () => {
     dispatch(actions.setDefaultSettings());
+    localStorage.removeItem('settingsData');
   };
 
   const changeBgColorHandler = (value) => {
@@ -39,10 +54,12 @@ const Settings = () => {
     if (value.length === 7 || value.length === 4) {
       dispatch(actions.changeBgColor(value));
     }
+    saveLocalData('bgColor', value);
   };
 
   const onToggleCardPatternHandler = () => {
     dispatch(actions.togglePattern());
+    saveLocalData('isPatternShown', !state.isPatternShown);
   }
 
   return (
