@@ -11,7 +11,7 @@ const initState = {
   isLoggedIn: false,
   player: '',
   score: 0,
-  levels: 1,
+  levels: 5,
   settings: {
     bgColor: '#f8ebc6',
     isPatternShown: true,
