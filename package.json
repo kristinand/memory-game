@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "node src/server/server",
-    "server": "nodemon src/server/server",
-    "client": "webpack serve --mode development"
+    "start": "node server/server",
+    "server": "nodemon server/server",
+    "client": "webpack serve --mode development",
+    "build": "webpack --mode production",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build"
   },
   "author": "Kristina Andreeva",
   "license": "ISC",

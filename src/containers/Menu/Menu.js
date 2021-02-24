@@ -91,7 +91,7 @@ const Menu = () => {
           title="Continue"
         />
         <MenuButton path="/rating" title="Rating" />
-        <MenuButton disabled={!state.isLoggedIn} path="/settings" title="Settings" />
+        <MenuButton disabled={!state.isLoggedIn} path={!state.isLoggedIn ? '': '/settings'} title="Settings" />
         <MenuButton path="/about" title="About" />
       </div>
       <p className={classes.footer}>

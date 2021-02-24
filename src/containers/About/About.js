@@ -13,7 +13,7 @@ const About = () => {
           <img className={classes.image} src={about} alt="how-to-play" width="250" />
           <h3>How to play</h3>
           <p>
-            To complete level you shoud guess all cards.
+            To complete level you should guess all cards.
             <br />
             The game has 5 levels, it takes nearly 5 minutes to complete it.
             <br />

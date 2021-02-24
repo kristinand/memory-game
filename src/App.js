@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from './store/actions';
-import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import Game from './containers/Game/Game';
 import Menu from './containers/Menu/Menu';
 import Rating from './containers/Rating/Rating';
@@ -26,7 +26,7 @@ const App = () => {
   return (
     <div className={classes.App} style={{ backgroundColor: bgColor }}>
       <div className={classes.wrapper}>
-        <HashRouter>
+        <BrowserRouter>
           <Switch>
             {player.length > 0 ? <Route path="/game" component={Game} /> : ''}
             <Route path="/about" component={About} />
@@ -35,7 +35,7 @@ const App = () => {
             <Route path="/" component={Menu} />
             <Redirect to="/" />
           </Switch>
-        </HashRouter>
+        </BrowserRouter>
       </div>
     </div>
   );

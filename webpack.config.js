@@ -8,8 +8,8 @@ module.exports = {
   context: path.resolve(__dirname, 'src'),
   entry: ['@babel/polyfill', './index.js'],
   output: {
+    path: path.resolve(__dirname, 'public'),
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'public/'),
   },
   resolve: {
     extensions: ['.js', '.json'],
@@ -28,6 +28,8 @@ module.exports = {
     port: 8080,
     open: false,
     historyApiFallback: true,
+    contentBase: "./",
+    hot: true,
   },
   performance: {
     hints: false,
