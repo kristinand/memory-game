@@ -73,7 +73,6 @@ const loadLocalGameData = (state, action) => {
 }
 
 const loadLocalSettingsData = (state, action) => {
-  console.log(action.data);
   return {
     ...state,
     settings: {
@@ -100,7 +99,6 @@ const startGame = (state, action) => {
 };
 
 const endGame = (state, action) => {
-  console.log(action.payload);
   return { ...state, isGameEnded: true };
 }
 
