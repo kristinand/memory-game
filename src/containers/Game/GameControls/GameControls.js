@@ -51,7 +51,6 @@ const GameControls = (props) => {
       }, 1000);
     } else {
       dispatch(actions.endGame(state.player, state.score));
-      localStorage.removeItem('gameData');
       history.push('/rating');
     }
     return () => clearTimeout(timeoutTimer);
@@ -63,9 +62,16 @@ const GameControls = (props) => {
   }, [state.isGamePaused]);
 
   useEffect(() => {
-    saveData();
-    dispatch(actions.saveScore(timer));
+    if (!state.isAutoplay && timer > 0) {
+      saveData();
+      dispatch(actions.saveScore(timer));
+    }
   }, [timer]);
+
+  useEffect(() => {
+    handleReset();
+    handlePause();
+  }, [state.isAutoplay]);
 
   const saveData = () => {
     let localData = {
@@ -113,10 +119,11 @@ const GameControls = (props) => {
 
   const onGamePauseHandler = () => dispatch(actions.setIsGamePaused(!isPaused));
   const onGameReloadHandler = () => {
+    if (state.isAutoplay) return;
     handleReset();
     dispatch(actions.startGame());
   }
-
+  
   return (
     <div className={classes.GameControls}>
       <div ref={focusRef} className={classes.screen} tabIndex={0} onKeyPress={handleKeyPress}></div>

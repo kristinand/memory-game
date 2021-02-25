@@ -9,6 +9,7 @@ const initState = {
   isGamePaused: true,
   isGameEnded: false,
   isLoggedIn: false,
+  isAutoplay: false,
   player: '',
   score: 0,
   levels: 5,
@@ -44,6 +45,7 @@ const gameReducer = (state = initState, action) => {
     case actionTypes.CHANGE_BG_COLOR: return { ...state, settings: {...state.settings, bgColor: action.bgColor }};
     case actionTypes.TOGGLE_PATTERN: return { ...state, settings: {...state.settings, isPatternShown: !state.settings.isPatternShown }};
     case actionTypes.SET_DEFAULT_SETTINGS: return { ...state, settings: initState.settings };
+    case actionTypes.AUTOPLAY: return { ...state, isAutoplay: action.value };
     default: return state;
   }
 };
@@ -55,7 +57,11 @@ const login = (state, action) => {
 const loadLocalGameData = (state, action) => {
   const data = action.data;
   if (Object.keys(data).length === 0 ) {
-    return {...state, player: action.player}
+    return {
+      ...state,
+      player: action.player,
+      isLoggedIn: action.player !== undefined
+    }
   } else {
     return {
       ...state,
@@ -83,6 +89,7 @@ const loadLocalSettingsData = (state, action) => {
 }
 
 const startGame = (state, action) => {
+  localStorage.removeItem('gameData');
   const coverColor = generateRandomColor(40, 40, 60, 60);
   let cards = createCards(1, coverColor);
   if (action.player === '') return;
@@ -94,11 +101,13 @@ const startGame = (state, action) => {
     level: 1,
     score: 0,
     isGamePaused: true,
-    isGameEnded: false
+    isGameEnded: false,
+    isAutoplay: false,
   };
 };
 
 const endGame = (state, action) => {
+  localStorage.removeItem('gameData');
   return { ...state, isGameEnded: true };
 }
 

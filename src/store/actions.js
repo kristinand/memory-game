@@ -24,20 +24,19 @@ export const startGame = (player) => {
   };
 };
 
-export const endGame = (player, score) => async dispatch => {
+export const endGame = (player, score) => async (dispatch) => {
+  const config = {
+    headers: { 'Content-Type': 'application/json' },
+  };
+  const body = JSON.stringify({ player, score });
 
-    const config = {
-      headers: {'Content-Type': 'application/json'}
-    }
-    const body = JSON.stringify({player, score});
-    
-    try {
-      const res = await axios.put('http://localhost:5000/game', body, config);
-      dispatch({
+  try {
+    const res = await axios.put('http://localhost:5000/game', body, config);
+    dispatch({
       type: actionTypes.END_GAME,
       payload: res.data,
-    })
-  } catch(err) {
+    });
+  } catch (err) {
     console.error(err);
   }
 };
@@ -115,6 +114,13 @@ export const login = (player) => {
 
 export const logout = () => {
   return {
-    type: actionTypes.LOGOUT
+    type: actionTypes.LOGOUT,
+  };
+};
+
+export const setAutoplay = (value) => {
+  return {
+    type: actionTypes.AUTOPLAY,
+    value,
   };
 };
