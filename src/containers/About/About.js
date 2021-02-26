@@ -8,7 +8,7 @@ const About = () => {
     <Fragment>
       <Header title="About Game" />
       <article className={classes.About}>
-        <h1>Wlecome to Memo — memory card game!</h1>
+        <h1>Welcome to Memo — memory card game!</h1>
         <section>
           <img className={classes.image} src={about} alt="how-to-play" width="250" />
           <h3>How to play</h3>
@@ -17,7 +17,7 @@ const About = () => {
             <br />
             The game has 5 levels, it takes nearly 5 minutes to complete it.
             <br />
-            When game was finished, your time(score) will appear in the ratings and will store in the backend. Therefore, firstly, you need to login before you can play the game.
+            When the game was finished, your time(score) will appear in the ratings and will store in the back-end. Therefore, firstly, you need to login before you can play the game.
 						<br />
 						You <strike>or not you</strike> could also overwrite your scores.
           </p>
