@@ -17,24 +17,24 @@ app.use((req, res, next) => {
   next();
 });
 
-app.put('/game', (req, res) => {
-  Score
-    .findOneAndUpdate(
+app.put('/game', async (req, res) => {
+  try {
+    const score = await Score.findOneAndUpdate(
       { player: req.body.player },
       {
         $set: {
           score: req.body.score,
-          date: Date.now()
+          date: Date.now(),
         },
       },
-      {
-        upsert: true,
-      }
-    )
-    .then((res) => {
-      // console.log(res);
-    })
-    .catch((err) => console.error(err));
+      { upsert: true }
+    );
+
+    await score.save();
+    res.json(score);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 app.get('/rating', async (req, res) => {
@@ -44,9 +44,9 @@ app.get('/rating', async (req, res) => {
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.resolve(__dirname, '../public')));
-  app.get('/*', (req,res) => {
-    res.sendFile(path.resolve(__dirname, '../public/index.html'))
-  })
+  app.get('/*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../public/index.html'));
+  });
 }
 
 const PORT = process.env.PORT || 5000;

@@ -69,7 +69,6 @@ const GameControls = (props) => {
   }, [timer]);
 
   useEffect(() => {
-    console.log('isAutoplay')
     if (state.score === 0) {
       handleReset();
       handlePause();

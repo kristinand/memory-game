@@ -86,7 +86,7 @@ const Menu = () => {
           onClick={onContinueGameHandler}
           path={localStorage.getItem('gameData') !== null && localStorage.getItem('player') === JSON.parse(localStorage.getItem('gameData')).player ? '/game' : '/'}
           disabled={
-            !state.isLoggedIn || localStorage.getItem('gameData') === null || localStorage.getItem('player') !== JSON.parse(localStorage.getItem('gameData')).player
+            !state.isLoggedIn || state.isGameEnded || localStorage.getItem('gameData') === null || localStorage.getItem('player') !== JSON.parse(localStorage.getItem('gameData')).player
           }
           title="Continue"
         />
