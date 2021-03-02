@@ -1,5 +1,6 @@
 const express = require('express');
 const connectDB = require('./db.js');
+const path = require('path');
 const Score = require('./models/Score.js');
 
 const app = express();
