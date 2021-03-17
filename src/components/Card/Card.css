@@ -71,3 +71,14 @@
   backface-visibility: hidden;
   transform: rotateY(180deg);
 }
+
+
+.closed {
+  transform: rotateY(0deg);
+  box-shadow: 2px 2px 0.1em 3px hsla(0, 0%, 70%, 0.3);
+}
+
+.opened {
+  transform: rotateY(180deg);
+  box-shadow: -2px 2px 0.1em 3px hsla(0, 0%, 70%, 0.3);
+}

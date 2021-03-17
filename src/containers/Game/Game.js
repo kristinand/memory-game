@@ -1,9 +1,10 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import classes from './Game.css';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../../store/actions';
 import { listToArray, getRandomNumber } from '../../utils/functions';
 import GameControls from './GameControls/GameControls';
-import CardRow from '../../components/CardRow';
+import CardRow from '../../components/CardRow/CardRow';
 import IconButton from '../../components/IconButton/IconButton';
 import Autoplay from '@assets/icons/autoplay.svg';
 
@@ -79,12 +80,12 @@ const Game = () => {
   return (
     <Fragment>
       <GameControls getFocusRef={(ref) => setFocusRef(ref)} />
-      <div style={{ display: 'flex', gap: '1rem', flexDirection: 'column', height: '70vh', justifyContent: 'center' }}>
+      <div className={classes.game}>
         {listToArray(state.cards, 4).map((cardsRow, i) => (
           <CardRow key={i} cards={cardsRow} onCardClick={onCardSelectHandler} />
         ))}
       </div>
-      <div style={{ textAlign: 'center' }}>
+      <div className={classes.autoplay}>
         {state.score === 0 && !state.isAutoplay ? (
           <IconButton onClick={onAutoplayHandler} text="Autoplay" component={Autoplay} />
         ) : (

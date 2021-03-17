@@ -1,32 +1,35 @@
-import React, { useRef, useEffect } from 'react';
+import React, {  useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import classNames from 'classnames/bind';
 import classes from './Card.css';
 import audio from '@assets/card-click.opus';
 
+let cx = classNames.bind(classes);
+
 const Card = (props) => {
+  const [isOpen, setIsOpen] = useState(false);
   const { soundVolume, isPatternShown } = useSelector((state) => state.settings);
   const clickAudio = new Audio(audio);
-  const cardRef = useRef();
 
   useEffect(() => {
-    props.status === 'closed' ? closeCard(cardRef.current) : openCard(cardRef.current);
+    if (props.status === 'closed') {
+      setIsOpen(false);
+    } else {
+      clickAudio.volume = soundVolume;
+      clickAudio.play();
+      setIsOpen(true);
+    }
   }, [props.status]);
 
-  const openCard = (card) => {
-    clickAudio.volume = soundVolume;
-    clickAudio.play();
-    card.style.transform = 'rotateY(180deg)';
-    card.style.boxShadow = '-2px 2px 0.1em 3px hsla(0, 0%, 70%, 0.3)';
-  };
-
-  const closeCard = (card) => {
-    card.style.transform = 'rotateY(0deg)';
-    card.style.boxShadow = '2px 2px 0.1em 3px hsla(0, 0%, 70%, 0.3)';
-  };
+  const cardClass = cx({
+    Card: true,
+    opened: isOpen,
+    closed: !isOpen
+  })
 
   return (
     <div className={classes.wrapper}>
-      <div ref={cardRef} onClick={props.onCardClick} className={['Card', classes.Card].join(' ')}>
+      <div onClick={props.onCardClick} className={cardClass}>
         <div className={classes.CardCover} style={{ backgroundColor: props.coverColor }}>
           <span>?</span>
         </div>

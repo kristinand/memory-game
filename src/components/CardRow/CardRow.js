@@ -1,17 +1,10 @@
 import React from 'react';
-import Card from './Card/Card';
-
-const styles = {
-  display: 'flex',
-  gap: '1rem',
-  flex: 1,
-  maxHeight: '250px',
-  justifyContent: 'space-between',
-};
+import Card from '../Card/Card';
+import classes from './CardRow.css'
 
 const CardRow = (props) => {
   return (
-    <div style={styles}>
+    <div className={classes.CardRow}>
       {props.cards.map((card) => (
         <Card
           onCardClick={() => props.onCardClick(card.key)}
