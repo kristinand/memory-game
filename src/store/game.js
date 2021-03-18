@@ -56,7 +56,7 @@ const login = (state, action) => {
 
 const loadLocalGameData = (state, action) => {
   const data = action.data;
-  if (Object.keys(data).length === 0 ) {
+  if (data === null) {
     return {
       ...state,
       player: action.player,

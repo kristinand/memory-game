@@ -8,6 +8,9 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import Logo from '@assets/icons/rss_logo.svg';
 import Login from '@assets/icons/right.svg';
 import Logout from '@assets/icons/left.svg';
+import classNames from 'classnames/bind';
+
+let cx = classNames.bind(classes);
 
 const Menu = () => {
   const dispatch = useDispatch();
@@ -47,13 +50,18 @@ const Menu = () => {
     dispatch(actions.logout());
   };
 
+  const helperTextClasses = cx({
+    input: true,
+    inputDanger: helperText.length > 0
+  })
+
   return (
     <Fragment>
       <div className={classes.menu}>
         <div className={classes.NameInput}>
           <div className={classes.inputContainer}>
             <input
-              className={helperText.length > 0 ? [classes.input, classes.inputDanger].join(' ') : classes.input}
+              className={helperTextClasses}
               type="text"
               id="name"
               value={player}
