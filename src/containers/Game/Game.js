@@ -9,7 +9,7 @@ import IconButton from '../../components/IconButton/IconButton';
 import Autoplay from '@assets/icons/autoplay.svg';
 
 const Game = () => {
-  const [musicSound] = useState(new Audio('http://soundimage.org/wp-content/uploads/2017/05/High-Altitude-Bliss.mp3'));
+  const [musicSound] = useState(new Audio('https://soundimage.org/wp-content/uploads/2017/05/High-Altitude-Bliss.mp3'));
   const state = useSelector((state) => state);
   const [focusRef, setFocusRef] = useState();
   musicSound.volume = state.settings.musicVolume;
@@ -91,7 +91,7 @@ const Game = () => {
         ) : (
           ''
         )}
-        { state.isAutoplay ? <p>ai guesses the cards...</p> : '' }
+        {state.isAutoplay ? <p>ai guesses the cards...</p> : ''}
       </div>
     </Fragment>
   );
