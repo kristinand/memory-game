@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from './store/actions';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import * as actions from './store/actions';
 import Game from './containers/Game/Game';
 import Menu from './containers/Menu/Menu';
 import Rating from './containers/Rating/Rating';
@@ -13,6 +13,7 @@ const App = () => {
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const bgColor = useSelector((state) => state.settings.bgColor);
   const dispatch = useDispatch();
+  const getLocalStorageValue = (prop) => JSON.parse(localStorage.getItem(prop));
 
   useEffect(() => {
     const player = localStorage.getItem('player');
@@ -25,8 +26,6 @@ const App = () => {
       dispatch(actions.loadLocalSettingsData(settingsData));
     }
   }, []);
-
-  const getLocalStorageValue = prop => JSON.parse(localStorage.getItem(prop));
 
   return (
     <div className={classes.App} style={{ backgroundColor: bgColor }}>
