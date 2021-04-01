@@ -12,7 +12,7 @@ module.exports = {
     filename: 'bundle.js',
   },
   resolve: {
-    extensions: ['.js', '.json'],
+    extensions: ['.js', '.json', '.jsx'],
     alias: {
       '@assets': path.resolve(__dirname, 'src/assets'),
     },
@@ -66,7 +66,7 @@ module.exports = {
         type: 'asset/inline',
       },
       {
-        test: /\.m?js$/,
+        test: /\.m?jsx?$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
