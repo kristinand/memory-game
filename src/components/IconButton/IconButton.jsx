@@ -4,7 +4,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import classes from './IconButton.css';
 
 const IconButton = (props) => {
-  const { title, onClick, component, buttonColor, text, color } = props;
+  const { title, onClick, component, text, color } = props;
 
   const buttonRef = useRef(null);
 
@@ -25,11 +25,11 @@ const IconButton = (props) => {
       }}
     >
       <SvgIcon
-        style={{ color: buttonColor, fontSize: '1.8rem' }}
+        fontSize="large"
         component={component}
         viewBox="0 0 100 100"
       />
-      <span style={{ fontSize: '1.1rem' }}>{text}</span>
+      {text && <span className={classes.btnText}>{text}</span>}
     </button>
   );
 };
@@ -38,7 +38,6 @@ export default IconButton;
 
 IconButton.defaultProps = {
   title: undefined,
-  buttonColor: undefined,
   color: undefined,
   text: undefined,
 };
@@ -47,7 +46,6 @@ IconButton.propTypes = {
   onClick: PropTypes.func.isRequired,
   component: PropTypes.func.isRequired,
   title: PropTypes.string,
-  buttonColor: PropTypes.string,
   color: PropTypes.string,
   text: PropTypes.string,
 };
