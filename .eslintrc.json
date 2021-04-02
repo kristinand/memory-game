@@ -17,5 +17,8 @@
     "object-curly-newline": ["error", { "ImportDeclaration": "never" }],
     "max-len": ["error", { "code": 120, "tabWidth": 2 }],
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+  },
+  "settings": {
+    "import/resolver": "webpack"
   }
 }
