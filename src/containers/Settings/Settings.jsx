@@ -1,46 +1,22 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actions from '../../store/actions';
-import classes from './Settings.css';
-import Header from '../../components/Header/Header';
+import Switch from '@material-ui/core/Switch';
 import menuSound from '@assets/menu-click.opus';
 import Reset from '@assets/icons/reset.svg';
+import Header from '../../components/Header/Header';
 import IconButton from '../../components/IconButton/IconButton';
-import Switch from '@material-ui/core/Switch';
+import classes from './Settings.css';
+import * as actions from '../../store/actions';
 
 const Settings = () => {
   const sound = new Audio(menuSound);
-  const state = useSelector((state) => state.settings);
+  const dispatch = useDispatch();
+  const state = useSelector((store) => store.settings);
   const [bgColor, setBgColor] = useState(state.bgColor);
 
-  let settingsData = { ...state };
-  const saveLocalData = (key, value) => {
-    settingsData = {
-      ...settingsData,
-      [key]: value
-    }
+  const setLocalStorageItem = (key, value) => {
+    const settingsData = { ...state, [key]: value };
     localStorage.setItem('settingsData', JSON.stringify(settingsData));
-  }
-
-  const dispatch = useDispatch();
-
-  const onVolumeChangeHandler = (type, value) => {
-    if (value < 0 || value > 1 || isNaN(+value)) return;
-    dispatch(actions.changeVolume(type, +value));
-    sound.volume = value;
-    sound.currentTime = 0;
-    sound.play();
-    saveLocalData(type + 'Volume', +value);
-  };
-
-  const onHotkeyChangeHandler = (keyType, value) => {
-    if (value.length > 1) value = value.slice(1);
-    if (Object.values(state.keys).includes(value)) return;
-    dispatch(actions.changeHotkey(keyType, value));
-    saveLocalData('keys', {
-      ...state.keys,
-      [keyType]: value,
-    })
   };
 
   const setDefaultSettingsHandler = () => {
@@ -48,22 +24,43 @@ const Settings = () => {
     localStorage.removeItem('settingsData');
   };
 
-  const changeBgColorHandler = (value) => {
+  const onVolumeChangeHandler = (type, value) => {
+    if (value < 0 || value > 1 || Number.isNaN(+value)) return;
+    sound.volume = value;
+    sound.currentTime = 0;
+    sound.play();
+    dispatch(actions.changeVolume(type, +value));
+    setLocalStorageItem(type.concat('Volume'), +value);
+  };
+
+  const onHotkeyChangeHandler = (keyType, value) => {
+    let newHotkey;
+    if (value.length > 1) newHotkey = value.slice(1);
+    if (Object.values(state.keys).includes(newHotkey)) return;
+    dispatch(actions.changeHotkey(keyType, newHotkey));
+    setLocalStorageItem('keys', {
+      ...state.keys,
+      [keyType]: newHotkey,
+    });
+  };
+
+  const onBgColorChangeHandler = (value) => {
     if (value[0] !== '#' || value.length > 7) return;
     setBgColor(value);
+
     if (value.length === 7 || value.length === 4) {
       dispatch(actions.changeBgColor(value));
+      setLocalStorageItem('bgColor', value);
     }
-    saveLocalData('bgColor', value);
   };
 
   const onToggleCardPatternHandler = () => {
     dispatch(actions.togglePattern());
-    saveLocalData('isPatternShown', !state.isPatternShown);
-  }
+    setLocalStorageItem('isPatternShown', !state.isPatternShown);
+  };
 
   return (
-    <Fragment>
+    <>
       <Header title="Game Settings" />
       <div className={classes.Settings}>
         <div className={classes.settingsElement}>
@@ -72,7 +69,7 @@ const Settings = () => {
             <input
               className={classes.input}
               type="text"
-              onChange={(event) => changeBgColorHandler(event.target.value)}
+              onChange={(event) => onBgColorChangeHandler(event.target.value)}
               value={bgColor}
             />
           </div>
@@ -163,7 +160,7 @@ const Settings = () => {
         <div className={classes.settingsElement}>
           <span>Card Pattern Enabled</span>
           <div className={classes.inputContainer}>
-            <Switch checked={state.isPatternShown} onChange={onToggleCardPatternHandler} color="default"/>
+            <Switch checked={state.isPatternShown} onChange={onToggleCardPatternHandler} color="default" />
           </div>
         </div>
       </div>
@@ -171,7 +168,7 @@ const Settings = () => {
       <div className={classes.buttonWrapper}>
         <IconButton onClick={setDefaultSettingsHandler} component={Reset} text="Set Default" />
       </div>
-    </Fragment>
+    </>
   );
 };
 
