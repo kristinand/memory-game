@@ -1,5 +1,5 @@
-import axios from 'axios';
 import * as actionTypes from './actionTypes';
+import api from '../api/api';
 
 export const loadLevel = (param = '') => ({
   type: actionTypes.LOAD_LEVEL,
@@ -18,16 +18,11 @@ export const startGame = () => ({
 });
 
 export const endGame = (player, score) => async (dispatch) => {
-  const config = {
-    headers: { 'Content-Type': 'application/json' },
-  };
-  const body = JSON.stringify({ player, score });
-
   try {
-    const res = await axios.put('http://localhost:5000/game', body, config);
+    const payload = await api.saveScore({ player, score });
     dispatch({
       type: actionTypes.END_GAME,
-      payload: res.data,
+      payload,
     });
   } catch (err) {
     console.error(err);

@@ -1,29 +1,20 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import classes from './Rating.css';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { formatTime } from '../../utils/functions';
-import Header from '../../components/Header/Header';
-import axios from 'axios';
 import classNames from 'classnames/bind';
+import classes from './Rating.css';
+import Header from '../../components/Header/Header';
+import { formatTime } from '../../utils/functions';
+import api from '../../api/api';
 
-let cx = classNames.bind(classes);
+const cx = classNames.bind(classes);
 
 const Rating = () => {
   const { player: playerName } = useSelector((state) => state);
   const [ratingData, setRatingData] = useState([]);
   let playersData = 'Loading...';
 
-  const loadData = async () => {
-    try {
-      const res = await axios.get('http://localhost:5000/rating');
-      return res.data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(async () => {
-    let ratings = await loadData();
+    let ratings = await api.loadRatings();
     ratings = ratings.sort((prev, cur) => prev.score - cur.score);
     setRatingData(ratings);
   }, []);
@@ -36,7 +27,7 @@ const Rating = () => {
       });
 
       return (
-        <div key={player._id} className={playerClasses}>
+        <div key={player.player} className={playerClasses}>
           <span>{i + 1}</span>
           <span>{player.player}</span>
           <span>{formatTime(player.score)}</span>
@@ -47,7 +38,7 @@ const Rating = () => {
   }
 
   return (
-    <Fragment>
+    <>
       <Header title="Rating" />
       <div className={classes.Rating}>
         <div className={classes.header}>
@@ -58,7 +49,7 @@ const Rating = () => {
         </div>
         {playersData}
       </div>
-    </Fragment>
+    </>
   );
 };
 
