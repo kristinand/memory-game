@@ -9,6 +9,13 @@
   width: 100%;
 }
 
+@media (max-width: 600px) {
+  .GameControls {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
 .screen {
   position: fixed;
   top: 0;
@@ -34,4 +41,10 @@
 .right {
   display: flex;
   gap: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .right {
+    align-self: flex-end;
+  }
 }
