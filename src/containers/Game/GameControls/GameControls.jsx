@@ -1,11 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import * as actions from '../../../store/actions';
-import useTimer from '../../../hooks/useTimer';
-import { formatTime } from '../../../utils/functions';
-import classes from './GameControls.css';
-import IconButton from '../../../components/IconButton/IconButton';
 
 import menuSound from '@assets/menu-click.opus';
 import Refresh from '@assets/icons/refresh.svg';
@@ -20,10 +15,16 @@ import Music0 from '@assets/icons/music0.svg';
 import Music1 from '@assets/icons/music1.svg';
 import Music2 from '@assets/icons/music2.svg';
 
+import * as actions from '../../../store/actions';
+import useTimer from '../../../hooks/useTimer';
+import { formatTime } from '../../../utils/functions';
+import IconButton from '../../../components/IconButton/IconButton';
+import classes from './GameControls.css';
+
 const GameControls = (props) => {
   const history = useHistory();
   const focusRef = useRef();
-  const state = useSelector((state) => state);
+  const state = useSelector((store) => store);
   const [menuClickSound] = useState(new Audio(menuSound));
   menuClickSound.volume = state.settings.soundVolume;
 
@@ -53,7 +54,9 @@ const GameControls = (props) => {
       dispatch(actions.endGame(state.player, state.score));
       history.push('/rating');
     }
-    return () => clearTimeout(timeoutTimer);
+    return () => {
+      clearTimeout(timeoutTimer)
+    };
   }, [state.cardsToWin]);
 
   useEffect(() => {
@@ -61,9 +64,21 @@ const GameControls = (props) => {
     return () => handlePause();
   }, [state.isGamePaused]);
 
+  const saveGameData = () => {
+    const localData = {
+      cards: state.cards,
+      level: state.level,
+      coverColor: state.coverColor,
+      cardsToWin: state.cardsToWin,
+      score: timer,
+      player: state.player,
+    };
+    localStorage.setItem('gameData', JSON.stringify(localData));
+  };
+
   useEffect(() => {
     if (!state.isAutoplay && timer > 0) {
-      saveData();
+      saveGameData();
       dispatch(actions.saveScore(timer));
     }
   }, [timer]);
@@ -74,27 +89,6 @@ const GameControls = (props) => {
       handlePause();
     }
   }, [state.isAutoplay]);
-
-  const saveData = () => {
-    let localData = {
-      cards: state.cards,
-      level: state.level,
-      coverColor: state.coverColor,
-      cardsToWin: state.cardsToWin,
-      score: timer,
-      player: state.player,
-    }
-    localStorage.setItem('gameData', JSON.stringify(localData));
-  }
-
-  const handleKeyPress = (event) => {
-    let key = event.key;
-    if (key === state.settings.keys.fullscreen) toggleFullscreenHandler();
-    else if (key === state.settings.keys.reload) onGameReloadHandler();
-    else if (key === state.settings.keys.sounds) onChangeAudioVolumeHandler('sound');
-    else if (key === state.settings.keys.music ) onChangeAudioVolumeHandler('music');
-    else if (key === state.settings.keys.pause ) onGamePauseHandler();
-  };
 
   const onChangeAudioVolumeHandler = (type) => {
     let volume = type === 'sound' ? state.settings.soundVolume : state.settings.musicVolume;
@@ -112,10 +106,8 @@ const GameControls = (props) => {
   const toggleFullscreenHandler = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
     }
   };
 
@@ -124,11 +116,20 @@ const GameControls = (props) => {
     if (state.isAutoplay) return;
     handleReset();
     dispatch(actions.startGame());
-  }
-  
+  };
+
+  const handleKeyPress = (event) => {
+    const { key } = event;
+    if (key === state.settings.keys.fullscreen) toggleFullscreenHandler();
+    else if (key === state.settings.keys.reload) onGameReloadHandler();
+    else if (key === state.settings.keys.sounds) onChangeAudioVolumeHandler('sound');
+    else if (key === state.settings.keys.music) onChangeAudioVolumeHandler('music');
+    else if (key === state.settings.keys.pause) onGamePauseHandler();
+  };
+
   return (
     <div className={classes.GameControls}>
-      <div ref={focusRef} className={classes.screen} tabIndex={0} onKeyPress={handleKeyPress}></div>
+      <div ref={focusRef} className={classes.screen} tabIndex={0} onKeyPress={handleKeyPress} />
       <span className={classes.level}>level: {state.level}</span>
 
       <span className={classes.right}>
@@ -143,7 +144,7 @@ const GameControls = (props) => {
           onClick={onGameReloadHandler}
           color={state.coverColor}
           component={Refresh}
-          title='Reload Game'
+          title="Reload Game"
         />
         <IconButton
           onClick={toggleFullscreenHandler}
