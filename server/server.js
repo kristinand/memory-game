@@ -1,13 +1,12 @@
 const express = require('express');
-const connectDB = require('./db.js');
 const path = require('path');
+const connectDB = require('./db.js');
 const Score = require('./models/Score.js');
 
 const app = express();
 
 connectDB();
 
-//init middleware / bodyParser
 app.use(express.json({ extended: false }));
 
 app.use((req, res, next) => {
@@ -27,7 +26,7 @@ app.put('/game', async (req, res) => {
           date: Date.now(),
         },
       },
-      { upsert: true }
+      { upsert: true },
     );
 
     await score.save();
