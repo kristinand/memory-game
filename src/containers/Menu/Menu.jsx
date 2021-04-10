@@ -25,7 +25,7 @@ const Menu = () => {
 
   const login = () => {
     const playerRegEx = new RegExp(/^[a-zA-Z]{3,10}$/);
-    if (player.length === 0) {
+    if (!player.length) {
       setHelperText('Please, enter your name');
     } else if (player.length < 3) {
       setHelperText('Your name should contain at least 3 characters');

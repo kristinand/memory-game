@@ -37,7 +37,7 @@ const Card = (props) => {
           <span>?</span>
         </div>
         <div className={classes.CardColor} style={{ backgroundColor: color }}>
-          {isPatternShown ? <span className="pattern">{pattern}</span> : ''}
+          {isPatternShown && <span className="pattern">{pattern}</span>}
         </div>
       </div>
     </div>

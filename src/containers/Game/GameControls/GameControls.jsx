@@ -120,11 +120,12 @@ const GameControls = (props) => {
 
   const handleKeyPress = (event) => {
     const { key } = event;
-    if (key === state.settings.keys.fullscreen) toggleFullscreenHandler();
-    else if (key === state.settings.keys.reload) onGameReloadHandler();
-    else if (key === state.settings.keys.sounds) onChangeAudioVolumeHandler('sound');
-    else if (key === state.settings.keys.music) onChangeAudioVolumeHandler('music');
-    else if (key === state.settings.keys.pause) onGamePauseHandler();
+    const { fullscreen, reload, sounds, music, pause } = state.settings.keys;
+    if (key === fullscreen) toggleFullscreenHandler();
+    else if (key === reload) onGameReloadHandler();
+    else if (key === sounds) onChangeAudioVolumeHandler('sound');
+    else if (key === music) onChangeAudioVolumeHandler('music');
+    else if (key === pause) onGamePauseHandler();
   };
 
   return (

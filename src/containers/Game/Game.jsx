@@ -1,16 +1,16 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import classes from './Game.css';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import Autoplay from '@assets/icons/autoplay.svg';
+import classes from './Game.css';
 import * as actions from '../../store/actions';
 import { listToArray, getRandomNumber } from '../../utils/functions';
 import GameControls from './GameControls/GameControls';
 import CardRow from '../../components/CardRow/CardRow';
 import IconButton from '../../components/IconButton/IconButton';
-import Autoplay from '@assets/icons/autoplay.svg';
 
 const Game = () => {
   const [musicSound] = useState(new Audio('https://soundimage.org/wp-content/uploads/2017/05/High-Altitude-Bliss.mp3'));
-  const state = useSelector((state) => state);
+  const state = useSelector((store) => store);
   const [focusRef, setFocusRef] = useState();
   musicSound.volume = state.settings.musicVolume;
 
@@ -19,7 +19,7 @@ const Game = () => {
   useEffect(() => {
     musicSound.play();
     musicSound.loop = true;
-    if (state.cards.length === 0) dispatch(actions.startGame());
+    if (!state.cards.length) dispatch(actions.startGame());
     return () => musicSound.pause();
   }, []);
 
@@ -30,7 +30,6 @@ const Game = () => {
     const selectedCard = state.cards[selectedCardIndex];
     const openedCard = state.cards[openedCardIndex];
 
-    // избегаем нажатия, если карта не закрыта
     if (selectedCard.status !== 'closed') return;
 
     // открытие первой карты
@@ -39,7 +38,7 @@ const Game = () => {
       return;
     }
 
-    if (openedCard.key.slice(1) == key.slice(1)) {
+    if (openedCard.key.slice(1) === key.slice(1)) {
       dispatch(actions.changeCardStatus('guessed', selectedCardIndex, openedCardIndex));
     } else {
       dispatch(actions.changeCardStatus('not-guessed', selectedCardIndex, openedCardIndex));
@@ -78,22 +77,20 @@ const Game = () => {
   };
 
   return (
-    <Fragment>
+    <>
       <GameControls getFocusRef={(ref) => setFocusRef(ref)} />
       <div className={classes.game}>
-        {listToArray(state.cards, 4).map((cardsRow, i) => (
-          <CardRow key={i} cards={cardsRow} onCardClick={onCardSelectHandler} />
+        {listToArray(state.cards, 4).map((cardsRow) => (
+          <CardRow key={cardsRow[0].key} cards={cardsRow} onCardClick={onCardSelectHandler} />
         ))}
       </div>
       <div className={classes.autoplay}>
-        {state.score === 0 && !state.isAutoplay ? (
+        {(!state.score && !state.isAutoplay) && (
           <IconButton onClick={onAutoplayHandler} text="Autoplay" component={Autoplay} />
-        ) : (
-          ''
         )}
-        {state.isAutoplay ? <p>ai guesses the cards...</p> : ''}
+        {state.isAutoplay && <p>ai guesses the cards...</p>}
       </div>
-    </Fragment>
+    </>
   );
 };
 
