@@ -1,8 +1,7 @@
 # Memory game
 
-[deploy](https://kristinand-react-game.herokuapp.com)
+### [View site](https://kristinand-react-game.herokuapp.com)
 
-* React, Redux, React Router
-* CSS
-* Backend: NodeJS, Express, MongoDB
+* Front-end: React, Redux, React Router, CSS
+* Back-end: NodeJS, Express, MongoDB
 * Webpack
