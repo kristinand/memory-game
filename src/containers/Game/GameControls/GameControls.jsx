@@ -34,11 +34,10 @@ const GameControls = (props) => {
   useEffect(() => {
     props.getFocusRef(focusRef.current);
     focusRef.current.focus();
-    if (state.score === 0) {
-      handleStart();
+    if (state.score) {
       handlePause();
-    }
-    else {
+    } else {
+      handleStart();
       handlePause();
     }
   }, []);
@@ -55,7 +54,7 @@ const GameControls = (props) => {
       history.push('/rating');
     }
     return () => {
-      clearTimeout(timeoutTimer)
+      clearTimeout(timeoutTimer);
     };
   }, [state.cardsToWin]);
 
@@ -113,9 +112,10 @@ const GameControls = (props) => {
 
   const onGamePauseHandler = () => dispatch(actions.setIsGamePaused(!isPaused));
   const onGameReloadHandler = () => {
-    if (state.isAutoplay) return;
-    handleReset();
-    dispatch(actions.startGame());
+    if (!state.isAutoplay) {
+      handleReset();
+      dispatch(actions.startGame());
+    }
   };
 
   const handleKeyPress = (event) => {
@@ -141,12 +141,7 @@ const GameControls = (props) => {
           title={isPaused ? 'Play' : 'Pause'}
           component={isPaused ? Play : Pause}
         />
-        <IconButton
-          onClick={onGameReloadHandler}
-          color={state.coverColor}
-          component={Refresh}
-          title="Reload Game"
-        />
+        <IconButton onClick={onGameReloadHandler} color={state.coverColor} component={Refresh} title="Reload Game" />
         <IconButton
           onClick={toggleFullscreenHandler}
           color={state.coverColor}
