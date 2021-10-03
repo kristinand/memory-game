@@ -7,13 +7,13 @@ const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
-  entry: ['@babel/polyfill', './index.js'],
+  entry: ['@babel/polyfill', './index.tsx'],
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'bundle.js',
   },
   resolve: {
-    extensions: ['.js', '.json', '.jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],
     alias: {
       '@assets': path.resolve(__dirname, 'src/assets'),
     },
@@ -37,6 +37,7 @@ module.exports = {
     contentBase: './',
     hot: true,
   },
+  devtool: 'eval-cheap-module-source-map',
   performance: {
     hints: false,
     maxEntrypointSize: 512000,
@@ -71,6 +72,7 @@ module.exports = {
         test: /\.(ttf|woff|woff2|eot)$/,
         type: 'asset/inline',
       },
+      { test: /\.tsx?$/, loader: 'ts-loader' },
       {
         test: /\.m?jsx?$/,
         exclude: /node_modules/,
