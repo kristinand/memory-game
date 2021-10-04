@@ -31,7 +31,7 @@ module.exports = {
     }),
   ],
   devServer: {
-    port: 8080,
+    port: 3000,
     open: false,
     historyApiFallback: true,
     contentBase: './',
@@ -50,6 +50,7 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           'style-loader',
+          'css-modules-typescript-loader',
           {
             loader: 'css-loader',
             options: {

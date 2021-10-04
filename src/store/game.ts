@@ -40,9 +40,9 @@ const gameReducer = (state = initState, action) => {
     case actionTypes.LOAD_LOCAL_SETTINGS_DATA:
       return loadLocalSettingsData(state, action);
     case actionTypes.START_GAME:
-      return startGame(state, action);
+      return startGame(state);
     case actionTypes.END_GAME:
-      return endGame(state, action);
+      return endGame(state);
     case actionTypes.LOAD_LEVEL:
       return loadLevel(state, action);
     case actionTypes.SAVE_SCORE:

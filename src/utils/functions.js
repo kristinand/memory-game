@@ -68,3 +68,5 @@ export function fillCards(cards, level, coverColor) {
   }
   return cards;
 }
+
+export const getLocalStorageValue = (prop) => JSON.parse(localStorage.getItem(prop));
