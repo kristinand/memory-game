@@ -10,7 +10,7 @@ import About from './components/About/About';
 
 import * as actions from './store/actions';
 import { IState } from './store/interfaces';
-import { getLocalStorageValue } from './utils';
+import { getLocalStorageValue } from './utils/functions';
 
 import classes from './App.css';
 

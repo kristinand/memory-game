@@ -1,6 +1,6 @@
 /* eslint-disable no-use-before-define */
 import * as actionTypes from './actionTypes';
-import { shuffleList, getRandomColor, fillCards } from '../utils/';
+import { shuffleList, getRandomColor, fillCards } from '../utils/functions';
 
 const initState = {
   level: 1,

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Autoplay from '@assets/icons/autoplay.svg';
 import classes from './Game.css';
 import * as actions from '../../store/actions';
-import { listToArray, getRandomNumber } from '../../utils/';
+import { listToArray, getRandomNumber } from '../../utils/functions';
 import GameControls from './GameControls/GameControls';
 import CardRow from '../../components/CardRow/CardRow';
 import IconButton from '../../components/IconButton/IconButton';
