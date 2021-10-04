@@ -17,7 +17,7 @@ import Music2 from '@assets/icons/music2.svg';
 
 import * as actions from '../../../store/actions';
 import useTimer from '../../../hooks/useTimer';
-import { formatTime } from '../../../utils/functions';
+import { formatTime } from '../../../utils';
 import IconButton from '../../../components/IconButton/IconButton';
 import classes from './GameControls.css';
 

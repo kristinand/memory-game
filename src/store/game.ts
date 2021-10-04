@@ -1,11 +1,11 @@
 /* eslint-disable no-use-before-define */
 import * as actionTypes from './actionTypes';
-import { shuffleList, generateRandomColor, fillCards } from '../utils/functions';
+import { shuffleList, getRandomColor, fillCards } from '../utils/';
 
 const initState = {
   level: 1,
   cards: [],
-  coverColor: generateRandomColor(40, 40, 60, 60),
+  coverColor: getRandomColor(40, 40, 60, 60),
   cardsToWin: null,
   isGamePaused: true,
   isGameEnded: false,
@@ -104,7 +104,7 @@ const loadLocalSettingsData = (state, action) => ({
 
 const startGame = (state) => {
   localStorage.removeItem('gameData');
-  const coverColor = generateRandomColor(40, 40, 60, 60);
+  const coverColor = getRandomColor(40, 40, 60, 60);
   const cards = createCards(1, coverColor);
   return {
     ...state,
@@ -141,7 +141,7 @@ const loadLevel = (state, action) => {
   } else if (action.param === 'dec' && level > 1) {
     level -= 1;
   }
-  const coverColor = generateRandomColor(40, 40, 60, 60);
+  const coverColor = getRandomColor(40, 40, 60, 60);
   const cards = createCards(level, state.coverColor);
   return {
     ...state,

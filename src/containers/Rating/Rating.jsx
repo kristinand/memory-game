@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import classes from './Rating.css';
 import Header from '../../components/Header/Header';
-import { formatTime } from '../../utils/functions';
+import { formatTime } from '../../utils';
 import api from '../../api/api';
 
 const cx = classNames.bind(classes);
