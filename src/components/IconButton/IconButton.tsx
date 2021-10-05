@@ -1,11 +1,16 @@
 import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import classes from './IconButton.css';
 
-const IconButton = (props) => {
-  const { title, onClick, component, text, color } = props;
+interface IProps {
+  title?: string;
+  text?: string;
+  color?: string;
+  component: React.ElementType<any>;
+  onClick: () => void;
+}
 
+const IconButton: React.FC<IProps> = ({ title, onClick, component, text, color }) => {
   const buttonRef = useRef(null);
 
   return (
@@ -24,28 +29,10 @@ const IconButton = (props) => {
         buttonRef.current.style.backgroundColor = 'transparent';
       }}
     >
-      <SvgIcon
-        fontSize="large"
-        component={component}
-        viewBox="0 0 100 100"
-      />
+      <SvgIcon fontSize="large" component={component} viewBox="0 0 100 100" />
       {text && <span className={classes.btnText}>{text}</span>}
     </button>
   );
 };
 
 export default IconButton;
-
-IconButton.defaultProps = {
-  title: undefined,
-  color: undefined,
-  text: undefined,
-};
-
-IconButton.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  component: PropTypes.func.isRequired,
-  title: PropTypes.string,
-  color: PropTypes.string,
-  text: PropTypes.string,
-};

@@ -1,11 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import Back from '@assets/icons/left.svg';
-import classes from './Header.css';
+
 import IconButton from '../IconButton/IconButton';
 
-const Header = ({ title }) => {
+import Back from '@assets/icons/left.svg';
+import classes from './Header.css';
+
+interface IProps {
+  title: string;
+}
+
+const Header: React.FC<IProps> = ({ title }) => {
   const history = useHistory();
   return (
     <div className={classes.Header}>
@@ -18,7 +23,3 @@ const Header = ({ title }) => {
 };
 
 export default Header;
-
-Header.propTypes = {
-  title: PropTypes.string.isRequired,
-};

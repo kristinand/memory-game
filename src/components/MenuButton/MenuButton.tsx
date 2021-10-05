@@ -1,18 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+import { IState } from '../../store/interfaces';
 import sound from '@assets/menu-click.opus';
 import classes from './MenuButton.css';
 
-const MenuButton = (props) => {
-  const { path, title, onClick, disabled } = props;
+interface IProps {
+  path: string;
+  title: string;
+  disabled?: boolean;
+  onClick?: () => void;
+}
+
+const MenuButton: React.FC<IProps> = ({ path, title, onClick, disabled }) => {
   const clickSound = new Audio(sound);
-  const soundVolume = useSelector((state) => state.settings.soundVolume);
+  const soundVolume = useSelector((state: IState) => state.settings.soundVolume);
   clickSound.volume = soundVolume;
 
   const onClickButtonHandler = () => {
-    if (onClick) onClick();
+    onClick && onClick();
     clickSound.currentTime = 0;
     clickSound.play();
   };
@@ -27,15 +34,3 @@ const MenuButton = (props) => {
 };
 
 export default MenuButton;
-
-MenuButton.defaultProps = {
-  disabled: false,
-  onClick: undefined,
-};
-
-MenuButton.propTypes = {
-  title: PropTypes.string.isRequired,
-  path: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
-  disabled: PropTypes.bool,
-};

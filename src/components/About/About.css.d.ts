@@ -3,6 +3,7 @@
 interface CssExports {
   'About': string;
   'image': string;
+  'strike': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

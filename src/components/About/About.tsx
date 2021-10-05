@@ -1,7 +1,9 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
-import about from '@assets/about.gif';
+
 import Header from '../Header/Header';
+
+import about from '@assets/about.gif';
 import classes from './About.css';
 
 const About = () => (
@@ -20,7 +22,7 @@ const About = () => (
           When the game was finished, your time(score) will appear in the ratings and will store in the back-end.
           Therefore, firstly, you need to login before you can play the game.
           <br />
-          You <strike>or not you</strike> could also overwrite your scores.
+          You <span className={classes.strike}>or not you</span> could also overwrite your scores.
         </p>
       </section>
       <section>

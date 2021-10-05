@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
-import PropTypes from 'prop-types';
+
+import { ECardStatus } from '../../entities/enums';
+import { IState } from '../../store/interfaces';
 import audio from '@assets/card-click.opus';
 import classes from './Card.css';
 
 const cx = classNames.bind(classes);
 
-const Card = (props) => {
-  const { status, onCardClick, coverColor, color, pattern } = props;
+interface IProps {
+  status: ECardStatus;
+  coverColor: string;
+  color: string;
+  pattern: string;
+  onCardClick: () => void;
+}
 
+const Card: React.FC<IProps> = ({ status, onCardClick, coverColor, color, pattern }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { soundVolume, isPatternShown } = useSelector((state) => state.settings);
+  const { soundVolume, isPatternShown } = useSelector((state: IState) => state.settings);
   const clickAudio = new Audio(audio);
 
   useEffect(() => {
-    if (status === 'closed') {
+    if (status === ECardStatus.Closed) {
       setIsOpen(false);
     } else {
       clickAudio.volume = soundVolume;
@@ -45,11 +53,3 @@ const Card = (props) => {
 };
 
 export default Card;
-
-Card.propTypes = {
-  color: PropTypes.string.isRequired,
-  status: PropTypes.string.isRequired,
-  coverColor: PropTypes.string.isRequired,
-  pattern: PropTypes.string.isRequired,
-  onCardClick: PropTypes.func.isRequired,
-};
