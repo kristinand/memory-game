@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Switch from '@material-ui/core/Switch';
-import menuSound from '@assets/menu-click.opus';
-import Reset from '@assets/icons/reset.svg';
+
 import Header from '../../components/Header/Header';
 import IconButton from '../../components/IconButton/IconButton';
-import classes from './Settings.css';
+
+import { IState } from '../../store/interfaces';
 import * as actions from '../../store/actions';
+import Reset from '@assets/icons/reset.svg';
+import menuSound from '@assets/menu-click.opus';
+import classes from './Settings.css';
 
 const Settings = () => {
   const sound = new Audio(menuSound);
   const dispatch = useDispatch();
-  const state = useSelector((store) => store.settings);
+  const state = useSelector((store: IState) => store.settings);
   const [bgColor, setBgColor] = useState(state.bgColor);
 
   const setLocalStorageItem = (key, value) => {

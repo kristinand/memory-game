@@ -11,3 +11,7 @@
 section:not(:last-child) {
 	margin-bottom: 1rem;
 }
+
+.strike {
+    text-decoration: line-through;
+}

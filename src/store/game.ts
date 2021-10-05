@@ -1,11 +1,11 @@
 /* eslint-disable no-use-before-define */
 import * as actionTypes from './actionTypes';
-import { shuffleList, generateRandomColor, fillCards } from '../utils/functions';
+import { shuffleList, getRandomColor, fillCards } from '../utils/functions';
 
 const initState = {
   level: 1,
   cards: [],
-  coverColor: generateRandomColor(40, 40, 60, 60),
+  coverColor: getRandomColor(40, 40, 60, 60),
   cardsToWin: null,
   isGamePaused: true,
   isGameEnded: false,
@@ -40,9 +40,9 @@ const gameReducer = (state = initState, action) => {
     case actionTypes.LOAD_LOCAL_SETTINGS_DATA:
       return loadLocalSettingsData(state, action);
     case actionTypes.START_GAME:
-      return startGame(state, action);
+      return startGame(state);
     case actionTypes.END_GAME:
-      return endGame(state, action);
+      return endGame(state);
     case actionTypes.LOAD_LEVEL:
       return loadLevel(state, action);
     case actionTypes.SAVE_SCORE:
@@ -104,7 +104,7 @@ const loadLocalSettingsData = (state, action) => ({
 
 const startGame = (state) => {
   localStorage.removeItem('gameData');
-  const coverColor = generateRandomColor(40, 40, 60, 60);
+  const coverColor = getRandomColor(40, 40, 60, 60);
   const cards = createCards(1, coverColor);
   return {
     ...state,
@@ -141,7 +141,7 @@ const loadLevel = (state, action) => {
   } else if (action.param === 'dec' && level > 1) {
     level -= 1;
   }
-  const coverColor = generateRandomColor(40, 40, 60, 60);
+  const coverColor = getRandomColor(40, 40, 60, 60);
   const cards = createCards(level, state.coverColor);
   return {
     ...state,

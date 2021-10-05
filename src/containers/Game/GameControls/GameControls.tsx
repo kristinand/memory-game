@@ -15,16 +15,17 @@ import Music0 from '@assets/icons/music0.svg';
 import Music1 from '@assets/icons/music1.svg';
 import Music2 from '@assets/icons/music2.svg';
 
+import { IState } from '../../../store/interfaces';
 import * as actions from '../../../store/actions';
-import useTimer from '../../../hooks/useTimer';
+import { useTimer } from '../../../utils/hooks';
 import { formatTime } from '../../../utils/functions';
 import IconButton from '../../../components/IconButton/IconButton';
 import classes from './GameControls.css';
 
 const GameControls = (props) => {
   const history = useHistory();
-  const focusRef = useRef();
-  const state = useSelector((store) => store);
+  const focusRef = useRef<HTMLDivElement>();
+  const state = useSelector((store: IState) => store);
   const [menuClickSound] = useState(new Audio(menuSound));
   menuClickSound.volume = state.settings.soundVolume;
 
@@ -33,7 +34,7 @@ const GameControls = (props) => {
 
   useEffect(() => {
     props.getFocusRef(focusRef.current);
-    focusRef.current.focus();
+    focusRef && focusRef.current.focus();
     if (state.score) {
       handlePause();
     } else {

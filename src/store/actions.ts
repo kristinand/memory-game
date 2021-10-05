@@ -6,7 +6,7 @@ export const loadLevel = (param = '') => ({
   param,
 });
 
-export const changeCardStatus = (status, selectedCardIndex, oldCardIndex) => ({
+export const changeCardStatus = (status, selectedCardIndex, oldCardIndex?) => ({
   type: actionTypes.CHANGE_CARD_STATUS,
   status,
   selectedCardIndex,

@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 
-const useTimer = (initialState = 0) => {
+export const useTimer = (initialState = 0) => {
   const [timer, setTimer] = useState(initialState);
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -37,5 +37,3 @@ const useTimer = (initialState = 0) => {
 
   return { timer, isActive, isPaused, handleStart, handlePause, handleResume, handleReset };
 };
-
-export default useTimer;

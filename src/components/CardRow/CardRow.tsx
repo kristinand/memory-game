@@ -1,9 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import Card from '../Card/Card';
+
 import classes from './CardRow.css';
 
-const CardRow = ({ cards, onCardClick }) => (
+interface IProps {
+  cards: any[];
+  onCardClick: (key: string) => void;
+}
+
+const CardRow: React.FC<IProps> = ({ cards, onCardClick }) => (
   <div className={classes.CardRow}>
     {cards.map((card) => (
       <Card
@@ -19,8 +25,3 @@ const CardRow = ({ cards, onCardClick }) => (
 );
 
 export default CardRow;
-
-CardRow.propTypes = {
-  cards: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onCardClick: PropTypes.func.isRequired,
-};

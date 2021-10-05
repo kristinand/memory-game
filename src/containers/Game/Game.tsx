@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Autoplay from '@assets/icons/autoplay.svg';
-import classes from './Game.css';
-import * as actions from '../../store/actions';
-import { listToArray, getRandomNumber } from '../../utils/functions';
+
 import GameControls from './GameControls/GameControls';
 import CardRow from '../../components/CardRow/CardRow';
 import IconButton from '../../components/IconButton/IconButton';
 
+import { IState } from '../../store/interfaces';
+import { ECardStatus } from '../../entities/enums';
+import * as actions from '../../store/actions';
+import { listToArray, getRandomNumber } from '../../utils/functions';
+import { musicURL } from '../../constants';
+import Autoplay from '@assets/icons/autoplay.svg';
+import classes from './Game.css';
+
 const Game = () => {
-  const [musicSound] = useState(new Audio('https://soundimage.org/wp-content/uploads/2017/05/High-Altitude-Bliss.mp3'));
-  const state = useSelector((store) => store);
-  const [focusRef, setFocusRef] = useState();
+  const [musicSound] = useState(new Audio(musicURL));
+  const state = useSelector((store: IState) => store);
+  const [focusRef, setFocusRef] = useState<HTMLDivElement>();
   musicSound.volume = state.settings.musicVolume;
 
   const dispatch = useDispatch();
@@ -26,24 +31,24 @@ const Game = () => {
   const onCardSelectHandler = (key) => {
     focusRef.focus();
     const selectedCardIndex = state.cards.findIndex((card) => card.key === key);
-    const openedCardIndex = state.cards.findIndex((card) => card.status === 'opened');
+    const openedCardIndex = state.cards.findIndex((card) => card.status === ECardStatus.Opened);
     const selectedCard = state.cards[selectedCardIndex];
     const openedCard = state.cards[openedCardIndex];
 
-    if (selectedCard.status !== 'closed') return;
+    if (selectedCard.status !== ECardStatus.Closed) return;
 
     // открытие первой карты
-    if (openedCard === undefined && selectedCard.status !== 'guessed') {
-      dispatch(actions.changeCardStatus('opened', selectedCardIndex));
+    if (openedCard === undefined && selectedCard.status !== ECardStatus.Guessed) {
+      dispatch(actions.changeCardStatus(ECardStatus.Opened, selectedCardIndex));
       return;
     }
 
     if (openedCard.key.slice(1) === key.slice(1)) {
-      dispatch(actions.changeCardStatus('guessed', selectedCardIndex, openedCardIndex));
+      dispatch(actions.changeCardStatus(ECardStatus.Guessed, selectedCardIndex, openedCardIndex));
     } else {
-      dispatch(actions.changeCardStatus('not-guessed', selectedCardIndex, openedCardIndex));
+      dispatch(actions.changeCardStatus(ECardStatus.NotGuessed, selectedCardIndex, openedCardIndex));
       setTimeout(() => {
-        dispatch(actions.changeCardStatus('closed', selectedCardIndex, openedCardIndex));
+        dispatch(actions.changeCardStatus(ECardStatus.Closed, selectedCardIndex, openedCardIndex));
       }, 500);
     }
   };
@@ -55,14 +60,14 @@ const Game = () => {
     }
     const chosenCardIndex = getRandomNumber(0, cards.length);
     let chosenCard = cards[chosenCardIndex];
-    if (chosenCard && chosenCard.status !== 'closed') {
-      chosenCard = cards.find((card) => card.status === 'closed');
+    if (chosenCard && chosenCard.status !== ECardStatus.Closed) {
+      chosenCard = cards.find((card) => card.status === ECardStatus.Closed);
     }
     const cardsStatus = cards.map((card) => card.status);
-    if (chosenCard && (cardsStatus.includes('closed') || cardsStatus.includes('not-guessed'))) {
+    if (chosenCard && (cardsStatus.includes(ECardStatus.Closed) || cardsStatus.includes(ECardStatus.NotGuessed))) {
       setTimeout(() => {
         onCardSelectHandler(chosenCard.key);
-        autoplay(cards.filter((card) => card.status !== 'guessed'));
+        autoplay(cards.filter((card) => card.status !== ECardStatus.Guessed));
       }, 800);
     } else {
       setTimeout(() => {
@@ -85,7 +90,7 @@ const Game = () => {
         ))}
       </div>
       <div className={classes.autoplay}>
-        {(!state.score && !state.isAutoplay) && (
+        {!state.score && !state.isAutoplay && (
           <IconButton onClick={onAutoplayHandler} text="Autoplay" component={Autoplay} />
         )}
         {state.isAutoplay && <p>ai guesses the cards...</p>}
