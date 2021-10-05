@@ -2,19 +2,22 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames/bind';
 import SvgIcon from '@material-ui/core/SvgIcon';
+
+import MenuButton from '../../components/MenuButton/MenuButton';
+import IconButton from '../../components/IconButton/IconButton';
+
+import { IState } from '../../store/interfaces';
+import * as actions from '../../store/actions';
 import Logo from '@assets/icons/rss_logo.svg';
 import Login from '@assets/icons/right.svg';
 import Logout from '@assets/icons/left.svg';
-import * as actions from '../../store/actions';
-import MenuButton from '../../components/MenuButton/MenuButton';
-import IconButton from '../../components/IconButton/IconButton';
 import classes from './Menu.css';
 
 const cx = classNames.bind(classes);
 
 const Menu = () => {
   const dispatch = useDispatch();
-  const state = useSelector((store) => store);
+  const state = useSelector((store: IState) => store);
   const [helperText, setHelperText] = useState('');
   const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
 

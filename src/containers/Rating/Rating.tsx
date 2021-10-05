@@ -1,25 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
-import classes from './Rating.css';
+
 import Header from '../../components/Header/Header';
-import { formatTime } from '../../utils/functions';
+
+import { IState } from '../../store/interfaces';
 import api from '../../api/api';
+import { formatTime } from '../../utils/functions';
+
+import classes from './Rating.css';
 
 const cx = classNames.bind(classes);
 
 const Rating = () => {
-  const { player: playerName } = useSelector((state) => state);
+  const { player: playerName } = useSelector((state: IState) => state);
   const [ratingData, setRatingData] = useState([]);
-  let playersData = 'Loading...';
+  let playersData: string | any[] = 'Loading...';
 
-  useEffect(async () => {
-    let ratings = await api.loadRatings();
-    ratings = ratings.sort((prev, cur) => prev.score - cur.score);
-    setRatingData(ratings);
+  useEffect(() => {
+    const loadRatings = async () => {
+      let ratings = await api.loadRatings();
+      ratings = ratings.sort((prev, cur) => prev.score - cur.score);
+      setRatingData(ratings);
+    };
+
+    loadRatings();
   }, []);
 
-  if (ratingData.length > 0) {
+  if (ratingData.length) {
     playersData = ratingData.map((player, i) => {
       const playerClasses = cx({
         player: true,
