@@ -1,9 +1,9 @@
+import { cardPatterns } from 'constants/';
 import { getRandomColor } from './getRandomColor';
 import { getRandomNumber } from './getRandomNumber';
 
 export function fillCards(cards: any[], level: number, coverColor: string): any[] {
-  let patterns = ['☯', '◑', '◐', '◒', '◓', '♡', '♥', '☁', '☀', '♨', '♦', '❀'];
-
+  let patterns = cardPatterns;
   for (let i = 0; i < level * 2 + 2; i++) {
     const keyPart = `${level}${i}${Math.ceil(Math.random() * 100000)}`;
     const color = getRandomColor();

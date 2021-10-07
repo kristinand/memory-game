@@ -8,9 +8,9 @@ import IconButton from '../../components/IconButton/IconButton';
 
 import { IState } from '../../entities/interfaces';
 import * as actions from '../../store/actions';
-import Logo from '@assets/icons/rss_logo.svg';
-import Login from '@assets/icons/right.svg';
-import Logout from '@assets/icons/left.svg';
+import Logo from 'assets/icons/rss_logo.svg';
+import Login from 'assets/icons/right.svg';
+import Logout from 'assets/icons/left.svg';
 import classes from './Menu.css';
 
 const cx = classNames.bind(classes);

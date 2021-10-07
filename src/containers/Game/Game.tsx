@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Autoplay from '@assets/icons/autoplay.svg';
+import Autoplay from 'assets/icons/autoplay.svg';
+import { musicURL } from 'constants/';
 import GameControls from './GameControls/GameControls';
 import CardRow from '../../components/CardRow/CardRow';
 import IconButton from '../../components/IconButton/IconButton';
@@ -10,10 +11,9 @@ import { IState } from '../../entities/interfaces';
 import { ECardStatus } from '../../entities/enums';
 import * as actions from '../../store/actions';
 import { listToArray, getRandomNumber } from '../../utils/functions';
-import { musicURL } from '../../constants';
 import classes from './Game.css';
 
-const Game = () => {
+const Game: React.FC = () => {
   const state = useSelector((store: IState) => store);
   const [musicSound] = useState(new Audio(musicURL));
   const [focusRef, setFocusRef] = useState<HTMLDivElement>();

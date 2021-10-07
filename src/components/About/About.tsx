@@ -3,7 +3,7 @@ import React from 'react';
 
 import Header from '../Header/Header';
 
-import about from '@assets/about.gif';
+import about from 'assets/about.gif';
 import classes from './About.css';
 
 const About = () => (
