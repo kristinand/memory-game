@@ -9,12 +9,12 @@ import Settings from './containers/Settings/Settings';
 import About from './components/About/About';
 
 import * as actions from './store/actions';
-import { IState } from './store/interfaces';
+import { IState, ISettings, IGameData } from './entities/interfaces';
 import { getLocalStorageValue } from './utils/functions';
 
 import classes from './App.css';
 
-const App = () => {
+const App: React.FC = () => {
   const isLoggedIn = useSelector((state: IState) => state.isLoggedIn);
   const bgColor = useSelector((state: IState) => state.settings.bgColor);
   const dispatch = useDispatch();
@@ -22,10 +22,10 @@ const App = () => {
   useEffect(() => {
     const player = localStorage.getItem('player');
     if (player) {
-      const gameData = getLocalStorageValue('gameData');
+      const gameData = getLocalStorageValue('gameData') as IGameData;
       dispatch(actions.loadLocalGameData(player, gameData));
     }
-    const settingsData = getLocalStorageValue('settingsData');
+    const settingsData = getLocalStorageValue('settingsData') as Partial<ISettings>;
     if (settingsData) {
       dispatch(actions.loadLocalSettingsData(settingsData));
     }

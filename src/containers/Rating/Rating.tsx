@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 
 import Header from '../../components/Header/Header';
 
-import { IState } from '../../store/interfaces';
+import { IState } from '../../entities/interfaces';
 import api from '../../api/api';
 import { formatTime } from '../../utils/functions';
 

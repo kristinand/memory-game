@@ -6,7 +6,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import IconButton from '../../components/IconButton/IconButton';
 
-import { IState } from '../../store/interfaces';
+import { IState } from '../../entities/interfaces';
 import * as actions from '../../store/actions';
 import Logo from '@assets/icons/rss_logo.svg';
 import Login from '@assets/icons/right.svg';

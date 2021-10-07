@@ -6,7 +6,7 @@ import GameControls from './GameControls/GameControls';
 import CardRow from '../../components/CardRow/CardRow';
 import IconButton from '../../components/IconButton/IconButton';
 
-import { IState } from '../../store/interfaces';
+import { IState } from '../../entities/interfaces';
 import { ECardStatus } from '../../entities/enums';
 import * as actions from '../../store/actions';
 import { listToArray, getRandomNumber } from '../../utils/functions';
