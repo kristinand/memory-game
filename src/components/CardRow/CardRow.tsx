@@ -1,11 +1,11 @@
 import React from 'react';
 
+import { ICard } from 'entities/interfaces';
 import Card from '../Card/Card';
-
 import classes from './CardRow.css';
 
 interface IProps {
-  cards: any[];
+  cards: ICard[];
   onCardClick: (key: string) => void;
 }
 

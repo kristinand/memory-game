@@ -13,6 +13,12 @@ interface IProps {
 const IconButton: React.FC<IProps> = ({ title, onClick, component, text, color }) => {
   const buttonRef = useRef(null);
 
+  const setButtonColors = (textColor = 'black', bgColor = 'transparent') => {
+    const button = buttonRef.current as HTMLButtonElement;
+    button.style.color = textColor;
+    button.style.backgroundColor = bgColor;
+  };
+
   return (
     <button
       type="button"
@@ -20,14 +26,8 @@ const IconButton: React.FC<IProps> = ({ title, onClick, component, text, color }
       className={classes.button}
       onClick={onClick}
       ref={buttonRef}
-      onMouseEnter={() => {
-        buttonRef.current.style.color = color;
-        buttonRef.current.style.backgroundColor = 'white';
-      }}
-      onMouseLeave={() => {
-        buttonRef.current.style.color = 'black';
-        buttonRef.current.style.backgroundColor = 'transparent';
-      }}
+      onMouseEnter={() => setButtonColors(color, 'white')}
+      onMouseLeave={() => setButtonColors()}
     >
       <SvgIcon fontSize="large" component={component} viewBox="0 0 100 100" />
       {text && <span className={classes.btnText}>{text}</span>}

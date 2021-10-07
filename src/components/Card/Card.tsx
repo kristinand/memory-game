@@ -7,8 +7,6 @@ import { ECardStatus } from '../../entities/enums';
 import { IState } from '../../entities/interfaces';
 import classes from './Card.css';
 
-const cx = classNames.bind(classes);
-
 interface IProps {
   status: ECardStatus;
   coverColor: string;
@@ -22,32 +20,33 @@ const Card: React.FC<IProps> = ({ status, onCardClick, coverColor, color, patter
   const { soundVolume, isPatternShown } = useSelector((state: IState) => state.settings);
   const clickAudio = new Audio(audio);
 
-  useEffect(() => {
+  const toggleCardOpen = async () => {
     if (status === ECardStatus.Closed) {
       setIsOpen(false);
     } else {
       clickAudio.volume = soundVolume;
-      clickAudio.play();
+      await clickAudio.play();
       setIsOpen(true);
     }
+  };
+  useEffect(() => {
+    void toggleCardOpen();
   }, [status]);
-
-  const cardClass = cx({
-    Card: true,
-    opened: isOpen,
-    closed: !isOpen,
-  });
 
   return (
     <div className={classes.wrapper}>
-      <div onClick={onCardClick} className={cardClass}>
+      <button
+        type="button"
+        onClick={onCardClick}
+        className={classNames(classes.Card, { [classes.cardOpened]: isOpen })}
+      >
         <div className={classes.CardCover} style={{ backgroundColor: coverColor }}>
           <span>?</span>
         </div>
         <div className={classes.CardColor} style={{ backgroundColor: color }}>
           {isPatternShown && <span className="pattern">{pattern}</span>}
         </div>
-      </div>
+      </button>
     </div>
   );
 };

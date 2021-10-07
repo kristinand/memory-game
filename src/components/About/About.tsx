@@ -1,18 +1,17 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 
+import AboutGif from 'assets/about.gif';
 import Header from '../Header/Header';
-
-import about from 'assets/about.gif';
 import classes from './About.css';
 
-const About = () => (
+const About: React.FC = () => (
   <>
     <Header title="About Game" />
     <article className={classes.About}>
       <h1>Welcome to Memo — memory card game!</h1>
       <section>
-        <img className={classes.image} src={about} alt="how-to-play" width="250" />
+        <img className={classes.image} src={AboutGif} alt="how-to-play" width="250" />
         <h3>How to play</h3>
         <p>
           To complete level you should guess all cards.

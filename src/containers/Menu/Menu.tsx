@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames/bind';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
+import Logo from 'assets/icons/rss_logo.svg';
+import Login from 'assets/icons/right.svg';
+import Logout from 'assets/icons/left.svg';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import IconButton from '../../components/IconButton/IconButton';
 
 import { IState } from '../../entities/interfaces';
 import * as actions from '../../store/actions';
-import Logo from 'assets/icons/rss_logo.svg';
-import Login from 'assets/icons/right.svg';
-import Logout from 'assets/icons/left.svg';
 import classes from './Menu.css';
 
 const cx = classNames.bind(classes);
@@ -32,7 +32,7 @@ const Menu = () => {
       setHelperText('Please, enter your name');
     } else if (player.length < 3) {
       setHelperText('Your name should contain at least 3 characters');
-    } else if (player.match(playerRegEx) === null) {
+    } else if ((playerRegEx.exec(player)) === null) {
       setHelperText('Only latin characters allowed');
     } else {
       localStorage.setItem('player', player);

@@ -18,10 +18,10 @@ const MenuButton: React.FC<IProps> = ({ path, title, onClick, disabled }) => {
   const soundVolume = useSelector((state: IState) => state.settings.soundVolume);
   clickSound.volume = soundVolume;
 
-  const onClickButtonHandler = () => {
-    onClick && onClick();
+  const onClickButtonHandler = async () => {
+    if (onClick) onClick();
     clickSound.currentTime = 0;
-    clickSound.play();
+    await clickSound.play();
   };
 
   return (
