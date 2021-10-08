@@ -6,7 +6,7 @@ interface IProps {
   title?: string;
   text?: string;
   color?: string;
-  component: React.ElementType<any>;
+  component: React.ElementType;
   onClick: () => void;
 }
 

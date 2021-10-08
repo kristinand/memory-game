@@ -1,13 +1,16 @@
-export function listToArray(list: any[], m: number): any[] {
+// [] 1xK -> [[],[],[]] PxM
+export function listToArray(list: unknown[], m: number): unknown[] {
   let k = list.length / m;
+  let p = m;
+
   if (k < m) {
     k = m;
-    m = list.length / m;
+    p = list.length / m;
+  } 
+
+  if (Number.isInteger(k)) {
+    const array = new Array(p).fill([]);
+    return array.map((_, i) => list.slice(Number(i) * k, Number(i) * k + k));
   }
-  if (!Number.isInteger(k)) return list;
-  const array = new Array(m).fill([]);
-  for (const i in array) {
-    array[i] = list.slice(Number(i) * k, Number(i) * k + k);
-  }
-  return array;
+  return list;
 }
