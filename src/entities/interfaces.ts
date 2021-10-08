@@ -26,7 +26,7 @@ export interface ISettings {
   keys: IKeys;
 }
 
-interface IKeys {
+export interface IKeys {
   music: string;
   sounds: string;
   reload: string;
@@ -40,4 +40,11 @@ export interface ICard {
   pattern: string;
   coverColor: string;
   status: ECardStatus;
+}
+
+export interface IRating {
+  _id: string;
+  player: string;
+  date: string;
+  score: number;
 }

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { ElementType, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames/bind';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
+import { myGitHubLink, myGitHubName, RSSchoolLink } from 'constants/index';
 import Logo from 'assets/icons/rss_logo.svg';
 import Login from 'assets/icons/right.svg';
 import Logout from 'assets/icons/left.svg';
@@ -13,17 +14,16 @@ import { IState } from '../../entities/interfaces';
 import * as actions from '../../store/actions';
 import classes from './Menu.css';
 
-const cx = classNames.bind(classes);
-
-const Menu = () => {
+const Menu: React.FC = () => {
   const dispatch = useDispatch();
   const state = useSelector((store: IState) => store);
   const [helperText, setHelperText] = useState('');
   const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
 
-  const onInputValueChangeHandler = (value) => {
-    if (state.isLoggedIn) return;
-    setPlayer(value.trim());
+  const onInputValueChangeHandler = (value: string) => {
+    if (!state.isLoggedIn) {
+      setPlayer(value.trim());
+    }
   };
 
   const login = () => {
@@ -32,7 +32,7 @@ const Menu = () => {
       setHelperText('Please, enter your name');
     } else if (player.length < 3) {
       setHelperText('Your name should contain at least 3 characters');
-    } else if ((playerRegEx.exec(player)) === null) {
+    } else if (playerRegEx.exec(player) === null) {
       setHelperText('Only latin characters allowed');
     } else {
       localStorage.setItem('player', player);
@@ -48,18 +48,13 @@ const Menu = () => {
     dispatch(actions.logout());
   };
 
-  const helperTextClasses = cx({
-    input: true,
-    inputDanger: helperText.length > 0,
-  });
-
   return (
     <>
       <div className={classes.menu}>
         <div className={classes.NameInput}>
           <div className={classes.inputContainer}>
             <input
-              className={helperTextClasses}
+              className={classNames({ [classes.input]: true, [classes.inputDanger]: helperText.length })}
               type="text"
               id="name"
               value={player}
@@ -68,7 +63,7 @@ const Menu = () => {
               autoComplete="off"
             />
             <IconButton
-              component={state.isLoggedIn ? Logout : Login}
+              component={(state.isLoggedIn ? Logout : Login) as ElementType}
               onClick={state.isLoggedIn ? logout : login}
               title={state.isLoggedIn ? 'Logout' : 'Login'}
             />
@@ -81,19 +76,16 @@ const Menu = () => {
         <MenuButton
           onClick={() => dispatch(actions.startGame())}
           disabled={!state.isLoggedIn}
-          path={player.length === 0 ? '/' : '/game'}
+          path="/game"
           title="New Game"
         />
         <MenuButton
-          path={
-            localStorage.getItem('gameData') !== null
-            && localStorage.getItem('player') === JSON.parse(localStorage.getItem('gameData')).player
-              ? '/game'
-              : '/'
-          }
+          path="/game"
           disabled={
-            !state.isLoggedIn || state.isGameEnded || localStorage.getItem('gameData') === null
-            || localStorage.getItem('player') !== JSON.parse(localStorage.getItem('gameData')).player
+            !state.isLoggedIn ||
+            state.isGameEnded ||
+            localStorage.getItem('gameData') === null ||
+            localStorage.getItem('player') !== player
           }
           title="Continue"
         />
@@ -102,15 +94,13 @@ const Menu = () => {
         <MenuButton path="/about" title="About" />
       </div>
       <p className={classes.footer}>
-        Created by
-        {' '}
-        <a rel="noopener noreferrer nofollow" target="_blank" href="https://github.com/kristinand">
-          @kristinand
+        Created by{' '}
+        <a rel="noopener noreferrer nofollow" target="_blank" href={myGitHubLink}>
+          @{myGitHubName}
         </a>
-        , 2021 /
-        {' '}
-        <a rel="noopener noreferrer nofollow" target="_blank" href="https://rs.school/js/">
-          <SvgIcon component={Logo} style={{ width: '1.7em', height: 'auto' }} viewBox="0 0 552.8 205.3" />
+        , 2021 /{' '}
+        <a rel="noopener noreferrer nofollow" target="_blank" href={RSSchoolLink}>
+          <SvgIcon component={Logo as ElementType} className={classes.logoSvg} viewBox="0 0 552.8 205.3" />
         </a>
       </p>
     </>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, ElementType } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -22,7 +22,11 @@ import { formatTime } from '../../../utils/functions';
 import IconButton from '../../../components/IconButton/IconButton';
 import classes from './GameControls.css';
 
-const GameControls = (props) => {
+interface IProps {
+  getFocusRef: (ref: HTMLDivElement) => void;
+}
+
+const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   const history = useHistory();
   const focusRef = useRef<HTMLDivElement>();
   const state = useSelector((store: IState) => store);
@@ -33,8 +37,9 @@ const GameControls = (props) => {
   const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer(state.score);
 
   useEffect(() => {
-    props.getFocusRef(focusRef.current);
-    focusRef && focusRef.current.focus();
+    const screen = focusRef.current;
+    getFocusRef(screen);
+    screen.focus();
     if (state.score) {
       handlePause();
     } else {
@@ -45,22 +50,25 @@ const GameControls = (props) => {
 
   useEffect(() => {
     let timeoutTimer;
-    if (state.cardsToWin !== 0) return;
-    if (state.level < state.levels) {
-      timeoutTimer = setTimeout(() => {
-        dispatch(actions.loadLevel('inc'));
-      }, 1000);
-    } else {
-      dispatch(actions.endGame(state.player, state.score));
-      history.push('/rating');
+    if (!state.cardsToWin) {
+      if (state.level < state.levels) {
+        timeoutTimer = setTimeout(() => {
+          dispatch(actions.loadLevel('inc'));
+        }, 1000);
+      } else {
+        dispatch(actions.endGame(state.player, state.score));
+        history.push('/rating');
+      }
     }
-    return () => {
-      clearTimeout(timeoutTimer);
-    };
+    return () => clearTimeout(timeoutTimer);
   }, [state.cardsToWin]);
 
   useEffect(() => {
-    state.isGamePaused ? handlePause() : handleResume();
+    if (state.isGamePaused) {
+      handlePause();
+    } else {
+      handleResume();
+    }
     return () => handlePause();
   }, [state.isGamePaused]);
 
@@ -98,16 +106,16 @@ const GameControls = (props) => {
 
     if (type === 'sound') {
       menuClickSound.currentTime = 0;
-      menuClickSound.play();
+      void menuClickSound.play();
     }
     dispatch(actions.changeVolume(type, volume));
   };
 
   const toggleFullscreenHandler = () => {
     if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
+      void document.documentElement.requestFullscreen();
     } else if (document.exitFullscreen) {
-      document.exitFullscreen();
+      void document.exitFullscreen();
     }
   };
 
@@ -119,8 +127,7 @@ const GameControls = (props) => {
     }
   };
 
-  const handleKeyPress = (event) => {
-    const { key } = event;
+  const handleKeyPress = ({ key }) => {
     const { fullscreen, reload, sounds, music, pause } = state.settings.keys;
     if (key === fullscreen) toggleFullscreenHandler();
     else if (key === reload) onGameReloadHandler();
@@ -131,7 +138,7 @@ const GameControls = (props) => {
 
   return (
     <div className={classes.GameControls}>
-      <div ref={focusRef} className={classes.screen} tabIndex={0} onKeyPress={handleKeyPress} />
+      <div role="menu" ref={focusRef} className={classes.screen} tabIndex={0} onKeyPress={handleKeyPress} />
       <span className={classes.level}>level: {state.level}</span>
 
       <span className={classes.right}>
@@ -140,28 +147,52 @@ const GameControls = (props) => {
           onClick={onGamePauseHandler}
           color={state.coverColor}
           title={isPaused ? 'Play' : 'Pause'}
-          component={isPaused ? Play : Pause}
+          component={(isPaused ? Play : Pause) as ElementType}
         />
-        <IconButton onClick={onGameReloadHandler} color={state.coverColor} component={Refresh} title="Reload Game" />
+        <IconButton
+          onClick={onGameReloadHandler}
+          color={state.coverColor}
+          component={Refresh as ElementType}
+          title="Reload Game"
+        />
         <IconButton
           onClick={toggleFullscreenHandler}
           color={state.coverColor}
-          component={Screen}
+          component={Screen as ElementType}
           title="Toggle Fullscreen"
         />
         <IconButton
           onClick={() => onChangeAudioVolumeHandler('sound')}
           color={state.coverColor}
           title="Sound Volume"
-          component={state.settings.soundVolume === 0 ? Sound0 : state.settings.soundVolume <= 0.5 ? Sound1 : Sound2}
+          component={
+            // eslint-disable-next-line no-nested-ternary
+            (state.settings.soundVolume === 0
+              ? Sound0
+              : state.settings.soundVolume <= 0.5
+              ? Sound1
+              : Sound2) as ElementType
+          }
         />
         <IconButton
           onClick={() => onChangeAudioVolumeHandler('music')}
           color={state.coverColor}
           title="Music Volume"
-          component={state.settings.musicVolume === 0 ? Music0 : state.settings.musicVolume <= 0.5 ? Music1 : Music2}
+          component={
+            // eslint-disable-next-line no-nested-ternary
+            (state.settings.musicVolume === 0
+              ? Music0
+              : state.settings.musicVolume <= 0.5
+              ? Music1
+              : Music2) as ElementType
+          }
         />
-        <IconButton onClick={() => history.push('/')} color={state.coverColor} component={Back} title="Back to Menu" />
+        <IconButton
+          onClick={() => history.push('/')}
+          color={state.coverColor}
+          component={Back as ElementType}
+          title="Back to Menu"
+        />
       </span>
     </div>
   );
