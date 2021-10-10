@@ -1,21 +1,14 @@
-import axios from 'axios';
-
-const instance = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:5000/',
-});
+import { IRating } from 'entities/interfaces';
+import axiosBaseQuery from './axiosBaseQuery';
 
 const api = {
-  async loadRatings() {
-    const res = await instance.get('/rating');
-    return res.data;
+  async loadRatings(): Promise<IRating[]> {
+    const result = await axiosBaseQuery({ url: '/rating' });
+    return result.data as IRating[];
   },
 
-  async saveScore(body) {
-    const config = {
-      headers: { 'Content-Type': 'application/json' },
-    };
-    const res = await instance.put('/game', body, config);
-    return res.data;
+  async saveScore(data: { player: string; score: number }): Promise<void> {
+    await axiosBaseQuery({ url: '/game', data });
   },
 };
 

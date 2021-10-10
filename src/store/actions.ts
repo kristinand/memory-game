@@ -17,12 +17,11 @@ export const startGame = () => ({
   type: actionTypes.START_GAME,
 });
 
-export const endGame = (player, score) => async (dispatch) => {
+export const endGame = (player: string, score: number) => async (dispatch) => {
   try {
-    const payload = await api.saveScore({ player, score });
+    await api.saveScore({ player, score });
     dispatch({
       type: actionTypes.END_GAME,
-      payload,
     });
   } catch (err) {
     console.error(err);
