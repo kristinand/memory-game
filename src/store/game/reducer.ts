@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-use-before-define */
 import { Reducer } from 'redux';
-import { ICard, IState } from 'entities/interfaces';
+import { shuffleList, getRandomColor, fillCards } from 'utils/functions';
+import { ICard, IGame } from 'entities/interfaces';
 import { ECardStatus } from 'entities/enums';
-import { TActionTypes, EActionTypes } from './entities';
-import { shuffleList, getRandomColor, fillCards } from '../utils/functions';
+import { TActionTypes, EActionTypes } from '../entities';
 
-const initState: IState = {
+const initState: IGame = {
   level: 1,
   cards: [],
   coverColor: getRandomColor(40, 40, 60, 60),
@@ -18,27 +18,12 @@ const initState: IState = {
   player: '',
   score: 0,
   levels: 5,
-  settings: {
-    bgColor: '#f8ebc6',
-    isPatternShown: true,
-    musicVolume: 0.5,
-    soundVolume: 0.5,
-    keys: {
-      music: 'm',
-      sounds: 's',
-      reload: 'r',
-      fullscreen: 'f',
-      pause: 'p',
-    },
-  },
 };
 
-const gameReducer: Reducer<IState, TActionTypes> = (state = initState, action) => {
+const gameReducer: Reducer<IGame, TActionTypes> = (state = initState, action) => {
   switch (action.type) {
     case EActionTypes.LOAD_LOCAL_GAME_DATA:
       return loadLocalGameData(state, action);
-    case EActionTypes.LOAD_LOCAL_SETTINGS_DATA:
-      return loadLocalSettingsData(state, action);
 
     case EActionTypes.LOGIN:
       return login(state, action);
@@ -58,26 +43,15 @@ const gameReducer: Reducer<IState, TActionTypes> = (state = initState, action) =
       return { ...state, isAutoplay: action.value };
     case EActionTypes.CHANGE_PAUSE_STATUS:
       return { ...state, isGamePaused: action.isPaused };
-      case EActionTypes.CHANGE_CARD_STATUS:
-        return updateGameStatus(state, action);
-
-    case EActionTypes.CHANGE_VOLUME:
-      return changeVolume(state, action);
-    case EActionTypes.CHANGE_HOTKEY:
-      return changeHotkey(state, action);
-    case EActionTypes.CHANGE_BG_COLOR:
-      return { ...state, settings: { ...state.settings, bgColor: action.bgColor } };
-    case EActionTypes.TOGGLE_PATTERN:
-      return { ...state, settings: { ...state.settings, isPatternShown: !state.settings.isPatternShown } };
-    case EActionTypes.SET_DEFAULT_SETTINGS:
-      return { ...state, settings: initState.settings };
+    case EActionTypes.CHANGE_CARD_STATUS:
+      return updateGameStatus(state, action);
 
     default:
       return state;
   }
 };
 
-const loadLocalGameData = (state, action): IState => {
+const loadLocalGameData = (state, action): IGame => {
   const { data, player } = action;
   let newState;
   if (data === null) {
@@ -101,15 +75,7 @@ const loadLocalGameData = (state, action): IState => {
   return newState;
 };
 
-const loadLocalSettingsData = (state, action): IState => ({
-  ...state,
-  settings: {
-    ...state.settings,
-    ...action.data,
-  },
-});
-
-const startGame = (state): IState => {
+const startGame = (state): IGame => {
   localStorage.removeItem('gameData');
   const coverColor = getRandomColor(40, 40, 60, 60);
   const cards = createCards(1, coverColor);
@@ -126,14 +92,14 @@ const startGame = (state): IState => {
   };
 };
 
-const endGame = (state): IState => {
+const endGame = (state): IGame => {
   localStorage.removeItem('gameData');
   return { ...state, isGameEnded: true };
 };
 
-const login = (state: IState, action): IState => ({ ...state, isLoggedIn: true, player: action.player });
+const login = (state: IGame, action): IGame => ({ ...state, isLoggedIn: true, player: action.player });
 
-const loadLevel = (state, action): IState => {
+const loadLevel = (state, action): IGame => {
   let { level } = state;
   if (action.param === 'inc' && level < state.levels) {
     level += 1;
@@ -152,7 +118,7 @@ const loadLevel = (state, action): IState => {
   };
 };
 
-const updateGameStatus = (state, action): IState => {
+const updateGameStatus = (state, action): IGame => {
   const { selectedCardIndex, oldCardIndex, status } = action;
   let { cards, cardsToWin } = state;
   const selectedCard = cards[selectedCardIndex];
@@ -186,21 +152,6 @@ const createCards = (level, coverColor): ICard[] => {
   cards = fillCards(cards, level, coverColor);
   cards = shuffleList(cards);
   return cards;
-};
-
-const changeVolume = (state, action): IState => {
-  let newState;
-  if (action.audio === 'music') {
-    newState = { ...state, settings: { ...state.settings, musicVolume: action.volume } };
-  } else {
-    newState = { ...state, settings: { ...state.settings, soundVolume: action.volume } };
-  }
-  return newState;
-};
-
-const changeHotkey = (state, action): IState => {
-  const { keyType, value: keyValue } = action;
-  return { ...state, settings: { ...state.settings, keys: { ...state.settings.keys, [keyType]: keyValue } } };
 };
 
 export default gameReducer;

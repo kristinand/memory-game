@@ -23,7 +23,7 @@
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
     "linebreak-style": ["error", "windows"],
-    "object-curly-newline": ["error", { "ImportDeclaration": "never" }],
+    "object-curly-newline": ["error", { "ImportDeclaration": { "multiline": true } }],
     "max-len": ["error", { "code": 120, "tabWidth": 2 }],
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "import/prefer-default-export": "off",

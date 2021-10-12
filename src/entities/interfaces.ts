@@ -1,13 +1,12 @@
 import { ECardStatus } from './enums';
 
-export interface IState extends IGameData {
+export interface IGame extends IGameData {
   isGamePaused: boolean;
   isGameEnded: boolean;
   isLoggedIn: boolean;
   isAutoplay: boolean;
   player: string;
   levels: number;
-  settings: ISettings;
 }
 
 export interface IGameData {
@@ -47,4 +46,9 @@ export interface IRating {
   player: string;
   date: string;
   score: number;
+}
+
+export interface IState {
+  game: IGame;
+  settings: ISettings;
 }

@@ -9,31 +9,32 @@ import IconButton from '../../components/IconButton/IconButton';
 
 import { ICard, IState } from '../../entities/interfaces';
 import { ECardStatus } from '../../entities/enums';
-import * as actions from '../../store/actions';
+import * as actions from '../../store/game/actions';
 import { listToArray, getRandomNumber } from '../../utils/functions';
 import classes from './Game.css';
 
 const Game: React.FC = () => {
-  const state = useSelector((store: IState) => store);
+  const gameState = useSelector((state: IState) => state.game);
+  const musicVolume = useSelector((state: IState) => state.settings.musicVolume);
   const [musicSound] = useState(new Audio(musicURL));
   const [focusRef, setFocusRef] = useState<HTMLDivElement>();
-  musicSound.volume = state.settings.musicVolume;
+  musicSound.volume = musicVolume;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     void musicSound.play();
     musicSound.loop = true;
-    if (!state.cards.length) dispatch(actions.startGame());
+    if (!gameState.cards.length) dispatch(actions.startGame());
     return () => musicSound.pause();
   }, []);
 
   const onCardSelectHandler = (key: string) => {
     focusRef.focus();
-    const selectedCardIndex = state.cards.findIndex((card) => card.key === key);
-    const openedCardIndex = state.cards.findIndex((card) => card.status === ECardStatus.Opened);
-    const selectedCard = state.cards[selectedCardIndex];
-    const openedCard = state.cards[openedCardIndex];
+    const selectedCardIndex = gameState.cards.findIndex((card) => card.key === key);
+    const openedCardIndex = gameState.cards.findIndex((card) => card.status === ECardStatus.Opened);
+    const selectedCard = gameState.cards[selectedCardIndex];
+    const openedCard = gameState.cards[openedCardIndex];
 
     if (selectedCard.status !== ECardStatus.Closed) return;
 
@@ -78,22 +79,22 @@ const Game: React.FC = () => {
 
   const onAutoplayHandler = () => {
     dispatch(actions.setAutoplay(true));
-    autoplay(state.cards);
+    autoplay(gameState.cards);
   };
 
   return (
     <>
       <GameControls getFocusRef={(ref) => setFocusRef(ref)} />
       <div className={classes.game}>
-        {listToArray(state.cards, 4).map((cardsRow: ICard[]) => (
+        {listToArray(gameState.cards, 4).map((cardsRow: ICard[]) => (
           <CardRow key={cardsRow[0].key} cards={cardsRow} onCardClick={onCardSelectHandler} />
         ))}
       </div>
       <div className={classes.autoplay}>
-        {!state.score && !state.isAutoplay && (
+        {!gameState.score && !gameState.isAutoplay && (
           <IconButton onClick={onAutoplayHandler} text="Autoplay" component={Autoplay as ElementType} />
         )}
-        {state.isAutoplay && <p>ai guesses the cards...</p>}
+        {gameState.isAutoplay && <p>ai guesses the cards...</p>}
       </div>
     </>
   );

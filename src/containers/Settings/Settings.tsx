@@ -4,11 +4,11 @@ import Switch from '@material-ui/core/Switch';
 
 import Reset from 'assets/icons/reset.svg';
 import menuSound from 'assets/menu-click.opus';
-import Header from '../../components/Header/Header';
-import IconButton from '../../components/IconButton/IconButton';
+import Header from 'components/Header/Header';
+import IconButton from 'components/IconButton/IconButton';
 
-import { IState, ISettings, IKeys } from '../../entities/interfaces';
-import * as actions from '../../store/actions';
+import { IState, ISettings, IKeys } from 'entities/interfaces';
+import * as actions from 'store/settings/actions';
 import classes from './Settings.css';
 
 const Settings: React.FC = () => {

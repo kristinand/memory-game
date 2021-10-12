@@ -11,7 +11,7 @@ import { formatTime } from '../../utils/functions';
 import classes from './Rating.css';
 
 const Rating: React.FC = () => {
-  const { player: playerName } = useSelector((state: IState) => state);
+  const playerName = useSelector((state: IState) => state.game.player);
   const [ratings, setRatings] = useState<IRating[]>([]);
 
   useEffect(() => {

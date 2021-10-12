@@ -15,11 +15,13 @@ import Music0 from 'assets/icons/music0.svg';
 import Music1 from 'assets/icons/music1.svg';
 import Music2 from 'assets/icons/music2.svg';
 
+import IconButton from 'components/IconButton/IconButton';
+
 import { IState } from 'entities/interfaces';
-import * as actions from 'store/actions';
+import * as gameActions from 'store/game/actions';
+import * as settingsActions from 'store/settings/actions';
 import { useTimer } from 'utils/hooks';
 import { formatTime } from 'utils/functions';
-import IconButton from 'components/IconButton/IconButton';
 import classes from './GameControls.css';
 
 interface IProps {
@@ -29,18 +31,21 @@ interface IProps {
 const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   const history = useHistory();
   const focusRef = useRef<HTMLDivElement>();
-  const state = useSelector((store: IState) => store);
+
+  const gameState = useSelector((store: IState) => store.game);
+  const settingsState = useSelector((store: IState) => store.settings);
+
   const [menuClickSound] = useState(new Audio(menuSound));
-  menuClickSound.volume = state.settings.soundVolume;
+  menuClickSound.volume = settingsState.soundVolume;
 
   const dispatch = useDispatch();
-  const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer(state.score);
+  const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer(gameState.score);
 
   useEffect(() => {
     const screen = focusRef.current;
     getFocusRef(screen);
     screen.focus();
-    if (state.score) {
+    if (gameState.score) {
       handlePause();
     } else {
       handleStart();
@@ -50,56 +55,56 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
 
   useEffect(() => {
     let timeoutTimer;
-    if (!state.cardsToWin) {
-      if (state.level < state.levels) {
+    if (!gameState.cardsToWin) {
+      if (gameState.level < gameState.levels) {
         timeoutTimer = setTimeout(() => {
-          dispatch(actions.loadLevel('inc'));
+          dispatch(gameActions.loadLevel('inc'));
         }, 1000);
       } else {
-        dispatch(actions.endGame(state.player, state.score));
+        dispatch(gameActions.endGame(gameState.player, gameState.score));
         history.push('/rating');
       }
     }
     return () => clearTimeout(timeoutTimer);
-  }, [state.cardsToWin]);
+  }, [gameState.cardsToWin]);
 
   useEffect(() => {
-    if (state.isGamePaused) {
+    if (gameState.isGamePaused) {
       handlePause();
     } else {
       handleResume();
     }
     return () => handlePause();
-  }, [state.isGamePaused]);
+  }, [gameState.isGamePaused]);
 
   const saveGameData = () => {
     const localData = {
-      cards: state.cards,
-      level: state.level,
-      coverColor: state.coverColor,
-      cardsToWin: state.cardsToWin,
+      cards: gameState.cards,
+      level: gameState.level,
+      coverColor: gameState.coverColor,
+      cardsToWin: gameState.cardsToWin,
       score: timer,
-      player: state.player,
+      player: gameState.player,
     };
     localStorage.setItem('gameData', JSON.stringify(localData));
   };
 
   useEffect(() => {
-    if (!state.isAutoplay && timer > 0) {
+    if (!gameState.isAutoplay && timer > 0) {
       saveGameData();
-      dispatch(actions.saveScore(timer));
+      dispatch(gameActions.saveScore(timer));
     }
   }, [timer]);
 
   useEffect(() => {
-    if (state.score === 0) {
+    if (gameState.score === 0) {
       handleReset();
       handlePause();
     }
-  }, [state.isAutoplay]);
+  }, [gameState.isAutoplay]);
 
   const onChangeAudioVolumeHandler = (type) => {
-    let volume = type === 'sound' ? state.settings.soundVolume : state.settings.musicVolume;
+    let volume = type === 'sound' ? settingsState.soundVolume : settingsState.musicVolume;
     if (volume < 0.5) volume = 0.5;
     else if (volume >= 0.5 && volume < 1) volume = 1;
     else volume = 0;
@@ -108,7 +113,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
       menuClickSound.currentTime = 0;
       void menuClickSound.play();
     }
-    dispatch(actions.changeVolume(type, volume));
+    dispatch(settingsActions.changeVolume(type, volume));
   };
 
   const toggleFullscreenHandler = () => {
@@ -119,16 +124,16 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
     }
   };
 
-  const onGamePauseHandler = () => dispatch(actions.setIsGamePaused(!isPaused));
+  const onGamePauseHandler = () => dispatch(gameActions.setIsGamePaused(!isPaused));
   const onGameReloadHandler = () => {
-    if (!state.isAutoplay) {
+    if (!gameState.isAutoplay) {
       handleReset();
-      dispatch(actions.startGame());
+      dispatch(gameActions.startGame());
     }
   };
 
   const handleKeyPress = ({ key }) => {
-    const { fullscreen, reload, sounds, music, pause } = state.settings.keys;
+    const { fullscreen, reload, sounds, music, pause } = settingsState.keys;
     if (key === fullscreen) toggleFullscreenHandler();
     else if (key === reload) onGameReloadHandler();
     else if (key === sounds) onChangeAudioVolumeHandler('sound');
@@ -139,57 +144,57 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   return (
     <div className={classes.GameControls}>
       <div role="menu" ref={focusRef} className={classes.screen} tabIndex={0} onKeyPress={handleKeyPress} />
-      <span className={classes.level}>level: {state.level}</span>
+      <span className={classes.level}>level: {gameState.level}</span>
 
       <span className={classes.right}>
         <span className={classes.timer}>{formatTime(timer)}</span>
         <IconButton
           onClick={onGamePauseHandler}
-          color={state.coverColor}
+          color={gameState.coverColor}
           title={isPaused ? 'Play' : 'Pause'}
           component={(isPaused ? Play : Pause) as ElementType}
         />
         <IconButton
           onClick={onGameReloadHandler}
-          color={state.coverColor}
+          color={gameState.coverColor}
           component={Refresh as ElementType}
           title="Reload Game"
         />
         <IconButton
           onClick={toggleFullscreenHandler}
-          color={state.coverColor}
+          color={gameState.coverColor}
           component={Screen as ElementType}
           title="Toggle Fullscreen"
         />
         <IconButton
           onClick={() => onChangeAudioVolumeHandler('sound')}
-          color={state.coverColor}
+          color={gameState.coverColor}
           title="Sound Volume"
           component={
             // eslint-disable-next-line no-nested-ternary
-            (state.settings.soundVolume === 0
+            (settingsState.soundVolume === 0
               ? Sound0
-              : state.settings.soundVolume <= 0.5
+              : settingsState.soundVolume <= 0.5
               ? Sound1
               : Sound2) as ElementType
           }
         />
         <IconButton
           onClick={() => onChangeAudioVolumeHandler('music')}
-          color={state.coverColor}
+          color={gameState.coverColor}
           title="Music Volume"
           component={
             // eslint-disable-next-line no-nested-ternary
-            (state.settings.musicVolume === 0
+            (settingsState.musicVolume === 0
               ? Music0
-              : state.settings.musicVolume <= 0.5
+              : settingsState.musicVolume <= 0.5
               ? Music1
               : Music2) as ElementType
           }
         />
         <IconButton
           onClick={() => history.push('/')}
-          color={state.coverColor}
+          color={gameState.coverColor}
           component={Back as ElementType}
           title="Back to Menu"
         />

@@ -11,12 +11,12 @@ import MenuButton from '../../components/MenuButton/MenuButton';
 import IconButton from '../../components/IconButton/IconButton';
 
 import { IState } from '../../entities/interfaces';
-import * as actions from '../../store/actions';
+import * as actions from '../../store/game/actions';
 import classes from './Menu.css';
 
 const Menu: React.FC = () => {
   const dispatch = useDispatch();
-  const state = useSelector((store: IState) => store);
+  const state = useSelector((store: IState) => store.game);
   const [helperText, setHelperText] = useState('');
   const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
 
