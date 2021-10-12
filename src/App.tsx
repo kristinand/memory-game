@@ -25,7 +25,7 @@ const App: React.FC = () => {
       const gameData = getLocalStorageValue('gameData') as IGameData;
       dispatch(actions.loadLocalGameData(player, gameData));
     }
-    const settingsData = getLocalStorageValue('settingsData') as Partial<ISettings>;
+    const settingsData = getLocalStorageValue('settingsData') as ISettings;
     if (settingsData) {
       dispatch(actions.loadLocalSettingsData(settingsData));
     }

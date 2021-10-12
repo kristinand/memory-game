@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-use-before-define */
-import * as actionTypes from './actionTypes';
+import { Reducer } from 'redux';
+import { ICard, IState } from 'entities/interfaces';
+import { ECardStatus } from 'entities/enums';
+import { TActionTypes, EActionTypes } from './entities';
 import { shuffleList, getRandomColor, fillCards } from '../utils/functions';
 
-const initState = {
+const initState: IState = {
   level: 1,
   cards: [],
   coverColor: getRandomColor(40, 40, 60, 60),
@@ -29,48 +33,51 @@ const initState = {
   },
 };
 
-const gameReducer = (state = initState, action) => {
+const gameReducer: Reducer<IState, TActionTypes> = (state = initState, action) => {
   switch (action.type) {
-    case actionTypes.LOGIN:
-      return login(state, action);
-    case actionTypes.LOGOUT:
-      return { ...state, player: '', isLoggedIn: false };
-    case actionTypes.LOAD_LOCAL_GAME_DATA:
+    case EActionTypes.LOAD_LOCAL_GAME_DATA:
       return loadLocalGameData(state, action);
-    case actionTypes.LOAD_LOCAL_SETTINGS_DATA:
+    case EActionTypes.LOAD_LOCAL_SETTINGS_DATA:
       return loadLocalSettingsData(state, action);
-    case actionTypes.START_GAME:
+
+    case EActionTypes.LOGIN:
+      return login(state, action);
+    case EActionTypes.LOGOUT:
+      return { ...state, player: '', isLoggedIn: false };
+
+    case EActionTypes.START_GAME:
       return startGame(state);
-    case actionTypes.END_GAME:
+    case EActionTypes.END_GAME:
       return endGame(state);
-    case actionTypes.LOAD_LEVEL:
+
+    case EActionTypes.LOAD_LEVEL:
       return loadLevel(state, action);
-    case actionTypes.SAVE_SCORE:
+    case EActionTypes.SAVE_SCORE:
       return { ...state, score: action.timer };
-    case actionTypes.CHANGE_CARD_STATUS:
-      return updateGameStatus(state, action);
-    case actionTypes.CHANGE_VOLUME:
-      return changeVolume(state, action);
-    case actionTypes.CHANGE_PAUSE_STATUS:
-      return { ...state, isGamePaused: action.isPaused };
-    case actionTypes.CHANGE_HOTKEY:
-      return changeHotkey(state, action);
-    case actionTypes.CHANGE_BG_COLOR:
-      return { ...state, settings: { ...state.settings, bgColor: action.bgColor } };
-    case actionTypes.SET_DEFAULT_SETTINGS:
-      return { ...state, settings: initState.settings };
-    case actionTypes.AUTOPLAY:
+    case EActionTypes.AUTOPLAY:
       return { ...state, isAutoplay: action.value };
-    case actionTypes.TOGGLE_PATTERN:
+    case EActionTypes.CHANGE_PAUSE_STATUS:
+      return { ...state, isGamePaused: action.isPaused };
+      case EActionTypes.CHANGE_CARD_STATUS:
+        return updateGameStatus(state, action);
+
+    case EActionTypes.CHANGE_VOLUME:
+      return changeVolume(state, action);
+    case EActionTypes.CHANGE_HOTKEY:
+      return changeHotkey(state, action);
+    case EActionTypes.CHANGE_BG_COLOR:
+      return { ...state, settings: { ...state.settings, bgColor: action.bgColor } };
+    case EActionTypes.TOGGLE_PATTERN:
       return { ...state, settings: { ...state.settings, isPatternShown: !state.settings.isPatternShown } };
+    case EActionTypes.SET_DEFAULT_SETTINGS:
+      return { ...state, settings: initState.settings };
+
     default:
       return state;
   }
 };
 
-const login = (state, action) => ({ ...state, isLoggedIn: true, player: action.player });
-
-const loadLocalGameData = (state, action) => {
+const loadLocalGameData = (state, action): IState => {
   const { data, player } = action;
   let newState;
   if (data === null) {
@@ -94,7 +101,7 @@ const loadLocalGameData = (state, action) => {
   return newState;
 };
 
-const loadLocalSettingsData = (state, action) => ({
+const loadLocalSettingsData = (state, action): IState => ({
   ...state,
   settings: {
     ...state.settings,
@@ -102,7 +109,7 @@ const loadLocalSettingsData = (state, action) => ({
   },
 });
 
-const startGame = (state) => {
+const startGame = (state): IState => {
   localStorage.removeItem('gameData');
   const coverColor = getRandomColor(40, 40, 60, 60);
   const cards = createCards(1, coverColor);
@@ -119,22 +126,14 @@ const startGame = (state) => {
   };
 };
 
-const endGame = (state) => {
+const endGame = (state): IState => {
   localStorage.removeItem('gameData');
   return { ...state, isGameEnded: true };
 };
 
-const changeVolume = (state, action) => {
-  let newState;
-  if (action.audio === 'music') {
-    newState = { ...state, settings: { ...state.settings, musicVolume: action.volume } };
-  } else {
-    newState = { ...state, settings: { ...state.settings, soundVolume: action.volume } };
-  }
-  return newState;
-};
+const login = (state: IState, action): IState => ({ ...state, isLoggedIn: true, player: action.player });
 
-const loadLevel = (state, action) => {
+const loadLevel = (state, action): IState => {
   let { level } = state;
   if (action.param === 'inc' && level < state.levels) {
     level += 1;
@@ -153,43 +152,53 @@ const loadLevel = (state, action) => {
   };
 };
 
-const updateGameStatus = (state, action) => {
+const updateGameStatus = (state, action): IState => {
   const { selectedCardIndex, oldCardIndex, status } = action;
   let { cards, cardsToWin } = state;
   const selectedCard = cards[selectedCardIndex];
   const oldCard = cards[oldCardIndex];
 
-  if (status === 'opened') {
-    selectedCard.status = 'opened';
+  if (status === ECardStatus.Opened) {
+    selectedCard.status = ECardStatus.Opened;
     cards = cards.slice(0, selectedCardIndex).concat([selectedCard, ...cards.slice(selectedCardIndex + 1)]);
-  } else if (status === 'guessed') {
-    selectedCard.status = 'guessed';
-    oldCard.status = 'guessed';
+  } else if (status === ECardStatus.Guessed) {
+    selectedCard.status = ECardStatus.Guessed;
+    oldCard.status = ECardStatus.Guessed;
     cards = cards.slice(0, selectedCardIndex).concat([selectedCard, ...cards.slice(selectedCardIndex + 1)]);
     cards = cards.slice(0, oldCardIndex).concat([oldCard, ...cards.slice(oldCardIndex + 1)]);
     cardsToWin -= 2;
-  } else if (status === 'not-guessed') {
-    selectedCard.status = 'not-guessed';
-    oldCard.status = 'not-guessed';
+  } else if (status === ECardStatus.NotGuessed) {
+    selectedCard.status = ECardStatus.NotGuessed;
+    oldCard.status = ECardStatus.NotGuessed;
     cards = cards.slice(0, selectedCardIndex).concat([selectedCard, ...cards.slice(selectedCardIndex + 1)]);
     cards = cards.slice(0, oldCardIndex).concat([oldCard, ...cards.slice(oldCardIndex + 1)]);
   } else {
-    selectedCard.status = 'closed';
-    oldCard.status = 'closed';
+    selectedCard.status = ECardStatus.Closed;
+    oldCard.status = ECardStatus.Closed;
     cards = cards.slice(0, selectedCardIndex).concat([selectedCard, ...cards.slice(selectedCardIndex + 1)]);
     cards = cards.slice(0, oldCardIndex).concat([oldCard, ...cards.slice(oldCardIndex + 1)]);
   }
   return { ...state, cards, cardsToWin, isGamePaused: false };
 };
 
-const createCards = (level, coverColor) => {
+const createCards = (level, coverColor): ICard[] => {
   let cards = [];
   cards = fillCards(cards, level, coverColor);
   cards = shuffleList(cards);
   return cards;
 };
 
-const changeHotkey = (state, action) => {
+const changeVolume = (state, action): IState => {
+  let newState;
+  if (action.audio === 'music') {
+    newState = { ...state, settings: { ...state.settings, musicVolume: action.volume } };
+  } else {
+    newState = { ...state, settings: { ...state.settings, soundVolume: action.volume } };
+  }
+  return newState;
+};
+
+const changeHotkey = (state, action): IState => {
   const { keyType, value: keyValue } = action;
   return { ...state, settings: { ...state.settings, keys: { ...state.settings.keys, [keyType]: keyValue } } };
 };

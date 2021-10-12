@@ -15,11 +15,11 @@ import Music0 from 'assets/icons/music0.svg';
 import Music1 from 'assets/icons/music1.svg';
 import Music2 from 'assets/icons/music2.svg';
 
-import { IState } from '../../../entities/interfaces';
-import * as actions from '../../../store/actions';
-import { useTimer } from '../../../utils/hooks';
-import { formatTime } from '../../../utils/functions';
-import IconButton from '../../../components/IconButton/IconButton';
+import { IState } from 'entities/interfaces';
+import * as actions from 'store/actions';
+import { useTimer } from 'utils/hooks';
+import { formatTime } from 'utils/functions';
+import IconButton from 'components/IconButton/IconButton';
 import classes from './GameControls.css';
 
 interface IProps {

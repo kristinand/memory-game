@@ -16,7 +16,7 @@ const Rating: React.FC = () => {
 
   useEffect(() => {
     const loadRatings = async () => {
-      let result = (await api.loadRatings()) as IRating[];
+      let result = await api.loadRatings();
       result = result.sort((prev, cur) => prev.score - cur.score);
       setRatings(result);
     };
