@@ -20,17 +20,14 @@ const Card: React.FC<IProps> = ({ status, onCardClick, coverColor, color, patter
   const { soundVolume, isPatternShown } = useSelector((state: IState) => state.settings);
   const clickAudio = new Audio(audio);
 
-  const toggleCardOpen = async () => {
+  useEffect(() => {
     if (status === ECardStatus.Closed) {
       setIsOpen(false);
     } else {
       clickAudio.volume = soundVolume;
-      await clickAudio.play();
+      void clickAudio.play();
       setIsOpen(true);
     }
-  };
-  useEffect(() => {
-    void toggleCardOpen();
   }, [status]);
 
   return (
