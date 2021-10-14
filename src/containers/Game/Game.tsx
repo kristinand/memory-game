@@ -1,44 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ElementType } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import GameControls from './GameControls/GameControls';
-import CardRow from '../../components/CardRow/CardRow';
-import IconButton from '../../components/IconButton/IconButton';
+import Autoplay from 'assets/icons/autoplay.svg';
+import { musicURL } from 'constants/';
+import { IState } from 'store/entities';
+import { ICard, ECardStatus } from 'entities/';
+import * as actions from 'store/game/actions';
+import { listToArray, getRandomNumber } from 'utils/functions';
 
-import { IState } from '../../store/interfaces';
-import { ECardStatus } from '../../entities/enums';
-import * as actions from '../../store/actions';
-import { listToArray, getRandomNumber } from '../../utils/functions';
-import { musicURL } from '../../constants';
-import Autoplay from '@assets/icons/autoplay.svg';
+import CardRow from 'components/CardRow/CardRow';
+import IconButton from 'components/IconButton/IconButton';
+import GameControls from './GameControls/GameControls';
+
 import classes from './Game.css';
 
-const Game = () => {
+const Game: React.FC = () => {
+  const gameState = useSelector((state: IState) => state.game);
+  const musicVolume = useSelector((state: IState) => state.settings.musicVolume);
   const [musicSound] = useState(new Audio(musicURL));
-  const state = useSelector((store: IState) => store);
   const [focusRef, setFocusRef] = useState<HTMLDivElement>();
-  musicSound.volume = state.settings.musicVolume;
+  musicSound.volume = musicVolume;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    musicSound.play();
+    void musicSound.play();
     musicSound.loop = true;
-    if (!state.cards.length) dispatch(actions.startGame());
+    if (!gameState.cards.length) dispatch(actions.startGame());
     return () => musicSound.pause();
   }, []);
 
-  const onCardSelectHandler = (key) => {
+  const onCardSelectHandler = (key: string) => {
     focusRef.focus();
-    const selectedCardIndex = state.cards.findIndex((card) => card.key === key);
-    const openedCardIndex = state.cards.findIndex((card) => card.status === ECardStatus.Opened);
-    const selectedCard = state.cards[selectedCardIndex];
-    const openedCard = state.cards[openedCardIndex];
+    const selectedCardIndex = gameState.cards.findIndex((card) => card.key === key);
+    const openedCardIndex = gameState.cards.findIndex((card) => card.status === ECardStatus.Opened);
+    const selectedCard = gameState.cards[selectedCardIndex];
+    const openedCard = gameState.cards[openedCardIndex];
 
     if (selectedCard.status !== ECardStatus.Closed) return;
 
     // открытие первой карты
-    if (openedCard === undefined && selectedCard.status !== ECardStatus.Guessed) {
+    if (openedCard === undefined) {
       dispatch(actions.changeCardStatus(ECardStatus.Opened, selectedCardIndex));
       return;
     }
@@ -53,7 +55,7 @@ const Game = () => {
     }
   };
 
-  const autoplay = (cards) => {
+  const autoplay = (cards: ICard[]) => {
     if (window.location.pathname !== '/game') {
       dispatch(actions.setAutoplay(false));
       return;
@@ -78,22 +80,22 @@ const Game = () => {
 
   const onAutoplayHandler = () => {
     dispatch(actions.setAutoplay(true));
-    autoplay(state.cards);
+    autoplay(gameState.cards);
   };
 
   return (
     <>
       <GameControls getFocusRef={(ref) => setFocusRef(ref)} />
       <div className={classes.game}>
-        {listToArray(state.cards, 4).map((cardsRow) => (
+        {listToArray(gameState.cards, 4).map((cardsRow: ICard[]) => (
           <CardRow key={cardsRow[0].key} cards={cardsRow} onCardClick={onCardSelectHandler} />
         ))}
       </div>
       <div className={classes.autoplay}>
-        {!state.score && !state.isAutoplay && (
-          <IconButton onClick={onAutoplayHandler} text="Autoplay" component={Autoplay} />
+        {!gameState.score && !gameState.isAutoplay && (
+          <IconButton onClick={onAutoplayHandler} text="Autoplay" component={Autoplay as ElementType} />
         )}
-        {state.isAutoplay && <p>ai guesses the cards...</p>}
+        {gameState.isAutoplay && <p>ai guesses the cards...</p>}
       </div>
     </>
   );

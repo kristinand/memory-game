@@ -5,3 +5,4 @@ export * from './formatTime';
 export * from './shuffleList';
 export * from './fillCards';
 export * from './getLocalStorageValue';
+export * from './createCards';

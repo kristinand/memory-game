@@ -1,14 +1,12 @@
-export function shuffleList(list: any[]): any[] {
+export function shuffleList(list: unknown[]): unknown[] {
   const newList = list;
   let currentIndex = list.length;
-  let temporaryValue;
-  let randomIndex;
-
+  
   while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
+    const randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
 
-    temporaryValue = list[currentIndex];
+    const temporaryValue = list[currentIndex];
     newList[currentIndex] = list[randomIndex];
     newList[randomIndex] = temporaryValue;
   }

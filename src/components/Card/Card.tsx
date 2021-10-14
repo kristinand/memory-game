@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 
-import { ECardStatus } from '../../entities/enums';
-import { IState } from '../../store/interfaces';
-import audio from '@assets/card-click.opus';
+import { ECardStatus } from 'entities/';
+import { IState } from 'store/entities';
+import audio from 'assets/card-click.opus';
 import classes from './Card.css';
-
-const cx = classNames.bind(classes);
 
 interface IProps {
   status: ECardStatus;
@@ -27,27 +25,25 @@ const Card: React.FC<IProps> = ({ status, onCardClick, coverColor, color, patter
       setIsOpen(false);
     } else {
       clickAudio.volume = soundVolume;
-      clickAudio.play();
+      void clickAudio.play();
       setIsOpen(true);
     }
   }, [status]);
 
-  const cardClass = cx({
-    Card: true,
-    opened: isOpen,
-    closed: !isOpen,
-  });
-
   return (
     <div className={classes.wrapper}>
-      <div onClick={onCardClick} className={cardClass}>
+      <button
+        type="button"
+        onClick={onCardClick}
+        className={classNames(classes.Card, { [classes.cardOpened]: isOpen })}
+      >
         <div className={classes.CardCover} style={{ backgroundColor: coverColor }}>
           <span>?</span>
         </div>
         <div className={classes.CardColor} style={{ backgroundColor: color }}>
           {isPatternShown && <span className="pattern">{pattern}</span>}
         </div>
-      </div>
+      </button>
     </div>
   );
 };

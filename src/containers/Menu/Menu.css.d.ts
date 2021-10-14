@@ -7,6 +7,7 @@ interface CssExports {
   'input': string;
   'inputContainer': string;
   'inputDanger': string;
+  'logoSvg': string;
   'menu': string;
 }
 export const cssExports: CssExports;

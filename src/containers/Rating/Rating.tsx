@@ -2,48 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 
-import Header from '../../components/Header/Header';
+import Header from 'components/Header/Header';
 
-import { IState } from '../../store/interfaces';
+import { IRating } from 'entities/';
+import { IState } from 'store/entities';
+import { formatTime } from 'utils/functions';
 import api from '../../api/api';
-import { formatTime } from '../../utils/functions';
 
 import classes from './Rating.css';
 
-const cx = classNames.bind(classes);
-
-const Rating = () => {
-  const { player: playerName } = useSelector((state: IState) => state);
-  const [ratingData, setRatingData] = useState([]);
-  let playersData: string | any[] = 'Loading...';
+const Rating: React.FC = () => {
+  const playerName = useSelector((state: IState) => state.game.player);
+  const [ratings, setRatings] = useState<IRating[]>([]);
 
   useEffect(() => {
     const loadRatings = async () => {
-      let ratings = await api.loadRatings();
-      ratings = ratings.sort((prev, cur) => prev.score - cur.score);
-      setRatingData(ratings);
+      let result = await api.loadRatings();
+      result = result.sort((prev, cur) => prev.score - cur.score);
+      setRatings(result);
     };
 
-    loadRatings();
+    void loadRatings();
   }, []);
-
-  if (ratingData.length) {
-    playersData = ratingData.map((player, i) => {
-      const playerClasses = cx({
-        player: true,
-        current: playerName === player.player,
-      });
-
-      return (
-        <div key={player.player} className={playerClasses}>
-          <span>{i + 1}</span>
-          <span>{player.player}</span>
-          <span>{formatTime(player.score)}</span>
-          <span>{new Date(player.date).toLocaleString()}</span>
-        </div>
-      );
-    });
-  }
 
   return (
     <>
@@ -55,7 +35,17 @@ const Rating = () => {
           <span>Completed Time</span>
           <span>Date</span>
         </div>
-        {playersData}
+        {ratings.map((playerRating, i) => (
+          <div
+            key={playerRating.player}
+            className={classNames({ [classes.player]: true, [classes.current]: playerName === playerRating.player })}
+          >
+            <span>{i + 1}</span>
+            <span>{playerRating.player}</span>
+            <span>{formatTime(playerRating.score)}</span>
+            <span>{new Date(playerRating.date).toLocaleString()}</span>
+          </div>
+        )) || 'Loading...'}
       </div>
     </>
   );

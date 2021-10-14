@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
+import React, { ElementType, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Switch from '@material-ui/core/Switch';
 
-import Header from '../../components/Header/Header';
-import IconButton from '../../components/IconButton/IconButton';
+import Reset from 'assets/icons/reset.svg';
+import menuSound from 'assets/menu-click.opus';
+import Header from 'components/Header/Header';
+import IconButton from 'components/IconButton/IconButton';
 
-import { IState } from '../../store/interfaces';
-import * as actions from '../../store/actions';
-import Reset from '@assets/icons/reset.svg';
-import menuSound from '@assets/menu-click.opus';
+import { IKeys } from 'entities/';
+import { IState } from 'store/entities';
+import { ISettings } from 'store/settings/entities';
+import * as actions from 'store/settings/actions';
 import classes from './Settings.css';
 
-const Settings = () => {
-  const sound = new Audio(menuSound);
+const Settings: React.FC = () => {
   const dispatch = useDispatch();
   const state = useSelector((store: IState) => store.settings);
   const [bgColor, setBgColor] = useState(state.bgColor);
+  const sound = new Audio(menuSound);
 
-  const setLocalStorageItem = (key, value) => {
-    const settingsData = { ...state, [key]: value };
+  const setLocalStorageSettingsItem = (obj: Partial<ISettings>) => {
+    const settingsData = { ...state, obj };
     localStorage.setItem('settingsData', JSON.stringify(settingsData));
   };
 
@@ -27,39 +29,43 @@ const Settings = () => {
     localStorage.removeItem('settingsData');
   };
 
-  const onVolumeChangeHandler = (type, value) => {
-    if (value < 0 || value > 1 || Number.isNaN(+value)) return;
-    sound.volume = value;
-    sound.currentTime = 0;
-    sound.play();
-    dispatch(actions.changeVolume(type, +value));
-    setLocalStorageItem(type.concat('Volume'), +value);
+  const onVolumeChangeHandler = (type: string, value: number) => {
+    if (value >= 0 && value <= 1) {
+      sound.volume = value;
+      sound.currentTime = 0;
+      void sound.play();
+
+      dispatch(actions.changeVolume(type, value));
+      setLocalStorageSettingsItem({ [type.concat('Volume')]: value });
+    }
   };
 
-  const onHotkeyChangeHandler = (keyType, value) => {
-    let newHotkey;
-    if (value.length > 1) newHotkey = value.slice(1);
-    if (Object.values(state.keys).includes(newHotkey)) return;
-    dispatch(actions.changeHotkey(keyType, newHotkey));
-    setLocalStorageItem('keys', {
-      ...state.keys,
-      [keyType]: newHotkey,
-    });
+  const onHotkeyChangeHandler = (keyType: keyof IKeys, value: string) => {
+    const newHotkey = value.slice(-1);
+    if (!Object.values(state.keys).includes(newHotkey)) {
+      dispatch(actions.changeHotkey(keyType, newHotkey));
+      setLocalStorageSettingsItem({
+        keys: {
+          ...state.keys,
+          [keyType]: newHotkey,
+        },
+      });
+    }
   };
 
-  const onBgColorChangeHandler = (value) => {
+  const onBgColorChangeHandler = (value: string) => {
     if (value[0] !== '#' || value.length > 7) return;
     setBgColor(value);
 
     if (value.length === 7 || value.length === 4) {
       dispatch(actions.changeBgColor(value));
-      setLocalStorageItem('bgColor', value);
+      setLocalStorageSettingsItem({ bgColor: value });
     }
   };
 
   const onToggleCardPatternHandler = () => {
     dispatch(actions.togglePattern());
-    setLocalStorageItem('isPatternShown', !state.isPatternShown);
+    setLocalStorageSettingsItem({ isPatternShown: !state.isPatternShown });
   };
 
   return (
@@ -83,7 +89,7 @@ const Settings = () => {
             <input
               className={classes.input}
               type="number"
-              onChange={(event) => onVolumeChangeHandler('music', event.target.value)}
+              onChange={(event) => onVolumeChangeHandler('music', event.target.valueAsNumber)}
               value={state.musicVolume}
               max={1}
               min={0}
@@ -97,7 +103,7 @@ const Settings = () => {
             <input
               className={classes.input}
               type="number"
-              onChange={(event) => onVolumeChangeHandler('sound', event.target.value)}
+              onChange={(event) => onVolumeChangeHandler('sound', event.target.valueAsNumber)}
               value={state.soundVolume}
               max={1}
               min={0}
@@ -169,7 +175,7 @@ const Settings = () => {
       </div>
 
       <div className={classes.buttonWrapper}>
-        <IconButton onClick={setDefaultSettingsHandler} component={Reset} text="Set Default" />
+        <IconButton onClick={setDefaultSettingsHandler} component={Reset as ElementType} text="Set Default" />
       </div>
     </>
   );

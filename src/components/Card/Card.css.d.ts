@@ -5,8 +5,7 @@ interface CssExports {
   'CardColor': string;
   'CardCover': string;
   'appear': string;
-  'closed': string;
-  'opened': string;
+  'cardOpened': string;
   'wrapper': string;
 }
 export const cssExports: CssExports;

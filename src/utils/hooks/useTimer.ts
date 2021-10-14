@@ -2,7 +2,17 @@
 
 import { useState, useRef } from 'react';
 
-export const useTimer = (initialState = 0) => {
+type IUseTimer = (initialState?: number) => {
+  timer: number;
+  isActive: boolean;
+  isPaused: boolean;
+  handleStart: () => void;
+  handlePause: () => void;
+  handleResume: () => void;
+  handleReset: () => void;
+};
+
+export const useTimer: IUseTimer = (initialState = 0) => {
   const [timer, setTimer] = useState(initialState);
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);

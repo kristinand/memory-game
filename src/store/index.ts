@@ -1,10 +1,16 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { Store, createStore, applyMiddleware, combineReducers } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
-import gameReducer from './game';
+import { TActionTypes, IState } from './entities';
+import gameReducer from './game/reducer';
+import settingsReducer from './settings/reducer';
 
-const composeEnhancers = (window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose) || compose;
+const rootReducer = combineReducers({
+  game: gameReducer,
+  settings: settingsReducer,
+});
 
-const store = createStore(gameReducer, composeEnhancers(applyMiddleware(thunk)));
+const store: Store<IState, TActionTypes> = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 export default store;

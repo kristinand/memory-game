@@ -2,8 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { IState } from '../../store/interfaces';
-import sound from '@assets/menu-click.opus';
+import { IState } from 'store/entities';
+import sound from 'assets/menu-click.opus';
 import classes from './MenuButton.css';
 
 interface IProps {
@@ -18,10 +18,10 @@ const MenuButton: React.FC<IProps> = ({ path, title, onClick, disabled }) => {
   const soundVolume = useSelector((state: IState) => state.settings.soundVolume);
   clickSound.volume = soundVolume;
 
-  const onClickButtonHandler = () => {
-    onClick && onClick();
+  const onClickButtonHandler = async () => {
+    if (onClick) onClick();
     clickSound.currentTime = 0;
-    clickSound.play();
+    await clickSound.play();
   };
 
   return (

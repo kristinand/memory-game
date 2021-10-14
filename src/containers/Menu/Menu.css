@@ -62,3 +62,8 @@
 .inputDanger::placeholder {
   color: rgba(157, 63, 70, 0.7);
 }
+
+:global(.MuiSvgIcon-root).logoSvg {
+  width: 1.7em;
+  height: auto;
+}
