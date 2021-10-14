@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 import { getRandomColor, createCards } from 'utils/functions';
 import { IGame, ECardStatus } from 'entities/';
-import { IChangeCardStatus, TGameActionTypes, EActionTypes } from './actionTypes';
+import { IChangeCardStatus, TGameActionTypes, EActionTypes } from './entites';
 
 const initState: IGame = {
   level: 1,

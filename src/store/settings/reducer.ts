@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 import { ISettings } from 'entities/';
-import { TSettingsActionTypes, EActionTypes } from './actionTypes';
+import { TSettingsActionTypes, EActionTypes } from './entities';
 
 const initState: ISettings = {
   bgColor: '#f8ebc6',

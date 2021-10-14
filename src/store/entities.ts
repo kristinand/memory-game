@@ -1,4 +1,4 @@
-import { TGameActionTypes } from './game/actionTypes';
-import { TSettingsActionTypes } from './settings/actionTypes';
+import { TGameActionTypes } from './game/entites';
+import { TSettingsActionTypes } from './settings/entities';
 
 export type TActionTypes = TGameActionTypes | TSettingsActionTypes;

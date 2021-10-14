@@ -6,7 +6,7 @@ import {
   ITogglePattern,
   ISetDefaultSettings,
   EActionTypes,
-} from './actionTypes';
+} from './entities';
 
 export const loadLocalSettingsData = (data: ILoadLocalSettingsData['data']): ILoadLocalSettingsData => ({
   type: EActionTypes.LOAD_LOCAL_SETTINGS_DATA,

@@ -13,7 +13,7 @@ import {
   ISaveScore,
   ISetAutoplay,
   EActionTypes,
-} from './actionTypes';
+} from './entites';
 import api from '../../api/api';
 
 export type AppThunk = ActionCreator<ThunkAction<void, IGame, null, Action<string>>>;
