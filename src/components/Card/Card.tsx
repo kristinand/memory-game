@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 
+import { ECardStatus } from 'entities/';
+import { IState } from 'store/entities';
 import audio from 'assets/card-click.opus';
-import { ECardStatus } from '../../entities/enums';
-import { IState } from '../../entities/interfaces';
 import classes from './Card.css';
 
 interface IProps {

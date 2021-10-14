@@ -3,14 +3,15 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import Autoplay from 'assets/icons/autoplay.svg';
 import { musicURL } from 'constants/';
-import GameControls from './GameControls/GameControls';
-import CardRow from '../../components/CardRow/CardRow';
-import IconButton from '../../components/IconButton/IconButton';
+import { IState } from 'store/entities';
+import { ICard, ECardStatus } from 'entities/';
+import * as actions from 'store/game/actions';
+import { listToArray, getRandomNumber } from 'utils/functions';
 
-import { ICard, IState } from '../../entities/interfaces';
-import { ECardStatus } from '../../entities/enums';
-import * as actions from '../../store/game/actions';
-import { listToArray, getRandomNumber } from '../../utils/functions';
+import CardRow from 'components/CardRow/CardRow';
+import IconButton from 'components/IconButton/IconButton';
+import GameControls from './GameControls/GameControls';
+
 import classes from './Game.css';
 
 const Game: React.FC = () => {

@@ -1,5 +1,14 @@
 import { IGameData, ECardStatus } from 'entities/';
 
+export interface IGame extends IGameData {
+  isGamePaused: boolean;
+  isGameEnded: boolean;
+  isLoggedIn: boolean;
+  isAutoplay: boolean;
+  player: string;
+  levels: number;
+}
+
 export enum EActionTypes {
   LOAD_LOCAL_GAME_DATA = 'LOAD_LOCAL_GAME_DATA',
 
@@ -14,7 +23,6 @@ export enum EActionTypes {
   CHANGE_PAUSE_STATUS = 'CHANGE_PAUSE_STATUS',
   SAVE_SCORE = 'SAVE_SCORE',
   AUTOPLAY = 'AUTOPLAY',
-
 }
 
 export interface IStartGame {

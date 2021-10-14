@@ -2,8 +2,7 @@ import { Store, createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
-import { IState } from 'entities/interfaces';
-import { TActionTypes } from './entities';
+import { TActionTypes, IState } from './entities';
 import gameReducer from './game/reducer';
 import settingsReducer from './settings/reducer';
 

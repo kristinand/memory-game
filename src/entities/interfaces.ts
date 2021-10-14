@@ -1,28 +1,11 @@
 import { ECardStatus } from './enums';
 
-export interface IGame extends IGameData {
-  isGamePaused: boolean;
-  isGameEnded: boolean;
-  isLoggedIn: boolean;
-  isAutoplay: boolean;
-  player: string;
-  levels: number;
-}
-
 export interface IGameData {
   level: number;
   cards: ICard[];
   coverColor: string;
   cardsToWin: null | number;
   score: number;
-}
-
-export interface ISettings {
-  bgColor: string;
-  isPatternShown: boolean;
-  musicVolume: number;
-  soundVolume: number;
-  keys: IKeys;
 }
 
 export interface IKeys {
@@ -46,9 +29,4 @@ export interface IRating {
   player: string;
   date: string;
   score: number;
-}
-
-export interface IState {
-  game: IGame;
-  settings: ISettings;
 }

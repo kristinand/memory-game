@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 
-import Header from '../../components/Header/Header';
+import Header from 'components/Header/Header';
 
-import { IState, IRating } from '../../entities/interfaces';
+import { IRating } from 'entities/';
+import { IState } from 'store/entities';
+import { formatTime } from 'utils/functions';
 import api from '../../api/api';
-import { formatTime } from '../../utils/functions';
 
 import classes from './Rating.css';
 

@@ -7,11 +7,11 @@ import { myGitHubLink, myGitHubName, RSSchoolLink } from 'constants/index';
 import Logo from 'assets/icons/rss_logo.svg';
 import Login from 'assets/icons/right.svg';
 import Logout from 'assets/icons/left.svg';
-import MenuButton from '../../components/MenuButton/MenuButton';
-import IconButton from '../../components/IconButton/IconButton';
+import MenuButton from 'components/MenuButton/MenuButton';
+import IconButton from 'components/IconButton/IconButton';
 
-import { IState } from '../../entities/interfaces';
-import * as actions from '../../store/game/actions';
+import { IState } from 'store/entities';
+import * as actions from 'store/game/actions';
 import classes from './Menu.css';
 
 const Menu: React.FC = () => {

@@ -1,9 +1,9 @@
 import { ActionCreator, Action, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { IGame } from 'entities/';
 import {
   ILoadLocalGameData,
+  IEndGame,
   IStartGame,
   ILogin,
   ILogout,
@@ -13,7 +13,8 @@ import {
   ISaveScore,
   ISetAutoplay,
   EActionTypes,
-} from './entites';
+  IGame
+} from './entities';
 import api from '../../api/api';
 
 export type AppThunk = ActionCreator<ThunkAction<void, IGame, null, Action<string>>>;
@@ -33,7 +34,7 @@ export const startGame = (): IStartGame => ({
 
 export const endGame =
   (player: string, score: number) =>
-  (dispatch: Dispatch): void => {
+  (dispatch: Dispatch<IEndGame>): void => {
     api
       .saveScore({ player, score })
       .catch((err) => {

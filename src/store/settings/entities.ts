@@ -1,4 +1,12 @@
-import { ISettings, IKeys } from 'entities/';
+import { IKeys } from 'entities/';
+
+export interface ISettings {
+  bgColor: string;
+  isPatternShown: boolean;
+  musicVolume: number;
+  soundVolume: number;
+  keys: IKeys;
+}
 
 export enum EActionTypes {
   LOAD_LOCAL_SETTINGS_DATA = 'LOAD_LOCAL_SETTINGS_DATA',

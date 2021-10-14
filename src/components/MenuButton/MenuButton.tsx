@@ -2,8 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { IState } from 'store/entities';
 import sound from 'assets/menu-click.opus';
-import { IState } from '../../entities/interfaces';
 import classes from './MenuButton.css';
 
 interface IProps {

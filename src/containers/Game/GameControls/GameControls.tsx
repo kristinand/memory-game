@@ -17,7 +17,7 @@ import Music2 from 'assets/icons/music2.svg';
 
 import IconButton from 'components/IconButton/IconButton';
 
-import { IState } from 'entities/interfaces';
+import { IState } from 'store/entities';
 import * as gameActions from 'store/game/actions';
 import * as settingsActions from 'store/settings/actions';
 import { useTimer } from 'utils/hooks';

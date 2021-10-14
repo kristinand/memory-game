@@ -2,16 +2,18 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
+import { loadLocalGameData } from 'store/game/actions';
+import { loadLocalSettingsData } from 'store/settings/actions';
+import { IState } from 'store/entities';
+import { ISettings } from 'store/settings/entities';
+import { IGameData } from 'entities/';
+import { getLocalStorageValue } from 'utils/functions';
 import Game from './containers/Game/Game';
 import Menu from './containers/Menu/Menu';
 import Rating from './containers/Rating/Rating';
 import Settings from './containers/Settings/Settings';
 import About from './components/About/About';
 
-import { loadLocalGameData } from './store/game/actions';
-import { loadLocalSettingsData } from './store/settings/actions';
-import { IState, ISettings, IGameData } from './entities/interfaces';
-import { getLocalStorageValue } from './utils/functions';
 
 import classes from './App.css';
 

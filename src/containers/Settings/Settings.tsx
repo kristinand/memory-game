@@ -7,7 +7,9 @@ import menuSound from 'assets/menu-click.opus';
 import Header from 'components/Header/Header';
 import IconButton from 'components/IconButton/IconButton';
 
-import { IState, ISettings, IKeys } from 'entities/interfaces';
+import { IKeys } from 'entities/';
+import { IState } from 'store/entities';
+import { ISettings } from 'store/settings/entities';
 import * as actions from 'store/settings/actions';
 import classes from './Settings.css';
 
