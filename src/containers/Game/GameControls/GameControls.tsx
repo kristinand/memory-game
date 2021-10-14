@@ -22,7 +22,7 @@ import * as gameActions from 'store/game/actions';
 import * as settingsActions from 'store/settings/actions';
 import { useTimer } from 'utils/hooks';
 import { formatTime } from 'utils/functions';
-import classes from './GameControls.css';
+import classes from './classes.module.scss';
 
 interface IProps {
   getFocusRef: (ref: HTMLDivElement) => void;

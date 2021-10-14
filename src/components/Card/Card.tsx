@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import { ECardStatus } from 'entities/';
 import { IState } from 'store/entities';
 import audio from 'assets/card-click.opus';
-import classes from './Card.css';
+import classes from './classes.module.scss';
 
 interface IProps {
   status: ECardStatus;

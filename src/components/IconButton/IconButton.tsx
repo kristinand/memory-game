@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import SvgIcon from '@material-ui/core/SvgIcon';
-import classes from './IconButton.css';
+import classes from './classes.module.scss';
 
 interface IProps {
   title?: string;

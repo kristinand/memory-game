@@ -9,7 +9,7 @@ import { IState } from 'store/entities';
 import { formatTime } from 'utils/functions';
 import api from '../../api/api';
 
-import classes from './Rating.css';
+import classes from './classes.module.scss';
 
 const Rating: React.FC = () => {
   const playerName = useSelector((state: IState) => state.game.player);

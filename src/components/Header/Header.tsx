@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import Back from 'assets/icons/left.svg';
 import IconButton from '../IconButton/IconButton';
-import classes from './Header.css';
+import classes from './classes.module.scss';
 
 interface IProps {
   title: string;

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { IState } from 'store/entities';
 import sound from 'assets/menu-click.opus';
-import classes from './MenuButton.css';
+import classes from './classes.module.scss';
 
 interface IProps {
   path: string;

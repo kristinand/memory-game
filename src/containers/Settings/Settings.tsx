@@ -11,7 +11,7 @@ import { IKeys } from 'entities/';
 import { IState } from 'store/entities';
 import { ISettings } from 'store/settings/entities';
 import * as actions from 'store/settings/actions';
-import classes from './Settings.css';
+import classes from './classes.module.scss';
 
 const Settings: React.FC = () => {
   const dispatch = useDispatch();

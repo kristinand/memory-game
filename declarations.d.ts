@@ -1,5 +1,5 @@
 declare module '*.svg';
-declare module '*.css' {
+declare module '*.scss' {
   type Binding = { [key: string]: string };
   const content: Binding;
   export default content;

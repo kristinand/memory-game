@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ICard } from 'entities/interfaces';
 import Card from '../Card/Card';
-import classes from './CardRow.css';
+import classes from './classes.module.scss';
 
 interface IProps {
   cards: ICard[];

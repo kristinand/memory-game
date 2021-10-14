@@ -12,7 +12,7 @@ import CardRow from 'components/CardRow/CardRow';
 import IconButton from 'components/IconButton/IconButton';
 import GameControls from './GameControls/GameControls';
 
-import classes from './Game.css';
+import classes from './classes.module.scss';
 
 const Game: React.FC = () => {
   const gameState = useSelector((state: IState) => state.game);

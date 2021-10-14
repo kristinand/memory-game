@@ -12,7 +12,7 @@ import IconButton from 'components/IconButton/IconButton';
 
 import { IState } from 'store/entities';
 import * as actions from 'store/game/actions';
-import classes from './Menu.css';
+import classes from './classes.module.scss';
 
 const Menu: React.FC = () => {
   const dispatch = useDispatch();
