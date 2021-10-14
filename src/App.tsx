@@ -15,7 +15,7 @@ import Settings from './containers/Settings/Settings';
 import About from './components/About/About';
 
 
-import classes from './App.css';
+import classes from './App.module.scss';
 
 const App: React.FC = () => {
   const isLoggedIn = useSelector((state: IState) => state.game.isLoggedIn);

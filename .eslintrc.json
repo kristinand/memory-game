@@ -20,6 +20,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
+  "ignorePatterns": ["webpack.config.js"],
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
     "linebreak-style": ["error", "windows"],

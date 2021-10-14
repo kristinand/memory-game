@@ -52,7 +52,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.(css)$/,
         exclude: /node_modules/,
         use: [
           'style-loader',
@@ -65,6 +65,23 @@ module.exports = {
               },
             },
           },
+        ],
+      },
+      {
+        test: /\.(s[ac]ss)$/,
+        exclude: /node_modules/,
+        use: [
+          'style-loader',
+          'css-modules-typescript-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[name]__[local]--[hash:base64:5]',
+              },
+            },
+          },
+          'sass-loader',
         ],
       },
       {
