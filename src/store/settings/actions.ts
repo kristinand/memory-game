@@ -1,10 +1,12 @@
-import {ILoadLocalSettingsData,
+import {
+  ILoadLocalSettingsData,
   IChangeVolume,
   IChangeHotkey,
   IChangeBgColor,
   ITogglePattern,
+  ISetDefaultSettings,
   EActionTypes,
-  ISetDefaultSettings,} from '../entities';
+} from './actionTypes';
 
 export const loadLocalSettingsData = (data: ILoadLocalSettingsData['data']): ILoadLocalSettingsData => ({
   type: EActionTypes.LOAD_LOCAL_SETTINGS_DATA,

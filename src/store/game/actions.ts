@@ -1,20 +1,20 @@
 import { ActionCreator, Action, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import { IGame } from 'entities/interfaces';
-import api from '../../api/api';
+import { IGame } from 'entities/';
 import {
-  ILoadLevel,
-  IChangeCardStatus,
-  IStartGame,
-  ISetIsGamePaused,
   ILoadLocalGameData,
-  ILogout,
+  IStartGame,
   ILogin,
+  ILogout,
+  ILoadLevel,
+  ISetIsGamePaused,
+  IChangeCardStatus,
   ISaveScore,
   ISetAutoplay,
   EActionTypes,
-} from '../entities';
+} from './actionTypes';
+import api from '../../api/api';
 
 export type AppThunk = ActionCreator<ThunkAction<void, IGame, null, Action<string>>>;
 

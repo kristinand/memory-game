@@ -1,15 +1,15 @@
 import { Reducer } from 'redux';
-import { ISettings } from 'entities/interfaces';
-import { TActionTypes, EActionTypes } from '../entities';
+import { ISettings } from 'entities/';
+import { TSettingsActionTypes, EActionTypes } from './actionTypes';
 
 const initState: ISettings = {
   bgColor: '#f8ebc6',
   isPatternShown: true,
   musicVolume: 0.5,
   soundVolume: 0.5,
-  // volume: {
+  // TODO: volume: {
   //   music: 0.5,
-  //   sound: 0.5,
+  //   sounds: 0.5,
   // },
   keys: {
     music: 'm',
@@ -20,29 +20,14 @@ const initState: ISettings = {
   },
 };
 
-const changeVolume = (state, action): ISettings => {
-  let newState;
-  if (action.audio === 'music') {
-    newState = { ...state, musicVolume: action.volume };
-  } else {
-    newState = { ...state, soundVolume: action.volume };
-  }
-  return newState;
-};
-
-const changeHotkey = (state, action): ISettings => {
-  const { keyType, value: keyValue } = action;
-  return { ...state, keys: { ...state.keys, [keyType]: keyValue } };
-};
-
-const settingsReducer: Reducer<ISettings, TActionTypes> = (state = initState, action) => {
+const settingsReducer: Reducer<ISettings, TSettingsActionTypes> = (state = initState, action) => {
   switch (action.type) {
     case EActionTypes.LOAD_LOCAL_SETTINGS_DATA:
       return action.data;
     case EActionTypes.CHANGE_VOLUME:
-      return changeVolume(state, action);
+      return { ...state, [`${action.audio}Volume`]: action.volume };
     case EActionTypes.CHANGE_HOTKEY:
-      return changeHotkey(state, action);
+      return { ...state, keys: { ...state.keys, [action.keyType]: action.value } };
     case EActionTypes.CHANGE_BG_COLOR:
       return { ...state, bgColor: action.bgColor };
     case EActionTypes.TOGGLE_PATTERN:
