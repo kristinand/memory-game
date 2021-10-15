@@ -10,7 +10,7 @@ interface IProps {
 }
 
 const CardRow: React.FC<IProps> = ({ cards, onCardClick }) => (
-  <div className={classes.CardRow}>
+  <div className={classes.cardRow}>
     {cards.map((card) => (
       <Card
         onCardClick={() => onCardClick(card.key)}

@@ -8,7 +8,7 @@ import classes from './classes.module.scss';
 const About: React.FC = () => (
   <>
     <Header title="About Game" />
-    <article className={classes.About}>
+    <article className={classes.article}>
       <h1>Welcome to Memo — memory card game!</h1>
       <section>
         <img className={classes.image} src={AboutGif} alt="how-to-play" width="250" />

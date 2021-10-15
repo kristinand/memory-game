@@ -1,4 +1,4 @@
-.GameControls {
+.gameControls {
   position: relative;
   margin-bottom: 1rem;
   display: flex;
@@ -10,7 +10,7 @@
 }
 
 @media (max-width: 600px) {
-  .GameControls {
+  .gameControls {
     flex-direction: column;
     gap: 0.5rem;
   }

@@ -27,7 +27,7 @@
   transform: scale(1.05);
 }
 
-.Card {
+.card {
   padding: 0.2em;
   position: relative;
   width: 100%;
@@ -50,12 +50,12 @@
 }
 
 @media (min-width: 1024px) {
-  .Card {
+  .card {
     font-size: 3rem;
   }
 }
 
-.CardCover {
+.cardCover {
   width: 100%;
   height: 100%;
   display: flex;
@@ -67,7 +67,7 @@
   backface-visibility: hidden;
 }
 
-.CardColor {
+.cardColor {
   display: flex;
   justify-content: center;
   align-items: center;

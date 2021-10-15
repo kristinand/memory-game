@@ -51,7 +51,7 @@ const Menu: React.FC = () => {
   return (
     <>
       <div className={classes.menu}>
-        <div className={classes.NameInput}>
+        <div className={classes.nameInput}>
           <div className={classes.inputContainer}>
             <input
               className={classNames({ [classes.input]: true, [classes.inputDanger]: helperText.length })}

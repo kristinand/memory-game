@@ -12,7 +12,7 @@ interface IProps {
 const Header: React.FC<IProps> = ({ title }) => {
   const history = useHistory();
   return (
-    <div className={classes.Header}>
+    <div className={classes.header}>
       <span className={classes.button}>
         <IconButton component={Back as ElementType} text="Back to Menu" onClick={() => history.push('/')} />
       </span>

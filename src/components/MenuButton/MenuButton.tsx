@@ -25,8 +25,8 @@ const MenuButton: React.FC<IProps> = ({ path, title, onClick, disabled }) => {
   };
 
   return (
-    <Link to={path} style={{ width: '100%' }}>
-      <button type="button" disabled={disabled} onClick={onClickButtonHandler} className={classes.Button}>
+    <Link to={path} className={classes.link}>
+      <button type="button" disabled={disabled} onClick={onClickButtonHandler} className={classes.button}>
         {title}
       </button>
     </Link>

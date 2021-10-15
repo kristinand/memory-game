@@ -71,7 +71,7 @@ const Settings: React.FC = () => {
   return (
     <>
       <Header title="Game Settings" />
-      <div className={classes.Settings}>
+      <div className={classes.settings}>
         <div className={classes.settingsElement}>
           <span>HEX Background Color</span>
           <div className={classes.inputContainer}>

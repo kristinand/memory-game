@@ -35,12 +35,12 @@ const Card: React.FC<IProps> = ({ status, onCardClick, coverColor, color, patter
       <button
         type="button"
         onClick={onCardClick}
-        className={classNames(classes.Card, { [classes.cardOpened]: isOpen })}
+        className={classNames(classes.card, { [classes.cardOpened]: isOpen })}
       >
-        <div className={classes.CardCover} style={{ backgroundColor: coverColor }}>
+        <div className={classes.cardCover} style={{ backgroundColor: coverColor }}>
           <span>?</span>
         </div>
-        <div className={classes.CardColor} style={{ backgroundColor: color }}>
+        <div className={classes.cardColor} style={{ backgroundColor: color }}>
           {isPatternShown && <span className={classes.pattern}>{pattern}</span>}
         </div>
       </button>

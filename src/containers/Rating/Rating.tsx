@@ -28,7 +28,7 @@ const Rating: React.FC = () => {
   return (
     <>
       <Header title="Rating" />
-      <div className={classes.Rating}>
+      <div className={classes.rating}>
         <div className={classes.header}>
           <span>Position</span>
           <span>Name</span>
