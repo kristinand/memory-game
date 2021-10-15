@@ -1,7 +1,0 @@
-.CardRow {
-	display: flex;
-  gap: 1rem;
-  flex: 1;
-  max-height: 250px;
-  justify-content: space-between;
-}

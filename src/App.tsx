@@ -8,14 +8,14 @@ import { IState } from 'store/entities';
 import { ISettings } from 'store/settings/entities';
 import { IGameData } from 'entities/';
 import { getLocalStorageValue } from 'utils/functions';
-import Game from './containers/Game/Game';
-import Menu from './containers/Menu/Menu';
-import Rating from './containers/Rating/Rating';
-import Settings from './containers/Settings/Settings';
-import About from './components/About/About';
+import Game from 'containers/Game';
+import Menu from 'containers/Menu';
+import Rating from 'containers/Rating';
+import Settings from 'containers/Settings';
+import About from 'components/About';
 
-
-import classes from './App.css';
+import './styles/index.scss';
+import classes from './App.module.scss';
 
 const App: React.FC = () => {
   const isLoggedIn = useSelector((state: IState) => state.game.isLoggedIn);

@@ -1,0 +1,89 @@
+@import 'styles/';
+
+.wrapper {
+  flex: 1;
+  height: 100%;
+  font-size: 4vw;
+  background-color: transparent;
+  animation: appear 0.5s ease-in;
+  transition: 0.1s ease-in-out;
+}
+
+@keyframes appear {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  70% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.wrapper:hover {
+  transform: scale(1.05);
+}
+
+.card {
+  padding: 0.2em;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-family: 'Averia Libre';
+  background-color: #fff;
+  outline: none;
+  border: none;
+  border-radius: 0.1em;
+  box-shadow: 2px 2px 0.1em 3px hsla(0, 0%, 70%, 0.3);
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.cardOpened {
+  transform: rotateY(180deg);
+  box-shadow: -2px 2px 0.1em 3px hsla(0, 0%, 70%, 0.3);
+}
+
+@media (min-width: 1024px) {
+  .card {
+    font-size: 3rem;
+  }
+}
+
+.cardCover {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  color: white;
+  border-radius: 0.1em;
+  backface-visibility: hidden;
+}
+
+.cardColor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0.14em;
+  bottom: 0.14em;
+  left: 0.14em;
+  right: 0.14em;
+  font-size: 1.4em;
+  color: white;
+  border-radius: 0.14em;
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+}
+
+
+.pattern {
+  font-family: $notoSansJS;
+}

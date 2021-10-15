@@ -1,0 +1,50 @@
+.gameControls {
+  position: relative;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.6rem;
+  height: 70px;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .gameControls {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+.screen {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.screen:focus {
+  outline: none;
+}
+
+.level {
+  margin: 0 0.5rem;
+}
+
+.timer {
+  position: relative;
+  top: 0.2em;
+  margin-right: 0.5rem;
+}
+
+.right {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .right {
+    align-self: flex-end;
+  }
+}
