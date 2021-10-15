@@ -15,7 +15,7 @@ import Music0 from 'assets/icons/music0.svg';
 import Music1 from 'assets/icons/music1.svg';
 import Music2 from 'assets/icons/music2.svg';
 
-import IconButton from 'components/IconButton/IconButton';
+import IconButton from 'components/IconButton';
 
 import { IState } from 'store/entities';
 import * as gameActions from 'store/game/actions';

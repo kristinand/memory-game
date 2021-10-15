@@ -2,7 +2,7 @@ import React, { ElementType } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Back from 'assets/icons/left.svg';
-import IconButton from '../IconButton/IconButton';
+import IconButton from '../IconButton';
 import classes from './classes.module.scss';
 
 interface IProps {

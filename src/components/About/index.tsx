@@ -2,7 +2,7 @@
 import React from 'react';
 
 import AboutGif from 'assets/about.gif';
-import Header from '../Header/Header';
+import Header from '../Header';
 import classes from './classes.module.scss';
 
 const About: React.FC = () => (

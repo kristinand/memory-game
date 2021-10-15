@@ -4,8 +4,8 @@ import Switch from '@material-ui/core/Switch';
 
 import Reset from 'assets/icons/reset.svg';
 import menuSound from 'assets/menu-click.opus';
-import Header from 'components/Header/Header';
-import IconButton from 'components/IconButton/IconButton';
+import Header from 'components/Header';
+import IconButton from 'components/IconButton';
 
 import { IKeys } from 'entities/';
 import { IState } from 'store/entities';

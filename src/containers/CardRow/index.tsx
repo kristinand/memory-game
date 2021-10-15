@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ICard } from 'entities/interfaces';
-import Card from '../Card/Card';
+import Card from '../Card';
 import classes from './classes.module.scss';
 
 interface IProps {
