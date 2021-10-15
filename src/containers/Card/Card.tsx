@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 
 import { ECardStatus } from 'entities/';
 import { IState } from 'store/entities';

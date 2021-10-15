@@ -8,9 +8,9 @@ import { ICard, ECardStatus } from 'entities/';
 import * as actions from 'store/game/actions';
 import { listToArray, getRandomNumber } from 'utils/functions';
 
-import CardRow from 'components/CardRow/CardRow';
 import IconButton from 'components/IconButton/IconButton';
-import GameControls from './GameControls/GameControls';
+import CardRow from '../CardRow/CardRow';
+import GameControls from '../GameControls/GameControls';
 
 import classes from './classes.module.scss';
 

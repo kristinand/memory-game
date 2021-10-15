@@ -1,6 +1,6 @@
 import React, { ElementType, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import classNames from 'classnames/bind';
+import classNames from 'classnames';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
 import { myGitHubLink, myGitHubName, RSSchoolLink } from 'constants/index';
