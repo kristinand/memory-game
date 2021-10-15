@@ -41,7 +41,7 @@ const Card: React.FC<IProps> = ({ status, onCardClick, coverColor, color, patter
           <span>?</span>
         </div>
         <div className={classes.CardColor} style={{ backgroundColor: color }}>
-          {isPatternShown && <span className="pattern">{pattern}</span>}
+          {isPatternShown && <span className={classes.pattern}>{pattern}</span>}
         </div>
       </button>
     </div>

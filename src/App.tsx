@@ -14,7 +14,7 @@ import Rating from './containers/Rating/Rating';
 import Settings from './containers/Settings/Settings';
 import About from './components/About/About';
 
-
+import './styles/index.scss';
 import classes from './App.module.scss';
 
 const App: React.FC = () => {

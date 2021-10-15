@@ -71,7 +71,7 @@ const Menu: React.FC = () => {
           {helperText.length > 0 ? <p className={classes.helperText}>{helperText}</p> : ''}
         </div>
 
-        <span className="separator">♥ ☀ ♦</span>
+        <span className={classes.separator}>♥ ☀ ♦</span>
 
         <MenuButton
           onClick={() => dispatch(actions.startGame())}
