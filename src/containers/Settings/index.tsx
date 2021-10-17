@@ -1,5 +1,6 @@
 import React, { ElementType } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import classNames from 'classnames';
 
 import Reset from 'assets/icons/reset.svg';
 import menuSound from 'assets/menu-click.opus';
@@ -55,14 +56,21 @@ const Settings: React.FC = () => {
   };
 
   const onThemeChangeHandler = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    const theme = checked ? ETheme.dark : ETheme.light;
-    dispatch(actions.changeTheme(theme));
-    setLocalStorageSettingsItem({ theme });
+    if (!state.isSystemTheme) {
+      const theme = checked ? ETheme.dark : ETheme.light;
+      dispatch(actions.changeTheme(theme));
+      setLocalStorageSettingsItem({ theme });
+    }
   };
 
   const onToggleCardPatternHandler = () => {
     dispatch(actions.togglePattern());
     setLocalStorageSettingsItem({ isPatternShown: !state.isPatternShown });
+  };
+
+  const onUseSystemThemeHandler = () => {
+    dispatch(actions.useSystemTheme());
+    setLocalStorageSettingsItem({ isSystemTheme: !state.isSystemTheme });
   };
 
   return (
@@ -110,11 +118,14 @@ const Settings: React.FC = () => {
             value={state.isPatternShown}
             onChange={onToggleCardPatternHandler}
           />
-          <SettingsElement
-            title="Dark Theme Enabled"
-            value={state.theme === ETheme.dark}
-            onChange={onThemeChangeHandler}
-          />
+          <SettingsElement title="Use System Theme" value={state.isSystemTheme} onChange={onUseSystemThemeHandler} />
+          {!state.isSystemTheme && (
+            <SettingsElement
+              title="Dark Theme Enabled"
+              value={state.theme === ETheme.dark}
+              onChange={onThemeChangeHandler}
+            />
+          )}
         </div>
 
         <Button className={classes.button} onClick={setDefaultSettingsHandler} icon={Reset as ElementType}>

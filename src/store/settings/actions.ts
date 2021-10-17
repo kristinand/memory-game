@@ -5,6 +5,7 @@ import {
   IChangeTheme,
   ITogglePattern,
   ISetDefaultSettings,
+  IUseSystemTheme,
   EActionTypes,
 } from './entities';
 
@@ -36,4 +37,8 @@ export const togglePattern = (): ITogglePattern => ({
 
 export const setDefaultSettings = (): ISetDefaultSettings => ({
   type: EActionTypes.SET_DEFAULT_SETTINGS,
+});
+
+export const useSystemTheme = (): IUseSystemTheme => ({
+  type: EActionTypes.USE_SYSTEM_THEME,
 });
