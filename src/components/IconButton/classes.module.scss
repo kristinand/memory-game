@@ -7,13 +7,9 @@
   justify-content: center;
   align-items: center;
   vertical-align: middle;
-  font-family: inherit;
   background-color: transparent;
   border-radius: 3px;
-  border: none;
-  outline: none;
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1);
-  cursor: pointer;
 
   &:hover {
     background-color: $danger;
