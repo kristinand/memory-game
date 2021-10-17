@@ -1,6 +1,5 @@
 import React, { ElementType } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Switch from '@material-ui/core/Switch';
 
 import Reset from 'assets/icons/reset.svg';
 import menuSound from 'assets/menu-click.opus';
@@ -8,7 +7,7 @@ import Layout from 'components/Layout';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Button from 'components/Button';
-import Input from 'components/Input';
+import SettingsElement from 'components/SettingsElement';
 
 import { IKeys } from 'entities/';
 import { IState } from 'store/entities';
@@ -71,87 +70,51 @@ const Settings: React.FC = () => {
       <Header title="Game Settings" />
       <Layout>
         <div className={classes.table}>
-          <div className={classes.tableRow}>
-            <span>Music Volume</span>
-            <Input
-              className={classes.input}
-              type="number"
-              onChange={(event) => onVolumeChangeHandler('music', (event.target as HTMLInputElement).valueAsNumber)}
-              value={state.musicVolume}
-              max={1}
-              min={0}
-              step={0.1}
-            />
-          </div>
-          <div className={classes.tableRow}>
-            <span>Sounds Volume</span>
-            <Input
-              className={classes.input}
-              type="number"
-              onChange={(event) => onVolumeChangeHandler('sound', (event.target as HTMLInputElement).valueAsNumber)}
-              value={state.soundVolume}
-              max={1}
-              min={0}
-              step={0.1}
-            />
-          </div>
-          <div className={classes.tableRow}>
-            <span>Pause Hotkey</span>
-            <Input
-              className={classes.input}
-              type="text"
-              onChange={(event) => onHotkeyChangeHandler('pause', (event.target as HTMLInputElement).value)}
-              value={state.keys.pause}
-            />
-          </div>
-          <div className={classes.tableRow}>
-            <span>Reload Game Hotkey</span>
-            <Input
-              className={classes.input}
-              type="text"
-              onChange={(event) => onHotkeyChangeHandler('reload', (event.target as HTMLInputElement).value)}
-              value={state.keys.reload}
-            />
-          </div>
-          <div className={classes.tableRow}>
-            <span>Toggle Fullscreen Hotkey</span>
-            <Input
-              className={classes.input}
-              type="text"
-              onChange={(event) => onHotkeyChangeHandler('fullscreen', (event.target as HTMLInputElement).value)}
-              value={state.keys.fullscreen}
-            />
-          </div>
-          <div className={classes.tableRow}>
-            <span>Music Volume Hotkey</span>
-            <Input
-              className={classes.input}
-              type="text"
-              onChange={(event) => onHotkeyChangeHandler('music', (event.target as HTMLInputElement).value)}
-              value={state.keys.music}
-            />
-          </div>
-          <div className={classes.tableRow}>
-            <span>Sounds Volume Hotkey</span>
-            <Input
-              className={classes.input}
-              type="text"
-              onChange={(event) => onHotkeyChangeHandler('sounds', (event.target as HTMLInputElement).value)}
-              value={state.keys.sounds}
-            />
-          </div>
-          <div className={classes.tableRow}>
-            <span>Card Pattern Enabled</span>
-            <div className={classes.input}>
-              <Switch checked={state.isPatternShown} onChange={onToggleCardPatternHandler} color="default" />
-            </div>
-          </div>
-          <div className={classes.tableRow}>
-            <span>Activate Dark Theme</span>
-            <div className={classes.input}>
-              <Switch checked={state.theme === ETheme.dark} onChange={onThemeChangeHandler} color="default" />
-            </div>
-          </div>
+          <SettingsElement
+            title="Music Volume"
+            onChange={(event) => onVolumeChangeHandler('music', (event.target as HTMLInputElement).valueAsNumber)}
+            value={state.musicVolume}
+          />
+          <SettingsElement
+            title="Sounds Volume"
+            onChange={(event) => onVolumeChangeHandler('sound', (event.target as HTMLInputElement).valueAsNumber)}
+            value={state.soundVolume}
+          />
+          <SettingsElement
+            title="Pause Hotkey"
+            onChange={(event) => onHotkeyChangeHandler('pause', (event.target as HTMLInputElement).value)}
+            value={state.keys.pause}
+          />
+          <SettingsElement
+            title="Reload Game Hotkey"
+            onChange={(event) => onHotkeyChangeHandler('reload', (event.target as HTMLInputElement).value)}
+            value={state.keys.reload}
+          />
+          <SettingsElement
+            title="Toggle Fullscreen Hotkey"
+            onChange={(event) => onHotkeyChangeHandler('fullscreen', (event.target as HTMLInputElement).value)}
+            value={state.keys.fullscreen}
+          />
+          <SettingsElement
+            title="Music Volume Hotkey"
+            onChange={(event) => onHotkeyChangeHandler('music', (event.target as HTMLInputElement).value)}
+            value={state.keys.music}
+          />
+          <SettingsElement
+            title="Sounds Volume Hotkey"
+            onChange={(event) => onHotkeyChangeHandler('sounds', (event.target as HTMLInputElement).value)}
+            value={state.keys.sounds}
+          />
+          <SettingsElement
+            title="Card Pattern Enabled"
+            value={state.isPatternShown}
+            onChange={onToggleCardPatternHandler}
+          />
+          <SettingsElement
+            title="Dark Theme Enabled"
+            value={state.theme === ETheme.dark}
+            onChange={onThemeChangeHandler}
+          />
         </div>
 
         <Button className={classes.button} onClick={setDefaultSettingsHandler} icon={Reset as ElementType}>
