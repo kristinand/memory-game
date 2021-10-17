@@ -37,18 +37,16 @@ const App: React.FC = () => {
 
   return (
     <div className={classNames(classes.App, classes[theme])}>
-      <div className={classes.wrapper}>
-        <BrowserRouter>
-          <Switch>
-            {isLoggedIn && <Route path="/game" component={Game} />}
-            <Route path="/about" component={About} />
-            <Route path="/rating" component={Rating} />
-            {isLoggedIn && <Route path="/settings" component={Settings} />}
-            <Route path="/" component={Menu} />
-            <Redirect to="/" />
-          </Switch>
-        </BrowserRouter>
-      </div>
+      <BrowserRouter>
+        <Switch>
+          {isLoggedIn && <Route path="/game" component={Game} />}
+          <Route path="/about" component={About} />
+          <Route path="/rating" component={Rating} />
+          {isLoggedIn && <Route path="/settings" component={Settings} />}
+          <Route path="/" component={Menu} />
+          <Redirect to="/" />
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 };

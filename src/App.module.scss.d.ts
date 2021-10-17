@@ -4,7 +4,6 @@ interface CssExports {
   'App': string;
   'dark': string;
   'light': string;
-  'wrapper': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

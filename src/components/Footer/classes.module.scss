@@ -1,0 +1,20 @@
+@import 'styles/';
+
+.footer {
+  width: 100%;
+  padding: 1em 0;
+  flex-shrink: 0;
+  text-align: center;
+  color: $textDark;
+  background-color: $danger;
+
+
+  & a {
+    color: $textDark;
+  }
+}
+
+:global(.MuiSvgIcon-root).logoSvg {
+  width: 1.4em;
+  height: auto;
+}

@@ -12,12 +12,15 @@ interface IProps {
 const Header: React.FC<IProps> = ({ title }) => {
   const history = useHistory();
   return (
-    <div className={classes.header}>
-      <span className={classes.button}>
-        <IconButton component={Back as ElementType} text="Back to Menu" onClick={() => history.push('/')} />
-      </span>
-      <span className={classes.title}>{title}</span>
-    </div>
+    <header className={classes.header}>
+      <IconButton
+        className={classes.button}
+        component={Back as ElementType}
+        text="Back to Menu"
+        onClick={() => history.push('/')}
+      />
+      <h2>{title}</h2>
+    </header>
   );
 };
 

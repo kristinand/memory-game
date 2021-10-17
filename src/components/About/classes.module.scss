@@ -1,11 +1,6 @@
-.article {
-  margin: 1rem auto;
-  min-width: 400px;
-  width: 50%;
-}
-
 .image {
   float: right;
+  border-radius: 3px;
 }
 
 section:not(:last-child) {

@@ -1,19 +1,7 @@
 @import 'styles/';
 
-.menu {
-  margin: 25vh auto;
-  width: 30%;
-  min-width: 200px;
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-  align-items: center;
-  font-weight: normal;
-  line-height: 1em;
-}
-
 .loginContainer {
-  width: 100%;
+  width: 300px;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
@@ -56,30 +44,22 @@
   }
 }
 
-:global(.MuiSvgIcon-root).logoSvg {
-  width: 1.4em;
-  height: auto;
+.buttonGroup {
+  display: flex;
+  width: 300px;
+  flex-direction: column;
+  align-items: center;
+  font-weight: normal;
+
+  & > *:not(:last-child) {
+    margin-bottom: 1em;
+  }
 }
 
 .separator {
+  width: 100%;
+  line-height: 2em;
+  text-align: center;
   font-family: $notoSansJS;
   color: $danger;
-}
-
-.footer {
-  position: absolute;
-  bottom: 0.3rem;
-  transform: translateX(-50%);
-  left: 50%;
-
-  & a {
-    text-decoration: none;
-    color: $danger;
-  }
-}
-
-@media (max-width: 600px) {
-  .footer {
-    font-size: 0.8rem;
-  }
 }
