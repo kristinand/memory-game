@@ -9,7 +9,7 @@ import * as actions from 'store/game/actions';
 import { listToArray, getRandomNumber } from 'utils/functions';
 
 import IconButton from 'components/IconButton';
-import CardRow from '../CardRow';
+import Card from '../Card';
 import GameControls from '../GameControls';
 
 import classes from './classes.module.scss';
@@ -88,7 +88,17 @@ const Game: React.FC = () => {
       <GameControls getFocusRef={(ref) => setFocusRef(ref)} />
       <div className={classes.game}>
         {listToArray(gameState.cards, 4).map((cardsRow: ICard[]) => (
-          <CardRow key={cardsRow[0].key} cards={cardsRow} onCardClick={onCardSelectHandler} />
+          <div className={classes.cardRow} key={cardsRow[0].key}>
+            {cardsRow.map((card) => (
+              <Card
+                onCardClick={() => onCardSelectHandler(card.key)}
+                key={card.key}
+                color={card.color}
+                pattern={card.pattern}
+                status={card.status}
+              />
+            ))}
+          </div>
         ))}
       </div>
       <div className={classes.autoplay}>
