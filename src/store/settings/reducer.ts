@@ -1,8 +1,8 @@
 import { Reducer } from 'redux';
-import { TSettingsActionTypes, EActionTypes, ISettings } from './entities';
+import { TSettingsActionTypes, EActionTypes, ISettings, ETheme } from './entities';
 
 const initState: ISettings = {
-  bgColor: '#f8ebc6',
+  theme: ETheme.light,
   isPatternShown: true,
   musicVolume: 0.5,
   soundVolume: 0.5,
@@ -27,8 +27,8 @@ const settingsReducer: Reducer<ISettings, TSettingsActionTypes> = (state = initS
       return { ...state, [`${action.audio}Volume`]: action.volume };
     case EActionTypes.CHANGE_HOTKEY:
       return { ...state, keys: { ...state.keys, [action.keyType]: action.value } };
-    case EActionTypes.CHANGE_BG_COLOR:
-      return { ...state, bgColor: action.bgColor };
+    case EActionTypes.CHANGE_THEME:
+      return { ...state, theme: action.theme };
     case EActionTypes.TOGGLE_PATTERN:
       return { ...state, isPatternShown: !state.isPatternShown };
     case EActionTypes.SET_DEFAULT_SETTINGS:

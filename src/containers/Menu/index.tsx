@@ -17,6 +17,7 @@ import classes from './classes.module.scss';
 const Menu: React.FC = () => {
   const dispatch = useDispatch();
   const state = useSelector((store: IState) => store.game);
+  const theme = useSelector((store: IState) => store.settings.theme);
   const [helperText, setHelperText] = useState('');
   const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
 
@@ -51,10 +52,10 @@ const Menu: React.FC = () => {
   return (
     <>
       <div className={classes.menu}>
-        <div className={classes.nameInput}>
+        <div className={classes.loginContainer}>
           <div className={classes.inputContainer}>
             <input
-              className={classNames({ [classes.input]: true, [classes.inputDanger]: helperText.length })}
+              className={classNames(classes.input, classes[theme], {[classes.danger]: helperText.length })}
               type="text"
               id="name"
               value={player}
@@ -62,13 +63,14 @@ const Menu: React.FC = () => {
               placeholder="Your name"
               autoComplete="off"
             />
-            <IconButton
-              component={(state.isLoggedIn ? Logout : Login) as ElementType}
-              onClick={state.isLoggedIn ? logout : login}
-              title={state.isLoggedIn ? 'Logout' : 'Login'}
-            />
+            {helperText.length > 0 ? <p className={classes.helperText}>{helperText}</p> : ''}
           </div>
-          {helperText.length > 0 ? <p className={classes.helperText}>{helperText}</p> : ''}
+          <IconButton
+            className={classes.loginButton}
+            component={(state.isLoggedIn ? Logout : Login) as ElementType}
+            onClick={state.isLoggedIn ? logout : login}
+            title={state.isLoggedIn ? 'Logout' : 'Login'}
+          />
         </div>
 
         <span className={classes.separator}>♥ ☀ ♦</span>

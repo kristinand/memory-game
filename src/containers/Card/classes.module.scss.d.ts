@@ -3,9 +3,11 @@
 interface CssExports {
   'appear': string;
   'card': string;
-  'cardColor': string;
   'cardCover': string;
-  'cardOpened': string;
+  'cardFace': string;
+  'dark': string;
+  'light': string;
+  'opened': string;
   'pattern': string;
   'wrapper': string;
 }

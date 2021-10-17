@@ -28,8 +28,8 @@ const Rating: React.FC = () => {
   return (
     <>
       <Header title="Rating" />
-      <div className={classes.rating}>
-        <div className={classes.header}>
+      <div className={classes.table}>
+        <div className={classes.tableHeader}>
           <span>Position</span>
           <span>Name</span>
           <span>Completed Time</span>
@@ -38,7 +38,7 @@ const Rating: React.FC = () => {
         {ratings.map((playerRating, i) => (
           <div
             key={playerRating.player}
-            className={classNames({ [classes.player]: true, [classes.current]: playerName === playerRating.player })}
+            className={classNames({ [classes.tableRow]: true, [classes.current]: playerName === playerRating.player })}
           >
             <span>{i + 1}</span>
             <span>{playerRating.player}</span>

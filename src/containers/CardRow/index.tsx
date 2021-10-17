@@ -17,7 +17,6 @@ const CardRow: React.FC<IProps> = ({ cards, onCardClick }) => (
         key={card.key}
         color={card.color}
         pattern={card.pattern}
-        coverColor={card.coverColor}
         status={card.status}
       />
     ))}

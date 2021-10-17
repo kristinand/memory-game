@@ -146,30 +146,26 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
       <div role="menu" ref={focusRef} className={classes.screen} tabIndex={0} onKeyPress={handleKeyPress} />
       <span className={classes.level}>level: {gameState.level}</span>
 
-      <span className={classes.right}>
+      <span className={classes.buttonGroup}>
         <span className={classes.timer}>{formatTime(timer)}</span>
         <IconButton
-          onClick={onGamePauseHandler}
-          color={gameState.coverColor}
           title={isPaused ? 'Play' : 'Pause'}
+          onClick={onGamePauseHandler}
           component={(isPaused ? Play : Pause) as ElementType}
         />
         <IconButton
-          onClick={onGameReloadHandler}
-          color={gameState.coverColor}
-          component={Refresh as ElementType}
           title="Reload Game"
+          onClick={onGameReloadHandler}
+          component={Refresh as ElementType}
         />
         <IconButton
-          onClick={toggleFullscreenHandler}
-          color={gameState.coverColor}
-          component={Screen as ElementType}
           title="Toggle Fullscreen"
+          onClick={toggleFullscreenHandler}
+          component={Screen as ElementType}
         />
         <IconButton
-          onClick={() => onChangeAudioVolumeHandler('sound')}
-          color={gameState.coverColor}
           title="Sound Volume"
+          onClick={() => onChangeAudioVolumeHandler('sound')}
           component={
             // eslint-disable-next-line no-nested-ternary
             (settingsState.soundVolume === 0
@@ -177,12 +173,12 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
               : settingsState.soundVolume <= 0.5
               ? Sound1
               : Sound2) as ElementType
-          }
+            }
+
         />
         <IconButton
-          onClick={() => onChangeAudioVolumeHandler('music')}
-          color={gameState.coverColor}
           title="Music Volume"
+          onClick={() => onChangeAudioVolumeHandler('music')}
           component={
             // eslint-disable-next-line no-nested-ternary
             (settingsState.musicVolume === 0
@@ -190,13 +186,13 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
               : settingsState.musicVolume <= 0.5
               ? Music1
               : Music2) as ElementType
-          }
+            }
+
         />
         <IconButton
-          onClick={() => history.push('/')}
-          color={gameState.coverColor}
-          component={Back as ElementType}
           title="Back to Menu"
+          onClick={() => history.push('/')}
+          component={Back as ElementType}
         />
       </span>
     </div>

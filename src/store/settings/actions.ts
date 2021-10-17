@@ -2,7 +2,7 @@ import {
   ILoadLocalSettingsData,
   IChangeVolume,
   IChangeHotkey,
-  IChangeBgColor,
+  IChangeTheme,
   ITogglePattern,
   ISetDefaultSettings,
   EActionTypes,
@@ -25,9 +25,9 @@ export const changeHotkey = (keyType: IChangeHotkey['keyType'], value: IChangeHo
   value,
 });
 
-export const changeBgColor = (bgColor: IChangeBgColor['bgColor']): IChangeBgColor => ({
-  type: EActionTypes.CHANGE_BG_COLOR,
-  bgColor,
+export const changeTheme = (theme: IChangeTheme['theme']): IChangeTheme => ({
+  type: EActionTypes.CHANGE_THEME,
+  theme,
 });
 
 export const togglePattern = (): ITogglePattern => ({

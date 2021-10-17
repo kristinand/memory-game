@@ -12,64 +12,74 @@
   line-height: 1em;
 }
 
+.loginContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+
+  & .loginButton {
+    height: 51px;
+  }
+}
+
+.inputContainer {
+  width: 80%;
+  height: 92px;
+
+  & .input {
+    display: block;
+    padding: 1em 2em;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    border: 0;
+    border-radius: 3px;
+    outline: none;
+
+    &.light {
+      background-color: $inputLight;
+    }
+
+    &.dark {
+      background-color: $inputDark;
+    }
+
+    &.danger::placeholder {
+      color: $danger;
+    }
+  }
+
+  & .helperText {
+    padding: 0.3em;
+    color: $danger;
+  }
+}
+
+:global(.MuiSvgIcon-root).logoSvg {
+  width: 1.4em;
+  height: auto;
+}
+
+.separator {
+  font-family: $notoSansJS;
+  color: $danger;
+}
+
 .footer {
   position: absolute;
   bottom: 0.3rem;
   transform: translateX(-50%);
   left: 50%;
+
+  & a {
+    text-decoration: none;
+    color: $danger;
+  }
 }
 
 @media (max-width: 600px) {
   .footer {
     font-size: 0.8rem;
   }
-}
-
-.footer a {
-  text-decoration: none;
-  color: rgba(0, 0, 0, 0.8);
-}
-
-.nameInput {
-  width: 100%;
-  height: 80px;
-}
-
-.inputContainer {
-  display: flex;
-  justify-content: space-between;
-}
-
-.helperText {
-  padding: 0.3em 2em;
-  color: #9d3f46;
-}
-
-.input {
-  display: block;
-  padding: 1em 2em;
-  width: 80%;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  background-color: #fff;
-  border: 0px solid rgba(0, 0, 0, 0);
-  border-radius: 0.3em;
-}
-
-.input:focus {
-  outline: none;
-}
-
-.inputDanger::placeholder {
-  color: rgba(157, 63, 70, 0.7);
-}
-
-:global(.MuiSvgIcon-root).logoSvg {
-  width: 1.7em;
-  height: auto;
-}
-
-.separator {
-  font-family: $notoSansJS;
 }

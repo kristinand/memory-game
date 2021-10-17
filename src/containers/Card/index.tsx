@@ -9,15 +9,15 @@ import classes from './classes.module.scss';
 
 interface IProps {
   status: ECardStatus;
-  coverColor: string;
   color: string;
   pattern: string;
   onCardClick: () => void;
 }
 
-const Card: React.FC<IProps> = ({ status, onCardClick, coverColor, color, pattern }) => {
+const Card: React.FC<IProps> = ({ status, onCardClick, color, pattern }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { soundVolume, isPatternShown } = useSelector((state: IState) => state.settings);
+  const { soundVolume, isPatternShown, theme } = useSelector((state: IState) => state.settings);
+  const { coverColor } = useSelector((state: IState) => state.game);
   const clickAudio = new Audio(audio);
 
   useEffect(() => {
@@ -35,12 +35,12 @@ const Card: React.FC<IProps> = ({ status, onCardClick, coverColor, color, patter
       <button
         type="button"
         onClick={onCardClick}
-        className={classNames(classes.card, { [classes.cardOpened]: isOpen })}
+        className={classNames(classes.card, classes[theme], { [classes.opened]: isOpen })}
       >
         <div className={classes.cardCover} style={{ backgroundColor: coverColor }}>
           <span>?</span>
         </div>
-        <div className={classes.cardColor} style={{ backgroundColor: color }}>
+        <div className={classes.cardFace} style={{ backgroundColor: color }}>
           {isPatternShown && <span className={classes.pattern}>{pattern}</span>}
         </div>
       </button>
