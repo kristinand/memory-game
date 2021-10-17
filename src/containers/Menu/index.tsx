@@ -56,6 +56,7 @@ const Menu: React.FC = () => {
             withHelperText
             helperText={helperText}
             placeholder="Your name"
+            value={player}
             autoFocus
             type="text"
             className={classes.input}
