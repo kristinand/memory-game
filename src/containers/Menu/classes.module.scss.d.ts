@@ -2,12 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'buttonGroup': string;
-  'danger': string;
-  'dark': string;
-  'helperText': string;
   'input': string;
-  'inputContainer': string;
-  'light': string;
   'loginButton': string;
   'loginContainer': string;
   'separator': string;

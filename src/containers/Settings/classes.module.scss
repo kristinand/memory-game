@@ -17,33 +17,9 @@
   }
 }
 
-.inputContainer {
-  width: 100px;
-  text-align: center;
-}
-
 .input {
-  display: block;
-  padding: 0.5em 1em;
-  width: 100%;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  border: 0;
-  border-radius: 0.3em;
-  transition: background-color 0.3s ease-in-out;
-
-  &.light {
-    background-color: $inputLight;
-  }
-
-  &.dark {
-    background-color: $inputDark;
-  }
-
-  &:focus {
-    outline: none;
-  }
+  margin-left: 50px;
+  width: 70px;
 }
 
 .button {

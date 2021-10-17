@@ -1,5 +1,9 @@
 @import 'styles/';
 
+.input {
+  padding: 1em 2em;
+}
+
 .loginContainer {
   width: 300px;
   display: flex;
@@ -8,39 +12,6 @@
 
   & .loginButton {
     height: 51px;
-  }
-}
-
-.inputContainer {
-  width: 80%;
-  height: 92px;
-
-  & .input {
-    display: block;
-    padding: 1em 2em;
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-    border: 0;
-    border-radius: 3px;
-    outline: none;
-
-    &.light {
-      background-color: $inputLight;
-    }
-
-    &.dark {
-      background-color: $inputDark;
-    }
-
-    &.danger::placeholder {
-      color: $danger;
-    }
-  }
-
-  & .helperText {
-    padding: 0.3em;
-    color: $danger;
   }
 }
 

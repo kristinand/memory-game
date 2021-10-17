@@ -1,0 +1,37 @@
+@import 'styles';
+
+.inputContainer {
+  &.withHT {
+    height: 92px;
+  }
+}
+
+.input {
+  width: 100%;
+  display: block;
+  padding: 0.5em 1em;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  border: 0;
+  border-radius: 3px;
+  outline: none;
+
+  &.light {
+    background-color: $inputLight;
+  }
+
+  &.dark {
+    background-color: $inputDark;
+  }
+
+  &.danger::placeholder {
+    color: $danger;
+  }
+}
+
+.helperText {
+  margin: 0;
+  padding: 0.3em;
+  color: $danger;
+}

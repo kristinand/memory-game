@@ -9,6 +9,7 @@ import Layout from 'components/Layout';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import IconButton from 'components/IconButton';
+import Input from 'components/Input';
 
 import { IKeys } from 'entities/';
 import { IState } from 'store/entities';
@@ -73,96 +74,82 @@ const Settings: React.FC = () => {
         <div className={classes.table}>
           <div className={classes.tableRow}>
             <span>Music Volume</span>
-            <div className={classes.inputContainer}>
-              <input
-                className={classNames(classes.input, classes[state.theme])}
-                type="number"
-                onChange={(event) => onVolumeChangeHandler('music', event.target.valueAsNumber)}
-                value={state.musicVolume}
-                max={1}
-                min={0}
-                step={0.1}
-              />
-            </div>
+            <Input
+              className={classes.input}
+              type="number"
+              onChange={(event) => onVolumeChangeHandler('music', (event.target as HTMLInputElement).valueAsNumber)}
+              value={state.musicVolume}
+              max={1}
+              min={0}
+              step={0.1}
+            />
           </div>
           <div className={classes.tableRow}>
             <span>Sounds Volume</span>
-            <div className={classes.inputContainer}>
-              <input
-                className={classNames(classes.input, classes[state.theme])}
-                type="number"
-                onChange={(event) => onVolumeChangeHandler('sound', event.target.valueAsNumber)}
-                value={state.soundVolume}
-                max={1}
-                min={0}
-                step={0.1}
-              />
-            </div>
+            <Input
+              className={classes.input}
+              type="number"
+              onChange={(event) => onVolumeChangeHandler('sound', (event.target as HTMLInputElement).valueAsNumber)}
+              value={state.soundVolume}
+              max={1}
+              min={0}
+              step={0.1}
+            />
           </div>
           <div className={classes.tableRow}>
             <span>Pause Hotkey</span>
-            <div className={classes.inputContainer}>
-              <input
-                className={classNames(classes.input, classes[state.theme])}
-                type="text"
-                onChange={(event) => onHotkeyChangeHandler('pause', event.target.value)}
-                value={state.keys.pause}
-              />
-            </div>
+            <Input
+              className={classes.input}
+              type="text"
+              onChange={(event) => onHotkeyChangeHandler('pause', (event.target as HTMLInputElement).value)}
+              value={state.keys.pause}
+            />
           </div>
           <div className={classes.tableRow}>
             <span>Reload Game Hotkey</span>
-            <div className={classes.inputContainer}>
-              <input
-                className={classNames(classes.input, classes[state.theme])}
-                type="text"
-                onChange={(event) => onHotkeyChangeHandler('reload', event.target.value)}
-                value={state.keys.reload}
-              />
-            </div>
+            <Input
+              className={classes.input}
+              type="text"
+              onChange={(event) => onHotkeyChangeHandler('reload', (event.target as HTMLInputElement).value)}
+              value={state.keys.reload}
+            />
           </div>
           <div className={classes.tableRow}>
             <span>Toggle Fullscreen Hotkey</span>
-            <div className={classes.inputContainer}>
-              <input
-                className={classNames(classes.input, classes[state.theme])}
-                type="text"
-                onChange={(event) => onHotkeyChangeHandler('fullscreen', event.target.value)}
-                value={state.keys.fullscreen}
-              />
-            </div>
+            <Input
+              className={classes.input}
+              type="text"
+              onChange={(event) => onHotkeyChangeHandler('fullscreen', (event.target as HTMLInputElement).value)}
+              value={state.keys.fullscreen}
+            />
           </div>
           <div className={classes.tableRow}>
             <span>Music Volume Hotkey</span>
-            <div className={classes.inputContainer}>
-              <input
-                className={classNames(classes.input, classes[state.theme])}
-                type="text"
-                onChange={(event) => onHotkeyChangeHandler('music', event.target.value)}
-                value={state.keys.music}
-              />
-            </div>
+            <Input
+              className={classes.input}
+              type="text"
+              onChange={(event) => onHotkeyChangeHandler('music', (event.target as HTMLInputElement).value)}
+              value={state.keys.music}
+            />
           </div>
           <div className={classes.tableRow}>
             <span>Sounds Volume Hotkey</span>
-            <div className={classes.inputContainer}>
-              <input
-                className={classNames(classes.input, classes[state.theme])}
-                type="text"
-                onChange={(event) => onHotkeyChangeHandler('sounds', event.target.value)}
-                value={state.keys.sounds}
-              />
-            </div>
+            <Input
+              className={classes.input}
+              type="text"
+              onChange={(event) => onHotkeyChangeHandler('sounds', (event.target as HTMLInputElement).value)}
+              value={state.keys.sounds}
+            />
           </div>
           <div className={classes.tableRow}>
             <span>Card Pattern Enabled</span>
-            <div className={classes.inputContainer}>
+            <div className={classes.input}>
               <Switch checked={state.isPatternShown} onChange={onToggleCardPatternHandler} color="default" />
             </div>
           </div>
           <div className={classes.tableRow}>
             <span>Activate Dark Theme</span>
-            <div className={classes.inputContainer}>
+            <div className={classes.input}>
               <Switch checked={state.theme === ETheme.dark} onChange={onThemeChangeHandler} color="default" />
             </div>
           </div>

@@ -29,7 +29,8 @@
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "import/prefer-default-export": "off",
     "react/require-default-props": "off",
-    "no-void": "off"
+    "no-void": "off",
+    "react/jsx-props-no-spreading": "off"
   },
   "settings": {
     "import/resolver": "webpack"

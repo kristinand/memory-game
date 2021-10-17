@@ -1,12 +1,12 @@
 import React, { ElementType, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import classNames from 'classnames';
 
+import Layout from 'components/Layout';
 import Login from 'assets/icons/right.svg';
 import Logout from 'assets/icons/left.svg';
 import MenuButton from 'components/MenuButton';
 import IconButton from 'components/IconButton';
-import Layout from 'components/Layout';
+import Input from 'components/Input';
 
 import { IState } from 'store/entities';
 import * as actions from 'store/game/actions';
@@ -16,13 +16,12 @@ import classes from './classes.module.scss';
 const Menu: React.FC = () => {
   const dispatch = useDispatch();
   const state = useSelector((store: IState) => store.game);
-  const theme = useSelector((store: IState) => store.settings.theme);
   const [helperText, setHelperText] = useState('');
   const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
 
-  const onInputValueChangeHandler = (value: string) => {
+  const onInputValueChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
     if (!state.isLoggedIn) {
-      setPlayer(value.trim());
+      setPlayer((event.target as HTMLInputElement).value.trim());
     }
   };
 
@@ -52,20 +51,15 @@ const Menu: React.FC = () => {
     <>
       <Layout centered>
         <div className={classes.loginContainer}>
-          <div className={classes.inputContainer}>
-            <input
-              className={classNames(classes.input, classes[theme], { [classes.danger]: helperText.length })}
-              type="text"
-              id="name"
-              value={player}
-              // eslint-disable-next-line jsx-a11y/no-autofocus
-              autoFocus
-              onChange={(event) => onInputValueChangeHandler(event.target.value)}
-              placeholder="Your name"
-              autoComplete="off"
-            />
-            {helperText.length > 0 ? <p className={classes.helperText}>{helperText}</p> : ''}
-          </div>
+          <Input
+            onChange={onInputValueChangeHandler}
+            withHelperText
+            helperText={helperText}
+            placeholder="Your name"
+            autoFocus
+            type="text"
+            className={classes.input}
+          />
           <IconButton
             className={classes.loginButton}
             component={(state.isLoggedIn ? Logout : Login) as ElementType}
