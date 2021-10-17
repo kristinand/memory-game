@@ -2,9 +2,9 @@
 // Please do not change this file!
 interface CssExports {
   'current': string;
-  'header': string;
-  'player': string;
-  'rating': string;
+  'table': string;
+  'tableHeader': string;
+  'tableRow': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

@@ -1,7 +1,12 @@
 import { IKeys } from 'entities/';
 
+export enum ETheme {
+  light = 'light',
+  dark = 'dark',
+}
+
 export interface ISettings {
-  bgColor: string;
+  theme: ETheme;
   isPatternShown: boolean;
   musicVolume: number;
   soundVolume: number;
@@ -13,7 +18,7 @@ export enum EActionTypes {
 
   CHANGE_VOLUME = 'CHANGE_VOLUME',
   CHANGE_HOTKEY = 'CHANGE_HOTKEY',
-  CHANGE_BG_COLOR = 'CHANGE_BG_COLOR',
+  CHANGE_THEME = 'CHANGE_THEME',
   TOGGLE_PATTERN = 'TOGGLE_PATTERN',
   SET_DEFAULT_SETTINGS = 'SET_DEFAULT_SETTINGS',
 }
@@ -33,9 +38,9 @@ export interface ISetDefaultSettings {
   type: typeof EActionTypes.SET_DEFAULT_SETTINGS;
 }
 
-export interface IChangeBgColor {
-  type: typeof EActionTypes.CHANGE_BG_COLOR;
-  bgColor: string;
+export interface IChangeTheme {
+  type: typeof EActionTypes.CHANGE_THEME;
+  theme: ETheme;
 }
 
 export interface ITogglePattern {
@@ -53,6 +58,6 @@ export type TSettingsActionTypes =
   | IChangeHotkey
   | ISetDefaultSettings
   | ITogglePattern
-  | IChangeBgColor
+  | IChangeTheme
   | IChangeVolume
   | ITogglePattern;

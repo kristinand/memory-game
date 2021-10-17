@@ -2,8 +2,10 @@
 // Please do not change this file!
 interface CssExports {
   'buttonWrapper': string;
+  'dark': string;
   'input': string;
   'inputContainer': string;
+  'light': string;
   'settings': string;
   'settingsElement': string;
 }

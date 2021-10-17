@@ -2,6 +2,8 @@
 // Please do not change this file!
 interface CssExports {
   'button': string;
+  'dark': string;
+  'light': string;
   'link': string;
 }
 export const cssExports: CssExports;

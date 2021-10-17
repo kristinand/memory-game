@@ -1,34 +1,36 @@
-.rating {
-  border: 2px solid #000;
+@import 'styles';
+
+.table {
+  border: 2px solid;
   border-radius: 5px;
 }
 
-.header {
+.tableHeader {
   display: flex;
   width: 100%;
   font-size: 1.2rem;
-  border-bottom: 2px solid #000;
+  border-bottom: 2px solid;
+
+  & span {
+    flex: 1;
+    padding: 0.5rem;
+  }
 }
 
-.header span {
-  flex: 1;
-  padding: 0.5rem;
-}
-
-.player {
+.tableRow {
   display: flex;
   width: 100%;
-}
 
-.player span {
-  flex: 1;
-  padding: 0.5rem;
-}
+  & span {
+    flex: 1;
+    padding: 0.5rem;
+  }
 
-.player:not(:last-child) {
-  border-bottom: 2px solid #000;
-}
+  &:not(:last-child) {
+    border-bottom: 2px solid;
+  }
 
-.current {
-  background-color: rgba(255, 255, 255, 0.5);
+  &.current {
+    background-color: rgba($danger, 0.5);
+  }
 }

@@ -1,36 +1,32 @@
-import React, { useRef } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import classNames from 'classnames';
+
 import SvgIcon from '@material-ui/core/SvgIcon';
+
+import { IState } from 'store/entities';
 import classes from './classes.module.scss';
 
 interface IProps {
   title?: string;
   text?: string;
-  color?: string;
   component: React.ElementType;
   onClick: () => void;
+  className?: string;
 }
 
-const IconButton: React.FC<IProps> = ({ title, onClick, component, text, color }) => {
-  const buttonRef = useRef(null);
-
-  const setButtonColors = (textColor = 'black', bgColor = 'transparent') => {
-    const button = buttonRef.current as HTMLButtonElement;
-    button.style.color = textColor;
-    button.style.backgroundColor = bgColor;
-  };
+const IconButton: React.FC<IProps> = ({ title, onClick, component, text, className }) => {
+  const { theme } = useSelector((store: IState) => store.settings);
 
   return (
     <button
       type="button"
       title={title}
-      className={classes.button}
+      className={classNames(classes.button, classes[theme], className)}
       onClick={onClick}
-      ref={buttonRef}
-      onMouseEnter={() => setButtonColors(color, 'white')}
-      onMouseLeave={() => setButtonColors()}
     >
       <SvgIcon fontSize="large" component={component} viewBox="0 0 100 100" />
-      {text && <span className={classes.btnText}>{text}</span>}
+      {text && <span className={classes.buttonText}>{text}</span>}
     </button>
   );
 };

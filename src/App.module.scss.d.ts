@@ -2,6 +2,8 @@
 // Please do not change this file!
 interface CssExports {
   'App': string;
+  'dark': string;
+  'light': string;
   'wrapper': string;
 }
 export const cssExports: CssExports;

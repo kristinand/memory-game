@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { loadLocalGameData } from 'store/game/actions';
 import { loadLocalSettingsData } from 'store/settings/actions';
@@ -19,7 +20,7 @@ import classes from './App.module.scss';
 
 const App: React.FC = () => {
   const isLoggedIn = useSelector((state: IState) => state.game.isLoggedIn);
-  const bgColor = useSelector((state: IState) => state.settings.bgColor);
+  const theme = useSelector((state: IState) => state.settings.theme);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className={classes.App} style={{ backgroundColor: bgColor }}>
+    <div className={classNames(classes.App, classes[theme])}>
       <div className={classes.wrapper}>
         <BrowserRouter>
           <Switch>
