@@ -15,7 +15,7 @@ import Music0 from 'assets/icons/music0.svg';
 import Music1 from 'assets/icons/music1.svg';
 import Music2 from 'assets/icons/music2.svg';
 
-import IconButton from 'components/IconButton';
+import Button from 'components/Button';
 
 import { IState } from 'store/entities';
 import * as gameActions from 'store/game/actions';
@@ -78,7 +78,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   }, [gameState.isGamePaused]);
 
   const saveGameData = () => {
-    const localData = {
+    const gameData = {
       cards: gameState.cards,
       level: gameState.level,
       coverColor: gameState.coverColor,
@@ -86,7 +86,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
       score: timer,
       player: gameState.player,
     };
-    localStorage.setItem('gameData', JSON.stringify(localData));
+    localStorage.setItem('gameData', JSON.stringify(gameData));
   };
 
   useEffect(() => {
@@ -142,60 +142,46 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   };
 
   return (
-    <div className={classes.gameControls}>
+    <header className={classes.gameControls}>
       <div role="menu" ref={focusRef} className={classes.screen} tabIndex={0} onKeyPress={handleKeyPress} />
       <span className={classes.level}>level: {gameState.level}</span>
 
       <span className={classes.buttonGroup}>
         <span className={classes.timer}>{formatTime(timer)}</span>
-        <IconButton
+        <Button
           title={isPaused ? 'Play' : 'Pause'}
           onClick={onGamePauseHandler}
-          component={(isPaused ? Play : Pause) as ElementType}
+          icon={(isPaused ? Play : Pause) as ElementType}
         />
-        <IconButton
-          title="Reload Game"
-          onClick={onGameReloadHandler}
-          component={Refresh as ElementType}
-        />
-        <IconButton
-          title="Toggle Fullscreen"
-          onClick={toggleFullscreenHandler}
-          component={Screen as ElementType}
-        />
-        <IconButton
+        <Button title="Reload Game" onClick={onGameReloadHandler} icon={Refresh as ElementType} />
+        <Button title="Toggle Fullscreen" onClick={toggleFullscreenHandler} icon={Screen as ElementType} />
+        <Button
           title="Sound Volume"
           onClick={() => onChangeAudioVolumeHandler('sound')}
-          component={
+          icon={
             // eslint-disable-next-line no-nested-ternary
             (settingsState.soundVolume === 0
               ? Sound0
               : settingsState.soundVolume <= 0.5
               ? Sound1
               : Sound2) as ElementType
-            }
-
+          }
         />
-        <IconButton
+        <Button
           title="Music Volume"
           onClick={() => onChangeAudioVolumeHandler('music')}
-          component={
+          icon={
             // eslint-disable-next-line no-nested-ternary
             (settingsState.musicVolume === 0
               ? Music0
               : settingsState.musicVolume <= 0.5
               ? Music1
               : Music2) as ElementType
-            }
-
+          }
         />
-        <IconButton
-          title="Back to Menu"
-          onClick={() => history.push('/')}
-          component={Back as ElementType}
-        />
+        <Button title="Back to Menu" onClick={() => history.push('/')} icon={Back as ElementType} />
       </span>
-    </div>
+    </header>
   );
 };
 

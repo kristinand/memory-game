@@ -1,8 +1,11 @@
 import { Reducer } from 'redux';
 import { TSettingsActionTypes, EActionTypes, ISettings, ETheme } from './entities';
 
+const systemTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)') ? ETheme.dark : ETheme.light;
+
 const initState: ISettings = {
-  theme: ETheme.light,
+  isSystemTheme: true,
+  theme: systemTheme,
   isPatternShown: true,
   musicVolume: 0.5,
   soundVolume: 0.5,
@@ -31,6 +34,12 @@ const settingsReducer: Reducer<ISettings, TSettingsActionTypes> = (state = initS
       return { ...state, theme: action.theme };
     case EActionTypes.TOGGLE_PATTERN:
       return { ...state, isPatternShown: !state.isPatternShown };
+    case EActionTypes.USE_SYSTEM_THEME:
+      return {
+        ...state,
+        isSystemTheme: !state.isSystemTheme,
+        theme: systemTheme,
+      };
     case EActionTypes.SET_DEFAULT_SETTINGS:
       return initState;
 

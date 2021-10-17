@@ -6,6 +6,7 @@ export enum ETheme {
 }
 
 export interface ISettings {
+  isSystemTheme: boolean;
   theme: ETheme;
   isPatternShown: boolean;
   musicVolume: number;
@@ -21,6 +22,7 @@ export enum EActionTypes {
   CHANGE_THEME = 'CHANGE_THEME',
   TOGGLE_PATTERN = 'TOGGLE_PATTERN',
   SET_DEFAULT_SETTINGS = 'SET_DEFAULT_SETTINGS',
+  USE_SYSTEM_THEME = 'USE_SYSTEM_THEME',
 }
 
 export interface ILoadLocalSettingsData {
@@ -47,6 +49,10 @@ export interface ITogglePattern {
   type: typeof EActionTypes.TOGGLE_PATTERN;
 }
 
+export interface IUseSystemTheme {
+  type: typeof EActionTypes.USE_SYSTEM_THEME;
+}
+
 export interface IChangeVolume {
   type: typeof EActionTypes.CHANGE_VOLUME;
   audio: string;
@@ -60,4 +66,5 @@ export type TSettingsActionTypes =
   | ITogglePattern
   | IChangeTheme
   | IChangeVolume
-  | ITogglePattern;
+  | ITogglePattern
+  | IUseSystemTheme;

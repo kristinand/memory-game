@@ -1,16 +1,15 @@
 .header {
-	margin: 1.5rem 0;
 	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.title {
-	font-size: 1.4rem;
+	padding: 0 10px;
+	width: 100%;
+	max-width: 1024px;
+	flex-shrink: 0;
+	text-align: center;
 }
 
 .button {
+	margin-left: 10px;
 	position: absolute;
-	left: 0%;
+	left: 0;
+	top: 22%;
 }

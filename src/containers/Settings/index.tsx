@@ -1,12 +1,14 @@
 import React, { ElementType } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
-import Switch from '@material-ui/core/Switch';
 
 import Reset from 'assets/icons/reset.svg';
 import menuSound from 'assets/menu-click.opus';
+import Layout from 'components/Layout';
 import Header from 'components/Header';
-import IconButton from 'components/IconButton';
+import Footer from 'components/Footer';
+import Button from 'components/Button';
+import SettingsElement from 'components/SettingsElement';
 
 import { IKeys } from 'entities/';
 import { IState } from 'store/entities';
@@ -20,13 +22,13 @@ const Settings: React.FC = () => {
   const sound = new Audio(menuSound);
 
   const setLocalStorageSettingsItem = (obj: Partial<ISettings>) => {
-    const settingsData = { ...state, ...obj };
-    localStorage.setItem('settingsData', JSON.stringify(settingsData));
+    const settings = { ...state, ...obj };
+    localStorage.setItem('settings', JSON.stringify(settings));
   };
 
   const setDefaultSettingsHandler = () => {
     dispatch(actions.setDefaultSettings());
-    localStorage.removeItem('settingsData');
+    localStorage.removeItem('settings');
   };
 
   const onVolumeChangeHandler = (type: string, value: number) => {
@@ -54,9 +56,11 @@ const Settings: React.FC = () => {
   };
 
   const onThemeChangeHandler = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    const theme = checked ? ETheme.dark : ETheme.light;
-    dispatch(actions.changeTheme(theme));
-    setLocalStorageSettingsItem({ theme });
+    if (!state.isSystemTheme) {
+      const theme = checked ? ETheme.dark : ETheme.light;
+      dispatch(actions.changeTheme(theme));
+      setLocalStorageSettingsItem({ theme });
+    }
   };
 
   const onToggleCardPatternHandler = () => {
@@ -64,110 +68,71 @@ const Settings: React.FC = () => {
     setLocalStorageSettingsItem({ isPatternShown: !state.isPatternShown });
   };
 
+  const onUseSystemThemeHandler = () => {
+    dispatch(actions.useSystemTheme());
+    setLocalStorageSettingsItem({ isSystemTheme: !state.isSystemTheme });
+  };
+
   return (
     <>
       <Header title="Game Settings" />
-      <div className={classes.settings}>
-        <div className={classes.settingsElement}>
-          <span>Music Volume</span>
-          <div className={classes.inputContainer}>
-            <input
-              className={classNames(classes.input, classes[state.theme])}
-              type="number"
-              onChange={(event) => onVolumeChangeHandler('music', event.target.valueAsNumber)}
-              value={state.musicVolume}
-              max={1}
-              min={0}
-              step={0.1}
+      <Layout>
+        <div className={classes.table}>
+          <SettingsElement
+            title="Music Volume"
+            onChange={(event) => onVolumeChangeHandler('music', (event.target as HTMLInputElement).valueAsNumber)}
+            value={state.musicVolume}
+          />
+          <SettingsElement
+            title="Sounds Volume"
+            onChange={(event) => onVolumeChangeHandler('sound', (event.target as HTMLInputElement).valueAsNumber)}
+            value={state.soundVolume}
+          />
+          <SettingsElement
+            title="Pause Hotkey"
+            onChange={(event) => onHotkeyChangeHandler('pause', (event.target as HTMLInputElement).value)}
+            value={state.keys.pause}
+          />
+          <SettingsElement
+            title="Reload Game Hotkey"
+            onChange={(event) => onHotkeyChangeHandler('reload', (event.target as HTMLInputElement).value)}
+            value={state.keys.reload}
+          />
+          <SettingsElement
+            title="Toggle Fullscreen Hotkey"
+            onChange={(event) => onHotkeyChangeHandler('fullscreen', (event.target as HTMLInputElement).value)}
+            value={state.keys.fullscreen}
+          />
+          <SettingsElement
+            title="Music Volume Hotkey"
+            onChange={(event) => onHotkeyChangeHandler('music', (event.target as HTMLInputElement).value)}
+            value={state.keys.music}
+          />
+          <SettingsElement
+            title="Sounds Volume Hotkey"
+            onChange={(event) => onHotkeyChangeHandler('sounds', (event.target as HTMLInputElement).value)}
+            value={state.keys.sounds}
+          />
+          <SettingsElement
+            title="Card Pattern Enabled"
+            value={state.isPatternShown}
+            onChange={onToggleCardPatternHandler}
+          />
+          <SettingsElement title="Use System Theme" value={state.isSystemTheme} onChange={onUseSystemThemeHandler} />
+          {!state.isSystemTheme && (
+            <SettingsElement
+              title="Dark Theme Enabled"
+              value={state.theme === ETheme.dark}
+              onChange={onThemeChangeHandler}
             />
-          </div>
+          )}
         </div>
-        <div className={classes.settingsElement}>
-          <span>Sounds Volume</span>
-          <div className={classes.inputContainer}>
-            <input
-              className={classNames(classes.input, classes[state.theme])}
-              type="number"
-              onChange={(event) => onVolumeChangeHandler('sound', event.target.valueAsNumber)}
-              value={state.soundVolume}
-              max={1}
-              min={0}
-              step={0.1}
-            />
-          </div>
-        </div>
-        <div className={classes.settingsElement}>
-          <span>Pause Hotkey</span>
-          <div className={classes.inputContainer}>
-            <input
-              className={classNames(classes.input, classes[state.theme])}
-              type="text"
-              onChange={(event) => onHotkeyChangeHandler('pause', event.target.value)}
-              value={state.keys.pause}
-            />
-          </div>
-        </div>
-        <div className={classes.settingsElement}>
-          <span>Reload Game Hotkey</span>
-          <div className={classes.inputContainer}>
-            <input
-              className={classNames(classes.input, classes[state.theme])}
-              type="text"
-              onChange={(event) => onHotkeyChangeHandler('reload', event.target.value)}
-              value={state.keys.reload}
-            />
-          </div>
-        </div>
-        <div className={classes.settingsElement}>
-          <span>Toggle Fullscreen Hotkey</span>
-          <div className={classes.inputContainer}>
-            <input
-              className={classNames(classes.input, classes[state.theme])}
-              type="text"
-              onChange={(event) => onHotkeyChangeHandler('fullscreen', event.target.value)}
-              value={state.keys.fullscreen}
-            />
-          </div>
-        </div>
-        <div className={classes.settingsElement}>
-          <span>Music Volume Hotkey</span>
-          <div className={classes.inputContainer}>
-            <input
-              className={classNames(classes.input, classes[state.theme])}
-              type="text"
-              onChange={(event) => onHotkeyChangeHandler('music', event.target.value)}
-              value={state.keys.music}
-            />
-          </div>
-        </div>
-        <div className={classes.settingsElement}>
-          <span>Sounds Volume Hotkey</span>
-          <div className={classes.inputContainer}>
-            <input
-              className={classNames(classes.input, classes[state.theme])}
-              type="text"
-              onChange={(event) => onHotkeyChangeHandler('sounds', event.target.value)}
-              value={state.keys.sounds}
-            />
-          </div>
-        </div>
-        <div className={classes.settingsElement}>
-          <span>Card Pattern Enabled</span>
-          <div className={classes.inputContainer}>
-            <Switch checked={state.isPatternShown} onChange={onToggleCardPatternHandler} color="default" />
-          </div>
-        </div>
-        <div className={classes.settingsElement}>
-          <span>Activate Dark Theme</span>
-          <div className={classes.inputContainer}>
-            <Switch checked={state.theme === ETheme.dark} onChange={onThemeChangeHandler} color="default" />
-          </div>
-        </div>
-      </div>
 
-      <div className={classes.buttonWrapper}>
-        <IconButton onClick={setDefaultSettingsHandler} component={Reset as ElementType} text="Set Default" />
-      </div>
+        <Button className={classes.button} onClick={setDefaultSettingsHandler} icon={Reset as ElementType}>
+          Set Default
+        </Button>
+      </Layout>
+      <Footer />
     </>
   );
 };

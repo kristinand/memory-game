@@ -1,29 +1,27 @@
 import React, { ElementType, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import classNames from 'classnames';
-import SvgIcon from '@material-ui/core/SvgIcon';
 
-import { myGitHubLink, myGitHubName, RSSchoolLink } from 'constants/index';
-import Logo from 'assets/icons/rss_logo.svg';
+import Layout from 'components/Layout';
 import Login from 'assets/icons/right.svg';
 import Logout from 'assets/icons/left.svg';
 import MenuButton from 'components/MenuButton';
-import IconButton from 'components/IconButton';
+import Button from 'components/Button';
+import Input from 'components/Input';
 
 import { IState } from 'store/entities';
 import * as actions from 'store/game/actions';
+import Footer from 'components/Footer';
 import classes from './classes.module.scss';
 
 const Menu: React.FC = () => {
   const dispatch = useDispatch();
   const state = useSelector((store: IState) => store.game);
-  const theme = useSelector((store: IState) => store.settings.theme);
   const [helperText, setHelperText] = useState('');
   const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
 
-  const onInputValueChangeHandler = (value: string) => {
+  const onInputValueChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
     if (!state.isLoggedIn) {
-      setPlayer(value.trim());
+      setPlayer((event.target as HTMLInputElement).value.trim());
     }
   };
 
@@ -51,60 +49,52 @@ const Menu: React.FC = () => {
 
   return (
     <>
-      <div className={classes.menu}>
+      <Layout centered>
         <div className={classes.loginContainer}>
-          <div className={classes.inputContainer}>
-            <input
-              className={classNames(classes.input, classes[theme], {[classes.danger]: helperText.length })}
-              type="text"
-              id="name"
-              value={player}
-              onChange={(event) => onInputValueChangeHandler(event.target.value)}
-              placeholder="Your name"
-              autoComplete="off"
-            />
-            {helperText.length > 0 ? <p className={classes.helperText}>{helperText}</p> : ''}
-          </div>
-          <IconButton
+          <Input
+            onChange={onInputValueChangeHandler}
+            withHelperText
+            helperText={helperText}
+            placeholder="Your name"
+            value={player}
+            autoFocus
+            type="text"
+            className={classes.input}
+          />
+          <Button
             className={classes.loginButton}
-            component={(state.isLoggedIn ? Logout : Login) as ElementType}
+            icon={(state.isLoggedIn ? Logout : Login) as ElementType}
             onClick={state.isLoggedIn ? logout : login}
             title={state.isLoggedIn ? 'Logout' : 'Login'}
           />
         </div>
 
-        <span className={classes.separator}>♥ ☀ ♦</span>
+        <div className={classes.separator}>♥ ☀ ♦</div>
 
-        <MenuButton
-          onClick={() => dispatch(actions.startGame())}
-          disabled={!state.isLoggedIn}
-          path="/game"
-          title="New Game"
-        />
-        <MenuButton
-          path="/game"
-          disabled={
-            !state.isLoggedIn ||
-            state.isGameEnded ||
-            localStorage.getItem('gameData') === null ||
-            localStorage.getItem('player') !== player
-          }
-          title="Continue"
-        />
-        <MenuButton path="/rating" title="Rating" />
-        <MenuButton disabled={!state.isLoggedIn} path={!state.isLoggedIn ? '' : '/settings'} title="Settings" />
-        <MenuButton path="/about" title="About" />
-      </div>
-      <p className={classes.footer}>
-        Created by{' '}
-        <a rel="noopener noreferrer nofollow" target="_blank" href={myGitHubLink}>
-          @{myGitHubName}
-        </a>
-        , 2021 /{' '}
-        <a rel="noopener noreferrer nofollow" target="_blank" href={RSSchoolLink}>
-          <SvgIcon component={Logo as ElementType} className={classes.logoSvg} viewBox="0 0 552.8 205.3" />
-        </a>
-      </p>
+        <div className={classes.buttonGroup}>
+          <MenuButton
+            onClick={() => dispatch(actions.startGame())}
+            disabled={!state.isLoggedIn}
+            path="/game"
+            title="New Game"
+          />
+          <MenuButton
+            path="/game"
+            disabled={
+              !state.isLoggedIn ||
+              state.isGameEnded ||
+              localStorage.getItem('gameData') === null ||
+              localStorage.getItem('player') !== player
+            }
+            title="Continue"
+          />
+          <MenuButton path="/rating" title="Rating" />
+          <MenuButton disabled={!state.isLoggedIn} path={!state.isLoggedIn ? '' : '/settings'} title="Settings" />
+          <MenuButton path="/about" title="About" />
+        </div>
+      </Layout>
+
+      <Footer />
     </>
   );
 };

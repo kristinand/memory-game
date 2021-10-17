@@ -8,8 +8,9 @@ import { ICard, ECardStatus } from 'entities/';
 import * as actions from 'store/game/actions';
 import { listToArray, getRandomNumber } from 'utils/functions';
 
-import IconButton from 'components/IconButton';
-import CardRow from '../CardRow';
+import Layout from 'components/Layout';
+import Button from 'components/Button';
+import Card from '../Card';
 import GameControls from '../GameControls';
 
 import classes from './classes.module.scss';
@@ -86,17 +87,31 @@ const Game: React.FC = () => {
   return (
     <>
       <GameControls getFocusRef={(ref) => setFocusRef(ref)} />
-      <div className={classes.game}>
-        {listToArray(gameState.cards, 4).map((cardsRow: ICard[]) => (
-          <CardRow key={cardsRow[0].key} cards={cardsRow} onCardClick={onCardSelectHandler} />
-        ))}
-      </div>
-      <div className={classes.autoplay}>
-        {!gameState.score && !gameState.isAutoplay && (
-          <IconButton onClick={onAutoplayHandler} text="Autoplay" component={Autoplay as ElementType} />
-        )}
-        {gameState.isAutoplay && <p>ai guesses the cards...</p>}
-      </div>
+      <Layout fullWidth centered>
+        <div className={classes.game}>
+          {listToArray(gameState.cards, 4).map((cardsRow: ICard[]) => (
+            <div key={cardsRow[0].key}>
+              {cardsRow.map((card) => (
+                <Card
+                  onCardClick={() => onCardSelectHandler(card.key)}
+                  key={card.key}
+                  color={card.color}
+                  pattern={card.pattern}
+                  status={card.status}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className={classes.autoplay}>
+          {!gameState.score && !gameState.isAutoplay && (
+            <Button onClick={onAutoplayHandler} icon={Autoplay as ElementType}>
+              Autoplay
+            </Button>
+          )}
+          {gameState.isAutoplay && <p>ai guesses the cards...</p>}
+        </div>
+      </Layout>
     </>
   );
 };

@@ -1,31 +1,36 @@
 @import 'styles';
 
 .table {
+  width: 90vw;
+  max-width: 800px;
   border: 2px solid;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
-.tableHeader {
-  display: flex;
-  width: 100%;
-  font-size: 1.2rem;
-  border-bottom: 2px solid;
-
-  & span {
-    flex: 1;
-    padding: 0.5rem;
-  }
-}
-
+.tableHeader,
 .tableRow {
   display: flex;
   width: 100%;
 
   & span {
-    flex: 1;
     padding: 0.5rem;
-  }
 
+    &:first-child {
+      width: 100px;
+    }
+
+    &:not(:first-child) {
+      flex: 1;
+    }
+  }
+}
+
+.tableHeader {
+  font-size: 1.2rem;
+  border-bottom: 2px solid;
+}
+
+.tableRow {
   &:not(:last-child) {
     border-bottom: 2px solid;
   }

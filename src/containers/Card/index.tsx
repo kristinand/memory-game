@@ -31,11 +31,11 @@ const Card: React.FC<IProps> = ({ status, onCardClick, color, pattern }) => {
   }, [status]);
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classNames(classes.card, { [classes.opened]: isOpen })}>
       <button
         type="button"
         onClick={onCardClick}
-        className={classNames(classes.card, classes[theme], { [classes.opened]: isOpen })}
+        className={classNames(classes.innerCard, classes[theme], { [classes.opened]: isOpen })}
       >
         <div className={classes.cardCover} style={{ backgroundColor: coverColor }}>
           <span>?</span>

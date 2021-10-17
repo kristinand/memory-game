@@ -1,55 +1,11 @@
 @import 'styles';
 
-.settings {
-  margin: 0 auto;
-  width: 50%;
-  min-width: 300px;
+.table {
   border: 2px solid;
-  border-radius: 5px;
-
-  .settingsElement {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem;
-
-    &:not(:last-child) {
-      border-bottom: 2px solid;
-    }
-  }
+  border-radius: 3px;
+  margin-bottom: 1em;
 }
 
-.inputContainer {
-  width: 100px;
-  text-align: center;
-}
-
-.input {
-  display: block;
-  padding: 0.5em 1em;
+.button {
   width: 100%;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  border: 0;
-  border-radius: 0.3em;
-  transition: background-color 0.3s ease-in-out;
-
-  &.light {
-    background-color: $inputLight;
-  }
-
-  &.dark {
-    background-color: $inputDark;
-  }
-
-  &:focus {
-    outline: none;
-  }
-}
-
-.buttonWrapper {
-  margin: 1rem;
-  display: flex;
-  justify-content: center;
 }

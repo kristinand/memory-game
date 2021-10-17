@@ -7,15 +7,13 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import { IState } from 'store/entities';
 import classes from './classes.module.scss';
 
-interface IProps {
-  title?: string;
-  text?: string;
-  component: React.ElementType;
-  onClick: () => void;
+interface IProps extends React.HTMLProps<HTMLButtonElement> {
+  children?: React.ReactNode;
+  icon?: React.ElementType;
   className?: string;
 }
 
-const IconButton: React.FC<IProps> = ({ title, onClick, component, text, className }) => {
+const Button: React.FC<IProps> = ({ title, onClick, icon, children, className }) => {
   const { theme } = useSelector((store: IState) => store.settings);
 
   return (
@@ -25,10 +23,10 @@ const IconButton: React.FC<IProps> = ({ title, onClick, component, text, classNa
       className={classNames(classes.button, classes[theme], className)}
       onClick={onClick}
     >
-      <SvgIcon fontSize="large" component={component} viewBox="0 0 100 100" />
-      {text && <span className={classes.buttonText}>{text}</span>}
+      {icon && <SvgIcon fontSize="large" component={icon} viewBox="0 0 100 100" />}
+      {children}
     </button>
   );
 };
 
-export default IconButton;
+export default Button;

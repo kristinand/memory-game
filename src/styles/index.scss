@@ -2,11 +2,20 @@
 @import './colors';
 
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
 body {
+  margin: 0;
+  padding: 0;
   font-family: $averiaLibre;
+  user-select: none;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  border: none;
+  cursor: pointer;
 }
