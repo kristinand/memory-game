@@ -146,7 +146,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
       <div role="menu" ref={focusRef} className={classes.screen} tabIndex={0} onKeyPress={handleKeyPress} />
       <span className={classes.level}>level: {gameState.level}</span>
 
-      <span className={classes.right}>
+      <span className={classes.buttonGroup}>
         <span className={classes.timer}>{formatTime(timer)}</span>
         <IconButton
           title={isPaused ? 'Play' : 'Pause'}
