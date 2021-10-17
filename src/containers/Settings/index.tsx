@@ -1,6 +1,5 @@
 import React, { ElementType } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import classNames from 'classnames';
 import Switch from '@material-ui/core/Switch';
 
 import Reset from 'assets/icons/reset.svg';
@@ -8,7 +7,7 @@ import menuSound from 'assets/menu-click.opus';
 import Layout from 'components/Layout';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
-import IconButton from 'components/IconButton';
+import Button from 'components/Button';
 import Input from 'components/Input';
 
 import { IKeys } from 'entities/';
@@ -155,12 +154,9 @@ const Settings: React.FC = () => {
           </div>
         </div>
 
-        <IconButton
-          className={classes.button}
-          onClick={setDefaultSettingsHandler}
-          component={Reset as ElementType}
-          text="Set Default"
-        />
+        <Button className={classes.button} onClick={setDefaultSettingsHandler} icon={Reset as ElementType}>
+          Set Default
+        </Button>
       </Layout>
       <Footer />
     </>

@@ -9,7 +9,7 @@ import * as actions from 'store/game/actions';
 import { listToArray, getRandomNumber } from 'utils/functions';
 
 import Layout from 'components/Layout';
-import IconButton from 'components/IconButton';
+import Button from 'components/Button';
 import Card from '../Card';
 import GameControls from '../GameControls';
 
@@ -105,7 +105,9 @@ const Game: React.FC = () => {
         </div>
         <div className={classes.autoplay}>
           {!gameState.score && !gameState.isAutoplay && (
-            <IconButton onClick={onAutoplayHandler} text="Autoplay" component={Autoplay as ElementType} />
+            <Button onClick={onAutoplayHandler} icon={Autoplay as ElementType}>
+              Autoplay
+            </Button>
           )}
           {gameState.isAutoplay && <p>ai guesses the cards...</p>}
         </div>

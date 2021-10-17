@@ -2,7 +2,7 @@ import React, { ElementType } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Back from 'assets/icons/left.svg';
-import IconButton from '../IconButton';
+import Button from '../Button';
 import classes from './classes.module.scss';
 
 interface IProps {
@@ -13,12 +13,9 @@ const Header: React.FC<IProps> = ({ title }) => {
   const history = useHistory();
   return (
     <header className={classes.header}>
-      <IconButton
-        className={classes.button}
-        component={Back as ElementType}
-        text="Back to Menu"
-        onClick={() => history.push('/')}
-      />
+      <Button className={classes.button} icon={Back as ElementType} onClick={() => history.push('/')}>
+        Back to Menu
+      </Button>
       <h2>{title}</h2>
     </header>
   );

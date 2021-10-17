@@ -2,7 +2,6 @@
 // Please do not change this file!
 interface CssExports {
   'button': string;
-  'buttonText': string;
   'dark': string;
   'light': string;
 }
