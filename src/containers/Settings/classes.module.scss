@@ -1,13 +1,11 @@
 @import 'styles';
 
-.settings {
-  margin: 0 auto;
-  width: 50%;
-  min-width: 300px;
+.table {
   border: 2px solid;
-  border-radius: 5px;
+  border-radius: 3px;
+  margin-bottom: 1em;
 
-  .settingsElement {
+  .tableRow {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -48,8 +46,6 @@
   }
 }
 
-.buttonWrapper {
-  margin: 1rem;
-  display: flex;
-  justify-content: center;
+.button {
+  width: 100%;
 }
