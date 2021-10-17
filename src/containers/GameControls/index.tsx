@@ -78,7 +78,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   }, [gameState.isGamePaused]);
 
   const saveGameData = () => {
-    const localData = {
+    const gameData = {
       cards: gameState.cards,
       level: gameState.level,
       coverColor: gameState.coverColor,
@@ -86,7 +86,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
       score: timer,
       player: gameState.player,
     };
-    localStorage.setItem('gameData', JSON.stringify(localData));
+    localStorage.setItem('gameData', JSON.stringify(gameData));
   };
 
   useEffect(() => {

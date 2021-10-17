@@ -22,13 +22,13 @@ const Settings: React.FC = () => {
   const sound = new Audio(menuSound);
 
   const setLocalStorageSettingsItem = (obj: Partial<ISettings>) => {
-    const settingsData = { ...state, ...obj };
-    localStorage.setItem('settingsData', JSON.stringify(settingsData));
+    const settings = { ...state, ...obj };
+    localStorage.setItem('settings', JSON.stringify(settings));
   };
 
   const setDefaultSettingsHandler = () => {
     dispatch(actions.setDefaultSettings());
-    localStorage.removeItem('settingsData');
+    localStorage.removeItem('settings');
   };
 
   const onVolumeChangeHandler = (type: string, value: number) => {
