@@ -31,18 +31,20 @@ const Card: React.FC<IProps> = ({ status, onCardClick, color, pattern }) => {
   }, [status]);
 
   return (
-    <button
-      type="button"
-      onClick={onCardClick}
-      className={classNames(classes.card, classes[theme], { [classes.opened]: isOpen })}
-    >
-      <div className={classes.cardCover} style={{ backgroundColor: coverColor }}>
-        <span>?</span>
-      </div>
-      <div className={classes.cardFace} style={{ backgroundColor: color }}>
-        {isPatternShown && <span className={classes.pattern}>{pattern}</span>}
-      </div>
-    </button>
+    <div className={classNames(classes.card, { [classes.opened]: isOpen })}>
+      <button
+        type="button"
+        onClick={onCardClick}
+        className={classNames(classes.innerCard, classes[theme], { [classes.opened]: isOpen })}
+      >
+        <div className={classes.cardCover} style={{ backgroundColor: coverColor }}>
+          <span>?</span>
+        </div>
+        <div className={classes.cardFace} style={{ backgroundColor: color }}>
+          {isPatternShown && <span className={classes.pattern}>{pattern}</span>}
+        </div>
+      </button>
+    </div>
   );
 };
 

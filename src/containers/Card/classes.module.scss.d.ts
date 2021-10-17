@@ -6,6 +6,7 @@ interface CssExports {
   'cardCover': string;
   'cardFace': string;
   'dark': string;
+  'innerCard': string;
   'light': string;
   'opened': string;
   'pattern': string;
