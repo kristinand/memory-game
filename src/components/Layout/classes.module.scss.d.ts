@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'centered': string;
+  'fullWidth': string;
   'layout': string;
 }
 export const cssExports: CssExports;

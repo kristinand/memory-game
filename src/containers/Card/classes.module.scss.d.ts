@@ -9,7 +9,6 @@ interface CssExports {
   'light': string;
   'opened': string;
   'pattern': string;
-  'wrapper': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

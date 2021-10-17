@@ -8,6 +8,7 @@ import { ICard, ECardStatus } from 'entities/';
 import * as actions from 'store/game/actions';
 import { listToArray, getRandomNumber } from 'utils/functions';
 
+import Layout from 'components/Layout';
 import IconButton from 'components/IconButton';
 import Card from '../Card';
 import GameControls from '../GameControls';
@@ -86,27 +87,29 @@ const Game: React.FC = () => {
   return (
     <>
       <GameControls getFocusRef={(ref) => setFocusRef(ref)} />
-      <div className={classes.game}>
-        {listToArray(gameState.cards, 4).map((cardsRow: ICard[]) => (
-          <div className={classes.cardRow} key={cardsRow[0].key}>
-            {cardsRow.map((card) => (
-              <Card
-                onCardClick={() => onCardSelectHandler(card.key)}
-                key={card.key}
-                color={card.color}
-                pattern={card.pattern}
-                status={card.status}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
-      <div className={classes.autoplay}>
-        {!gameState.score && !gameState.isAutoplay && (
-          <IconButton onClick={onAutoplayHandler} text="Autoplay" component={Autoplay as ElementType} />
-        )}
-        {gameState.isAutoplay && <p>ai guesses the cards...</p>}
-      </div>
+      <Layout fullWidth centered>
+        <div className={classes.game}>
+          {listToArray(gameState.cards, 4).map((cardsRow: ICard[]) => (
+            <div key={cardsRow[0].key}>
+              {cardsRow.map((card) => (
+                <Card
+                  onCardClick={() => onCardSelectHandler(card.key)}
+                  key={card.key}
+                  color={card.color}
+                  pattern={card.pattern}
+                  status={card.status}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className={classes.autoplay}>
+          {!gameState.score && !gameState.isAutoplay && (
+            <IconButton onClick={onAutoplayHandler} text="Autoplay" component={Autoplay as ElementType} />
+          )}
+          {gameState.isAutoplay && <p>ai guesses the cards...</p>}
+        </div>
+      </Layout>
     </>
   );
 };

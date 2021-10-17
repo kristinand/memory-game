@@ -142,7 +142,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   };
 
   return (
-    <div className={classes.gameControls}>
+    <header className={classes.gameControls}>
       <div role="menu" ref={focusRef} className={classes.screen} tabIndex={0} onKeyPress={handleKeyPress} />
       <span className={classes.level}>level: {gameState.level}</span>
 
@@ -195,7 +195,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
           component={Back as ElementType}
         />
       </span>
-    </div>
+    </header>
   );
 };
 

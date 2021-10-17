@@ -2,7 +2,6 @@
 // Please do not change this file!
 interface CssExports {
   'autoplay': string;
-  'cardRow': string;
   'game': string;
 }
 export const cssExports: CssExports;
