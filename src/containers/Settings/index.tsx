@@ -43,12 +43,13 @@ const Settings: React.FC = () => {
   };
 
   const onHotkeyChangeHandler = (type: keyof IKeys, { code }: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!Object.values(state.keys).includes(code) && code.startsWith('Key')) {
-      dispatch(actions.changeHotkey(type, code));
+    const key = code.slice(3);
+    if (!Object.values(state.keys).includes(key) && code.startsWith('Key')) {
+      dispatch(actions.changeHotkey(type, key));
       setLocalStorageSettingsItem({
         keys: {
           ...state.keys,
-          [type]: code.slice(3),
+          [type]: key,
         },
       });
     }
@@ -112,18 +113,10 @@ const Settings: React.FC = () => {
             onKeyPress={(event) => onHotkeyChangeHandler('sounds', event)}
             val={state.keys.sounds}
           />
-          <SettingsElement
-            title="Show Card Pattern"
-            val={state.isPatternShown}
-            onChange={onToggleCardPatternHandler}
-          />
+          <SettingsElement title="Show Card Pattern" val={state.isPatternShown} onChange={onToggleCardPatternHandler} />
           <SettingsElement title="System Theme" val={state.isSystemTheme} onChange={onUseSystemThemeHandler} />
           {!state.isSystemTheme && (
-            <SettingsElement
-              title="Dark Theme"
-              val={state.theme === ETheme.dark}
-              onChange={onThemeChangeHandler}
-            />
+            <SettingsElement title="Dark Theme" val={state.theme === ETheme.dark} onChange={onThemeChangeHandler} />
           )}
         </div>
 
