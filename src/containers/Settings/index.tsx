@@ -42,22 +42,22 @@ const Settings: React.FC = () => {
     }
   };
 
-  const onHotkeyChangeHandler = (keyType: keyof IKeys, value: string) => {
-    const newHotkey = value.slice(-1);
-    if (!Object.values(state.keys).includes(newHotkey)) {
-      dispatch(actions.changeHotkey(keyType, newHotkey));
+  const onHotkeyChangeHandler = (type: keyof IKeys, event: React.KeyboardEvent<HTMLInputElement>) => {
+    const { code } = event;
+    if (!Object.values(state.keys).includes(code) && code.startsWith('Key')) {
+      dispatch(actions.changeHotkey(type, code));
       setLocalStorageSettingsItem({
         keys: {
           ...state.keys,
-          [keyType]: newHotkey,
+          [type]: code.slice(3),
         },
       });
     }
   };
 
-  const onThemeChangeHandler = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+  const onThemeChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!state.isSystemTheme) {
-      const theme = checked ? ETheme.dark : ETheme.light;
+      const theme = event.target.checked ? ETheme.dark : ETheme.light;
       dispatch(actions.changeTheme(theme));
       setLocalStorageSettingsItem({ theme });
     }
@@ -81,48 +81,48 @@ const Settings: React.FC = () => {
           <SettingsElement
             title="Music Volume"
             onChange={(event) => onVolumeChangeHandler('music', (event.target as HTMLInputElement).valueAsNumber)}
-            value={state.musicVolume}
+            val={state.musicVolume}
           />
           <SettingsElement
             title="Sounds Volume"
             onChange={(event) => onVolumeChangeHandler('sound', (event.target as HTMLInputElement).valueAsNumber)}
-            value={state.soundVolume}
+            val={state.soundVolume}
           />
           <SettingsElement
             title="Pause Hotkey"
-            onChange={(event) => onHotkeyChangeHandler('pause', (event.target as HTMLInputElement).value)}
-            value={state.keys.pause}
+            onKeyPress={(event) => onHotkeyChangeHandler('pause', event)}
+            val={state.keys.pause}
           />
           <SettingsElement
             title="Reload Game Hotkey"
-            onChange={(event) => onHotkeyChangeHandler('reload', (event.target as HTMLInputElement).value)}
-            value={state.keys.reload}
+            onKeyPress={(event) => onHotkeyChangeHandler('reload', event)}
+            val={state.keys.reload}
           />
           <SettingsElement
             title="Toggle Fullscreen Hotkey"
-            onChange={(event) => onHotkeyChangeHandler('fullscreen', (event.target as HTMLInputElement).value)}
-            value={state.keys.fullscreen}
+            onKeyPress={(event) => onHotkeyChangeHandler('fullscreen', event)}
+            val={state.keys.fullscreen}
           />
           <SettingsElement
             title="Music Volume Hotkey"
-            onChange={(event) => onHotkeyChangeHandler('music', (event.target as HTMLInputElement).value)}
-            value={state.keys.music}
+            onKeyPress={(event) => onHotkeyChangeHandler('music', event)}
+            val={state.keys.music}
           />
           <SettingsElement
             title="Sounds Volume Hotkey"
-            onChange={(event) => onHotkeyChangeHandler('sounds', (event.target as HTMLInputElement).value)}
-            value={state.keys.sounds}
+            onKeyPress={(event) => onHotkeyChangeHandler('sounds', event)}
+            val={state.keys.sounds}
           />
           <SettingsElement
             title="Card Pattern Enabled"
-            value={state.isPatternShown}
+            val={state.isPatternShown}
             onChange={onToggleCardPatternHandler}
           />
-          <SettingsElement title="Use System Theme" value={state.isSystemTheme} onChange={onUseSystemThemeHandler} />
+          <SettingsElement title="Use System Theme" val={state.isSystemTheme} onChange={onUseSystemThemeHandler} />
           {!state.isSystemTheme && (
             <SettingsElement
               title="Dark Theme Enabled"
-              value={state.theme === ETheme.dark}
+              val={state.theme === ETheme.dark}
               onChange={onThemeChangeHandler}
             />
           )}

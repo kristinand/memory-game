@@ -1,32 +1,29 @@
 import React from 'react';
-import Switch from '@material-ui/core/Switch';
 
 import Input from 'components/Input';
 import classes from './classes.module.scss';
 
-interface IProps {
+interface IProps extends React.HTMLProps<HTMLInputElement> {
   title: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>, checked?: boolean) => void;
-  value?: number | string | boolean;
+  val: number | string | boolean;
 }
 
-const SettingsElement: React.FC<IProps> = ({ title, onChange, value }) => {
-  const getControl = () => {
-    switch (typeof value) {
+const SettingsElement: React.FC<IProps> = ({ title, val, ...other }) => {
+  const getProps = (): React.HTMLProps<HTMLInputElement> => {
+    switch (typeof val) {
       case 'boolean':
-        return <Switch checked={value} onChange={onChange} color="default" />;
+        return { type: 'checkbox', checked: val, ...other };
       case 'number':
-        return (
-          <Input className={classes.input} type="number" onChange={onChange} value={value} max={1} min={0} step={0.1} />
-        );
+        return { type: 'number', value: val, min: 1, max: 0, step: 0.1, className: classes.input, ...other };
       default:
-        return <Input className={classes.input} type="text" onChange={onChange} value={value} />;
+        return { type: 'text', value: val, className: classes.input, ...other };
     }
   };
+
   return (
     <div className={classes.settingsElement}>
       <span>{title}</span>
-      {getControl()}
+      <Input {...getProps()} />
     </div>
   );
 };
