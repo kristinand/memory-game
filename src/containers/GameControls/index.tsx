@@ -132,13 +132,15 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
     }
   };
 
-  const handleKeyPress = ({ key }) => {
+  const handleKeyPress = ({ code }: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(code);
+    const pressedKey = code.slice(3);
     const { fullscreen, reload, sounds, music, pause } = settingsState.keys;
-    if (key === fullscreen) toggleFullscreenHandler();
-    else if (key === reload) onGameReloadHandler();
-    else if (key === sounds) onChangeAudioVolumeHandler('sound');
-    else if (key === music) onChangeAudioVolumeHandler('music');
-    else if (key === pause) onGamePauseHandler();
+    if (pressedKey === fullscreen) toggleFullscreenHandler();
+    else if (pressedKey === reload) onGameReloadHandler();
+    else if (pressedKey === sounds) onChangeAudioVolumeHandler('sound');
+    else if (pressedKey === music) onChangeAudioVolumeHandler('music');
+    else if (pressedKey === pause) onGamePauseHandler();
   };
 
   return (

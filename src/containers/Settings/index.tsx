@@ -42,8 +42,7 @@ const Settings: React.FC = () => {
     }
   };
 
-  const onHotkeyChangeHandler = (type: keyof IKeys, event: React.KeyboardEvent<HTMLInputElement>) => {
-    const { code } = event;
+  const onHotkeyChangeHandler = (type: keyof IKeys, { code }: React.KeyboardEvent<HTMLInputElement>) => {
     if (!Object.values(state.keys).includes(code) && code.startsWith('Key')) {
       dispatch(actions.changeHotkey(type, code));
       setLocalStorageSettingsItem({

@@ -14,11 +14,11 @@ const initState: ISettings = {
   //   sounds: 0.5,
   // },
   keys: {
-    music: 'm',
-    sounds: 's',
-    reload: 'r',
-    fullscreen: 'f',
-    pause: 'p',
+    music: 'M',
+    sounds: 'S',
+    reload: 'R',
+    fullscreen: 'F',
+    pause: 'P',
   },
 };
 
