@@ -25,7 +25,7 @@ const initState: ISettings = {
 const settingsReducer: Reducer<ISettings, TSettingsActionTypes> = (state = initState, action) => {
   switch (action.type) {
     case EActionTypes.LOAD_LOCAL_SETTINGS_DATA:
-      return action.data;
+      return { ...state, ...action.data };
     case EActionTypes.CHANGE_VOLUME:
       return { ...state, [`${action.audio}Volume`]: action.volume };
     case EActionTypes.CHANGE_HOTKEY:

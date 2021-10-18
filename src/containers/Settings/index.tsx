@@ -1,6 +1,5 @@
 import React, { ElementType } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import classNames from 'classnames';
 
 import Reset from 'assets/icons/reset.svg';
 import menuSound from 'assets/menu-click.opus';
@@ -10,6 +9,7 @@ import Footer from 'components/Footer';
 import Button from 'components/Button';
 import SettingsElement from 'components/SettingsElement';
 
+import { getLocalStorageValue } from 'utils/functions';
 import { IKeys } from 'entities/';
 import { IState } from 'store/entities';
 import { ISettings, ETheme } from 'store/settings/entities';
@@ -22,7 +22,8 @@ const Settings: React.FC = () => {
   const sound = new Audio(menuSound);
 
   const setLocalStorageSettingsItem = (obj: Partial<ISettings>) => {
-    const settings = { ...state, ...obj };
+    let settings = getLocalStorageValue('settings') as Partial<ISettings>;
+    settings = { ...settings, ...obj };
     localStorage.setItem('settings', JSON.stringify(settings));
   };
 

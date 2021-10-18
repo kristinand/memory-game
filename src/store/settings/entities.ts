@@ -27,7 +27,7 @@ export enum EActionTypes {
 
 export interface ILoadLocalSettingsData {
   type: typeof EActionTypes.LOAD_LOCAL_SETTINGS_DATA;
-  data: ISettings;
+  data: Partial<ISettings>;
 }
 
 export interface IChangeHotkey {
