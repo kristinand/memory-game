@@ -61,16 +61,16 @@ const Game: React.FC = () => {
       dispatch(actions.setAutoplay(false));
       return;
     }
-    const chosenCardIndex = getRandomNumber(0, cards.length);
-    let chosenCard = cards[chosenCardIndex];
-    if (chosenCard && chosenCard.status !== ECardStatus.Closed) {
-      chosenCard = cards.find((card) => card.status === ECardStatus.Closed);
-    }
-    const cardsStatus = cards.map((card) => card.status);
-    if (chosenCard && (cardsStatus.includes(ECardStatus.Closed) || cardsStatus.includes(ECardStatus.NotGuessed))) {
+
+    if (cards.length) {
+      const closedCards = cards.filter((card) => card.status === ECardStatus.Closed);
+      const chosenCard = closedCards[getRandomNumber(0, closedCards.length)];
+
       setTimeout(() => {
         onCardSelectHandler(chosenCard.key);
-        autoplay(cards.filter((card) => card.status !== ECardStatus.Guessed));
+
+        const notGuessedCards = cards.filter((card) => card.status !== ECardStatus.Guessed);
+        autoplay(notGuessedCards);
       }, 800);
     } else {
       setTimeout(() => {
@@ -103,14 +103,11 @@ const Game: React.FC = () => {
             </div>
           ))}
         </div>
-        <div className={classes.autoplay}>
-          {!gameState.score && !gameState.isAutoplay && (
-            <Button onClick={onAutoplayHandler} icon={Autoplay as ElementType}>
-              Autoplay
-            </Button>
-          )}
-          {gameState.isAutoplay && <p>ai guesses the cards...</p>}
-        </div>
+        {!gameState.score && !gameState.isAutoplay && (
+          <Button onClick={onAutoplayHandler} icon={Autoplay as ElementType}>
+            Autoplay
+          </Button>
+        )}
       </Layout>
     </>
   );
