@@ -8,6 +8,7 @@ import MenuButton from 'components/MenuButton';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+import { setLocalStorageValue } from 'utils/functions';
 import { IState } from 'store/entities';
 import * as actions from 'store/game/actions';
 import Footer from 'components/Footer';
@@ -34,7 +35,7 @@ const Menu: React.FC = () => {
     } else if (playerRegEx.exec(player) === null) {
       setHelperText('Only latin characters allowed');
     } else {
-      localStorage.setItem('player', player);
+      setLocalStorageValue('player', player);
       dispatch(actions.login(player));
       setHelperText('');
     }

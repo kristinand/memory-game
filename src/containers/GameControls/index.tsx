@@ -21,7 +21,7 @@ import { IState } from 'store/entities';
 import * as gameActions from 'store/game/actions';
 import * as settingsActions from 'store/settings/actions';
 import { useTimer } from 'utils/hooks';
-import { formatTime } from 'utils/functions';
+import { formatTime, setLocalStorageValue } from 'utils/functions';
 import classes from './classes.module.scss';
 
 interface IProps {
@@ -86,7 +86,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
       score: timer,
       player: gameState.player,
     };
-    localStorage.setItem('gameData', JSON.stringify(gameData));
+    setLocalStorageValue('gameData', gameData);
   };
 
   useEffect(() => {

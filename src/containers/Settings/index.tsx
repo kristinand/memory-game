@@ -9,7 +9,7 @@ import Footer from 'components/Footer';
 import Button from 'components/Button';
 import SettingsElement from 'components/SettingsElement';
 
-import { getLocalStorageValue } from 'utils/functions';
+import { getLocalStorageValue, setLocalStorageValue } from 'utils/functions';
 import { IKeys } from 'entities/';
 import { IState } from 'store/entities';
 import { ISettings, ETheme } from 'store/settings/entities';
@@ -24,7 +24,7 @@ const Settings: React.FC = () => {
   const setLocalStorageSettingsItem = (obj: Partial<ISettings>) => {
     let settings = getLocalStorageValue('settings') as Partial<ISettings>;
     settings = { ...settings, ...obj };
-    localStorage.setItem('settings', JSON.stringify(settings));
+    setLocalStorageValue('settings', settings);
   };
 
   const setDefaultSettingsHandler = () => {
