@@ -51,16 +51,24 @@ const Menu: React.FC = () => {
     <>
       <Layout centered>
         <div className={classes.loginContainer}>
-          <Input
-            onChange={onInputValueChangeHandler}
-            withHelperText
-            helperText={helperText}
-            placeholder="Your name"
-            value={player}
-            autoFocus
-            type="text"
-            className={classes.input}
-          />
+          {state.isLoggedIn ? (
+            <div className={classes.playerName}>Hello, {player}!</div>
+          ) : (
+            <Input
+              onChange={onInputValueChangeHandler}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') login();
+              }}
+              withHelperText
+              helperText={helperText}
+              placeholder="Your name"
+              value={player}
+              autoFocus
+              type="text"
+              className={classes.input}
+            />
+          )}
+
           <Button
             className={classes.loginButton}
             icon={(state.isLoggedIn ? Logout : Login) as ElementType}
