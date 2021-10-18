@@ -9,10 +9,6 @@ const initState: ISettings = {
   isPatternShown: true,
   musicVolume: 0.5,
   soundVolume: 0.5,
-  // TODO: volume: {
-  //   music: 0.5,
-  //   sounds: 0.5,
-  // },
   keys: {
     music: 'M',
     sounds: 'S',
