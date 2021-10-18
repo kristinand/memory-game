@@ -18,7 +18,7 @@ const SettingsElement: React.FC<IProps> = ({ title, val, ...other }) => {
       props = { ...props, type: 'checkbox', checked: val };
       break;
     case 'number':
-      props = { ...props, type: 'number', value: val, min: 1, max: 0, step: 0.1 };
+      props = { ...props, type: 'number', value: val, min: 0, max: 1, step: 0.1 };
       break;
     default:
       props = { ...props, type: 'text', value: val };
