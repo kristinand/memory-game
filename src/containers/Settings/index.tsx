@@ -113,14 +113,14 @@ const Settings: React.FC = () => {
             val={state.keys.sounds}
           />
           <SettingsElement
-            title="Card Pattern Enabled"
+            title="Show Card Pattern"
             val={state.isPatternShown}
             onChange={onToggleCardPatternHandler}
           />
-          <SettingsElement title="Use System Theme" val={state.isSystemTheme} onChange={onUseSystemThemeHandler} />
+          <SettingsElement title="System Theme" val={state.isSystemTheme} onChange={onUseSystemThemeHandler} />
           {!state.isSystemTheme && (
             <SettingsElement
-              title="Dark Theme Enabled"
+              title="Dark Theme"
               val={state.theme === ETheme.dark}
               onChange={onThemeChangeHandler}
             />
