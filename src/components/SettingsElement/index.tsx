@@ -9,21 +9,25 @@ interface IProps extends React.HTMLProps<HTMLInputElement> {
 }
 
 const SettingsElement: React.FC<IProps> = ({ title, val, ...other }) => {
-  const getProps = (): React.HTMLProps<HTMLInputElement> => {
-    switch (typeof val) {
-      case 'boolean':
-        return { type: 'checkbox', checked: val, ...other };
-      case 'number':
-        return { type: 'number', value: val, min: 1, max: 0, step: 0.1, className: classes.input, ...other };
-      default:
-        return { type: 'text', value: val, className: classes.input, ...other };
-    }
+  let props = {
+    className: classes.input,
+    ...other,
   };
+  switch (typeof val) {
+    case 'boolean':
+      props = { ...props, type: 'checkbox', checked: val };
+      break;
+    case 'number':
+      props = { ...props, type: 'number', value: val, min: 1, max: 0, step: 0.1 };
+      break;
+    default:
+      props = { ...props, type: 'text', value: val };
+  }
 
   return (
     <div className={classes.settingsElement}>
       <span>{title}</span>
-      <Input {...getProps()} />
+      <Input {...props} />
     </div>
   );
 };

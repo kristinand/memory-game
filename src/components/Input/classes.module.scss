@@ -1,20 +1,22 @@
 @import 'styles';
 
 .inputContainer {
+  position: relative;
   &.withHT {
     height: 92px;
   }
 }
 
-.input {
+.input,
+.checkmark {
   width: 100%;
   display: block;
   padding: 0.5em 1em;
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
-  border: 0;
   border-radius: 3px;
+  border: none;
   outline: none;
 
   &.light {
@@ -28,6 +30,24 @@
   &.danger::placeholder {
     color: $danger;
   }
+}
+
+.input[type='checkbox'] {
+  height: 35px;
+  margin-top: 0;
+  margin-bottom: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 35px;
+  width: 70px;
+  color: $textLight;
+  text-align: center;
 }
 
 .helperText {
