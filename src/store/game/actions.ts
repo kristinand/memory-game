@@ -13,7 +13,7 @@ import {
   ISaveScore,
   ISetAutoplay,
   EActionTypes,
-  IGame
+  IGame,
 } from './entities';
 import api from '../../api/api';
 
@@ -69,13 +69,13 @@ export const setIsGamePaused = (isPaused: ISetIsGamePaused['isPaused']): ISetIsG
 
 export const changeCardStatus = (
   status: IChangeCardStatus['status'],
-  selectedCardIndex: IChangeCardStatus['selectedCardIndex'],
-  oldCardIndex?: IChangeCardStatus['oldCardIndex'],
+  selectedCard: IChangeCardStatus['selectedCard'],
+  oldCard?: IChangeCardStatus['oldCard'],
 ): IChangeCardStatus => ({
   type: EActionTypes.CHANGE_CARD_STATUS,
   status,
-  selectedCardIndex,
-  oldCardIndex,
+  selectedCard,
+  oldCard,
 });
 
 export const saveScore = (timer: ISaveScore['timer']): ISaveScore => ({

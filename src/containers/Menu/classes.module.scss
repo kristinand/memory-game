@@ -1,9 +1,5 @@
 @import 'styles/';
 
-.input {
-  padding: 1em 2em;
-}
-
 .loginContainer {
   width: 300px;
   display: flex;
@@ -13,6 +9,17 @@
   & .loginButton {
     height: 51px;
   }
+}
+
+.input,
+.playerName {
+  padding: 1em 2em;
+}
+
+.playerName {
+  flex: 1;
+  height: 51px;
+  margin-bottom: 42px;
 }
 
 .buttonGroup {

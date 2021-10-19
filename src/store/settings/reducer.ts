@@ -9,23 +9,19 @@ const initState: ISettings = {
   isPatternShown: true,
   musicVolume: 0.5,
   soundVolume: 0.5,
-  // TODO: volume: {
-  //   music: 0.5,
-  //   sounds: 0.5,
-  // },
   keys: {
-    music: 'm',
-    sounds: 's',
-    reload: 'r',
-    fullscreen: 'f',
-    pause: 'p',
+    music: 'M',
+    sounds: 'S',
+    reload: 'R',
+    fullscreen: 'F',
+    pause: 'P',
   },
 };
 
 const settingsReducer: Reducer<ISettings, TSettingsActionTypes> = (state = initState, action) => {
   switch (action.type) {
     case EActionTypes.LOAD_LOCAL_SETTINGS_DATA:
-      return action.data;
+      return { ...state, ...action.data };
     case EActionTypes.CHANGE_VOLUME:
       return { ...state, [`${action.audio}Volume`]: action.volume };
     case EActionTypes.CHANGE_HOTKEY:

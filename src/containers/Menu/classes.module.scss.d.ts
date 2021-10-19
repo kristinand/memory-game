@@ -5,6 +5,7 @@ interface CssExports {
   'input': string;
   'loginButton': string;
   'loginContainer': string;
+  'playerName': string;
   'separator': string;
 }
 export const cssExports: CssExports;

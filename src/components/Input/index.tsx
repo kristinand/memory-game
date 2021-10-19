@@ -12,17 +12,14 @@ interface IProps extends React.HTMLProps<HTMLInputElement> {
   className?: string;
 }
 
-const Input: React.FC<IProps> = ({
-  withHelperText = false,
-  helperText,
-  ConatinerClassName,
-  className,
-  ...other
-}) => {
+const Input: React.FC<IProps> = ({ withHelperText = false, helperText, ConatinerClassName, className, ...other }) => {
   const theme = useSelector((store: IState) => store.settings.theme);
 
   return (
     <div className={classNames(classes.inputContainer, ConatinerClassName, { [classes.withHT]: withHelperText })}>
+      {other.type === 'checkbox' && (
+        <span className={classNames(classes.checkmark, classes[theme])}>{other.checked ? 'ON' : 'OFF'}</span>
+      )}
       <input
         className={classNames(className, classes.input, classes[theme], {
           [classes.danger]: helperText,

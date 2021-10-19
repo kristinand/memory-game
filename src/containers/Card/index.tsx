@@ -34,7 +34,7 @@ const Card: React.FC<IProps> = ({ status, onCardClick, color, pattern }) => {
     <div className={classNames(classes.card, { [classes.opened]: isOpen })}>
       <button
         type="button"
-        onClick={onCardClick}
+        onClick={status === ECardStatus.Closed ? onCardClick : undefined}
         className={classNames(classes.innerCard, classes[theme], { [classes.opened]: isOpen })}
       >
         <div className={classes.cardCover} style={{ backgroundColor: coverColor }}>
