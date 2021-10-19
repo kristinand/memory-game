@@ -1,4 +1,4 @@
-import { IGameData, ECardStatus } from 'entities/';
+import { IGameData, ECardStatus, ICard } from 'entities/';
 
 export interface IGame extends IGameData {
   isGamePaused: boolean;
@@ -43,8 +43,8 @@ export interface IChangeCardStatus {
   type: typeof EActionTypes.CHANGE_CARD_STATUS;
 
   status: ECardStatus;
-  selectedCardIndex: number;
-  oldCardIndex?: number;
+  selectedCard: ICard;
+  oldCard?: ICard;
 }
 
 export interface ISetIsGamePaused {

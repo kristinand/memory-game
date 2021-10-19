@@ -18,10 +18,12 @@ export interface IKeys {
 
 export interface ICard {
   key: string;
+  pairKey: string;
   color: string;
   pattern: string;
   coverColor: string;
   status: ECardStatus;
+  count: number;
 }
 
 export interface IRating {

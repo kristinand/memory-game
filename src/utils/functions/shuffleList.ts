@@ -1,7 +1,7 @@
-export function shuffleList(list: unknown[]): unknown[] {
+export function shuffleList<T = any>(list: T[]): T[] {
   const newList = list;
   let currentIndex = list.length;
-  
+
   while (currentIndex !== 0) {
     const randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
