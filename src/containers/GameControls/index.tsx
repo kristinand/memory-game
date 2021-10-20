@@ -58,7 +58,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
     if (!gameState.cardsToWin) {
       if (gameState.level < gameState.levels) {
         timeoutTimer = setTimeout(() => {
-          dispatch(gameActions.loadLevel('inc'));
+          dispatch(gameActions.loadNextLevel());
         }, 1000);
       } else {
         dispatch(gameActions.endGame(gameState.player, gameState.score));

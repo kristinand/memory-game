@@ -1,7 +1,7 @@
 import { shuffleList, getRandomNumber, getRandomColor } from 'utils/functions';
 import { cardPatterns } from 'constants/';
 import { ECardStatus, ICard } from 'entities/';
-import { IChangeCardStatus, IGame, ILoadLevel } from './entities';
+import { IChangeCardStatus, IGame } from './entities';
 
 export const createCards = (level: number, coverColor: string): ICard[] => {
   let cards: ICard[] = [];
@@ -53,19 +53,14 @@ export const updateCardStatus = (state: IGame, action: IChangeCardStatus): IGame
   return { ...state, cardsToWin, isGamePaused: false };
 };
 
-export const loadLevel = (state: IGame, { param }: ILoadLevel): IGame => {
-  let { level } = state;
-  if (param === 'inc') {
-    level += 1;
-  } else if (param === 'dec') {
-    level -= 1;
-  }
+export const loadNextLevel = (state: IGame): IGame => {
+  const nextLevel = state.level + 1;
   const coverColor = getRandomColor(40, 40, 60, 60);
-  const cards = createCards(level, state.coverColor);
+  const cards = createCards(nextLevel, coverColor);
   return {
     ...state,
     cards,
-    level,
+    level: nextLevel,
     coverColor,
     cardsToWin: cards.length,
     isGamePaused: true,

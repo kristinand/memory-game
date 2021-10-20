@@ -57,9 +57,8 @@ export const logout = (): ILogout => ({
   type: EActionTypes.LOGOUT,
 });
 
-export const loadLevel = (param = ''): ILoadLevel => ({
+export const loadNextLevel = (): ILoadLevel => ({
   type: EActionTypes.LOAD_LEVEL,
-  param,
 });
 
 export const setIsGamePaused = (isPaused: ISetIsGamePaused['isPaused']): ISetIsGamePaused => ({

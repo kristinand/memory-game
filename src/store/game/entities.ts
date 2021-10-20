@@ -35,8 +35,6 @@ export interface IEndGame {
 
 export interface ILoadLevel {
   type: typeof EActionTypes.LOAD_LEVEL;
-
-  param: string;
 }
 
 export interface IChangeCardStatus {

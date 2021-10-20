@@ -2,7 +2,7 @@
 import { Reducer } from 'redux';
 import { getRandomColor } from 'utils/functions';
 import { TGameActionTypes, EActionTypes, IGame } from './entities';
-import { updateCardStatus, loadLevel, startGame } from './functions';
+import { updateCardStatus, loadNextLevel, startGame } from './functions';
 
 const initState: IGame = {
   level: 1,
@@ -43,7 +43,7 @@ const gameReducer: Reducer<IGame, TGameActionTypes> = (state = initState, action
     }
 
     case EActionTypes.LOAD_LEVEL:
-      return loadLevel(state, action);
+      return loadNextLevel(state);
     case EActionTypes.SAVE_SCORE:
       return { ...state, score: action.timer };
     case EActionTypes.AUTOPLAY:
