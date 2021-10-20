@@ -55,7 +55,7 @@ export const updateCardStatus = (state: IGame, action: IChangeCardStatus): IGame
 
 export const loadNextLevel = (state: IGame): IGame => {
   const nextLevel = state.level + 1;
-  const coverColor = getRandomColor(40, 40, 60, 60);
+  const coverColor = getRandomColor();
   const cards = createCards(nextLevel, coverColor);
   return {
     ...state,
@@ -64,18 +64,5 @@ export const loadNextLevel = (state: IGame): IGame => {
     coverColor,
     cardsToWin: cards.length,
     isGamePaused: true,
-  };
-};
-
-export const startGame = (state: IGame, initState: IGame): IGame => {
-  localStorage.removeItem('gameData');
-  const coverColor = getRandomColor(40, 40, 60, 60);
-  const cards = createCards(initState.level, coverColor);
-  return {
-    ...initState,
-    ...state,
-    coverColor,
-    cards,
-    cardsToWin: cards.length,
   };
 };

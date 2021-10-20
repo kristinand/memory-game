@@ -2,7 +2,6 @@ import { IGameData, ECardStatus, ICard } from 'entities/';
 
 export interface IGame extends IGameData {
   isGamePaused: boolean;
-  isGameEnded: boolean;
   isLoggedIn: boolean;
   isAutoplay: boolean;
   player: string;

@@ -18,6 +18,7 @@ import Music2 from 'assets/icons/music2.svg';
 import Button from 'components/Button';
 
 import { LAST_LEVEL } from 'constants/';
+import { ECardStatus } from 'entities';
 import { IState } from 'store/entities';
 import * as gameActions from 'store/game/actions';
 import * as settingsActions from 'store/settings/actions';
@@ -83,7 +84,6 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
       cards: gameState.cards,
       level: gameState.level,
       coverColor: gameState.coverColor,
-      cardsToWin: gameState.cardsToWin,
       score: timer,
       player: gameState.player,
     };

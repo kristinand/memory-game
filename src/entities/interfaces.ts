@@ -4,7 +4,7 @@ export interface IGameData {
   level: number;
   cards: ICard[];
   coverColor: string;
-  cardsToWin: null | number;
+  cardsToWin: number;
   score: number;
 }
 

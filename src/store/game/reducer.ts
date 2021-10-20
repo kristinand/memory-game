@@ -2,15 +2,14 @@
 import { Reducer } from 'redux';
 import { getRandomColor } from 'utils/functions';
 import { TGameActionTypes, EActionTypes, IGame } from './entities';
-import { updateCardStatus, loadNextLevel, startGame } from './functions';
+import { createCards, updateCardStatus, loadNextLevel } from './functions';
 
 const initState: IGame = {
   level: 1,
-  cards: [],
-  coverColor: getRandomColor(40, 40, 60, 60),
-  cardsToWin: null,
+  coverColor: getRandomColor(),
+  cards: createCards(1, getRandomColor()),
+  cardsToWin: 2 * (1 * 2 + 2),
   isGamePaused: true,
-  isGameEnded: false,
   isLoggedIn: false,
   isAutoplay: false,
   player: '',
@@ -34,11 +33,13 @@ const gameReducer: Reducer<IGame, TGameActionTypes> = (state = initState, action
     case EActionTypes.LOGOUT:
       return { ...state, player: '', isLoggedIn: false };
 
-    case EActionTypes.START_GAME:
-      return startGame(state, initState);
+    case EActionTypes.START_GAME:{
+      localStorage.removeItem('gameData');
+      return { ...initState, player: state.player, isLoggedIn: true };
+    }
     case EActionTypes.END_GAME: {
       localStorage.removeItem('gameData');
-      return { ...state, isGameEnded: true };
+      return { ...initState, player: state.player, isLoggedIn: true };
     }
 
     case EActionTypes.LOAD_LEVEL:

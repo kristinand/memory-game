@@ -91,7 +91,6 @@ const Menu: React.FC = () => {
             path="/game"
             disabled={
               !state.isLoggedIn ||
-              state.isGameEnded ||
               localStorage.getItem('gameData') === null ||
               localStorage.getItem('player') !== player
             }
