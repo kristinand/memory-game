@@ -72,19 +72,15 @@ export const loadLevel = (state: IGame, { param }: ILoadLevel): IGame => {
   };
 };
 
-export const startGame = (state: IGame): IGame => {
+export const startGame = (state: IGame, initState: IGame): IGame => {
   localStorage.removeItem('gameData');
   const coverColor = getRandomColor(40, 40, 60, 60);
-  const cards = createCards(1, coverColor);
+  const cards = createCards(initState.level, coverColor);
   return {
+    ...initState,
     ...state,
     coverColor,
     cards,
     cardsToWin: cards.length,
-    level: 1,
-    score: 0,
-    isGamePaused: true,
-    isGameEnded: false,
-    isAutoplay: false,
   };
 };

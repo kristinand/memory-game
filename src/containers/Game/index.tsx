@@ -33,6 +33,10 @@ const Game: React.FC = () => {
 
   const onCardSelectHandler = (selectedCard: ICard) => {
     focusRef.focus();
+
+    // do not change status of already opened card
+    if (selectedCard.status !== ECardStatus.Closed) return;
+
     const openedCardIndex = gameState.cards.findIndex((card) => card.status === ECardStatus.Opened);
     const openedCard = gameState.cards[openedCardIndex];
 
@@ -51,7 +55,7 @@ const Game: React.FC = () => {
     }
   };
 
-  const autoplay = (cards: ICard[]) => {
+  const autoplay = (cards: ICard[], prevCard?: ICard, nextCard?: ICard) => {
     if (window.location.pathname !== '/game') {
       dispatch(actions.setAutoplay(false));
       return;
@@ -59,13 +63,28 @@ const Game: React.FC = () => {
 
     if (cards.length) {
       const closedCards = cards.filter((card) => card.status === ECardStatus.Closed);
-      const chosenCard = closedCards[getRandomNumber(0, closedCards.length)];
+
+      const chosenCard = nextCard || closedCards[getRandomNumber(0, closedCards.length)];
+
+      // выбрали карту, ищем ее пару среди доступных карточек
+      const pairCard = cards.find((card) => card.key === chosenCard.pairKey);
 
       setTimeout(() => {
         onCardSelectHandler(chosenCard);
 
         const notGuessedCards = cards.filter((card) => card.status !== ECardStatus.Guessed);
-        autoplay(notGuessedCards);
+
+        // "запоминаем" карту, если число ее открытий (count) >= текущему ур.
+        // или же она была открыта предыдущей, в ином случае, открываем любую карту.
+        // уже угаданную парную карту не нужно ставить в следущую
+        // eslint-disable-next-line no-param-reassign
+        nextCard =
+          (pairCard?.key === prevCard?.key || pairCard?.count >= gameState.level) &&
+          pairCard?.status !== ECardStatus.Guessed
+            ? pairCard
+            : undefined;
+
+        autoplay(notGuessedCards, chosenCard, nextCard);
       }, 800);
     } else {
       setTimeout(() => {
