@@ -36,7 +36,7 @@ const gameReducer: Reducer<IGame, TGameActionTypes> = (state = initState, action
       return { ...state, player: '', isLoggedIn: false };
 
     case EActionTypes.START_GAME:
-      return startGame(state);
+      return startGame(state, initState);
     case EActionTypes.END_GAME: {
       localStorage.removeItem('gameData');
       return { ...state, isGameEnded: true };

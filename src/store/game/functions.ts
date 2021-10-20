@@ -35,9 +35,12 @@ export const updateCardStatus = (state: IGame, action: IChangeCardStatus): IGame
   const { selectedCard, oldCard, status } = action;
   let { cardsToWin } = state;
 
+  if (status !== ECardStatus.Closed) {
+    selectedCard.count += 1;
+  }
+
   // in case of all statuses, selected card:
   selectedCard.status = status;
-  selectedCard.count += 1;
 
   // opened can be only one card
   if (status !== ECardStatus.Opened) {
@@ -69,19 +72,15 @@ export const loadLevel = (state: IGame, { param }: ILoadLevel): IGame => {
   };
 };
 
-export const startGame = (state: IGame): IGame => {
+export const startGame = (state: IGame, initState: IGame): IGame => {
   localStorage.removeItem('gameData');
   const coverColor = getRandomColor(40, 40, 60, 60);
-  const cards = createCards(1, coverColor);
+  const cards = createCards(initState.level, coverColor);
   return {
+    ...initState,
     ...state,
     coverColor,
     cards,
     cardsToWin: cards.length,
-    level: 1,
-    score: 0,
-    isGamePaused: true,
-    isGameEnded: false,
-    isAutoplay: false,
   };
 };
