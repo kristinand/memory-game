@@ -71,7 +71,7 @@ const Settings: React.FC = () => {
 
   const onUseSystemThemeHandler = () => {
     dispatch(actions.useSystemTheme());
-    setLocalStorageSettingsItem({ isSystemTheme: !state.isSystemTheme });
+    setLocalStorageSettingsItem({ isSystemTheme: !state.isSystemTheme, theme: undefined });
   };
 
   return (

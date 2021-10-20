@@ -1,7 +1,8 @@
 import { Reducer } from 'redux';
 import { TSettingsActionTypes, EActionTypes, ISettings, ETheme } from './entities';
 
-const systemTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)') ? ETheme.dark : ETheme.light;
+const systemTheme =
+  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? ETheme.dark : ETheme.light;
 
 const initState: ISettings = {
   isSystemTheme: true,
