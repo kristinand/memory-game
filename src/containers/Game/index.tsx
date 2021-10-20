@@ -2,7 +2,7 @@ import React, { useState, useEffect, ElementType } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Autoplay from 'assets/icons/autoplay.svg';
-import { musicURL } from 'constants/';
+import { MUSIC_URL } from 'constants/';
 import { IState } from 'store/entities';
 import { ICard, ECardStatus } from 'entities/';
 import * as actions from 'store/game/actions';
@@ -18,7 +18,7 @@ import classes from './classes.module.scss';
 const Game: React.FC = () => {
   const gameState = useSelector((state: IState) => state.game);
   const musicVolume = useSelector((state: IState) => state.settings.musicVolume);
-  const [musicSound] = useState(new Audio(musicURL));
+  const [musicSound] = useState(new Audio(MUSIC_URL));
   const [focusRef, setFocusRef] = useState<HTMLDivElement>();
   musicSound.volume = musicVolume;
 

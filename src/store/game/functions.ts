@@ -1,12 +1,12 @@
 import { shuffleList, getRandomNumber, getRandomColor } from 'utils/functions';
-import { cardPatterns } from 'constants/';
+import { CARD_PATTERNS } from 'constants/';
 import { ECardStatus, ICard } from 'entities/';
 import { IChangeCardStatus, IGame } from './entities';
 
 export const createCards = (level: number, coverColor: string): ICard[] => {
   let cards: ICard[] = [];
 
-  let patterns = cardPatterns;
+  let patterns = CARD_PATTERNS;
   for (let i = 0; i < level * 2 + 2; i++) {
     const key1 = `${level}${i}${Math.ceil(Math.random() * 100000)}`;
     const key2 = `${level}${i}${Math.ceil(Math.random() * 100000)}`;
