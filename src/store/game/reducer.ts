@@ -15,7 +15,6 @@ const initState: IGame = {
   isAutoplay: false,
   player: '',
   score: 0,
-  levels: 5,
 };
 
 const gameReducer: Reducer<IGame, TGameActionTypes> = (state = initState, action) => {

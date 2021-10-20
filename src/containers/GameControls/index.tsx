@@ -17,6 +17,7 @@ import Music2 from 'assets/icons/music2.svg';
 
 import Button from 'components/Button';
 
+import { LAST_LEVEL } from 'constants/';
 import { IState } from 'store/entities';
 import * as gameActions from 'store/game/actions';
 import * as settingsActions from 'store/settings/actions';
@@ -56,7 +57,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   useEffect(() => {
     let timeoutTimer;
     if (!gameState.cardsToWin) {
-      if (gameState.level < gameState.levels) {
+      if (gameState.level < LAST_LEVEL) {
         timeoutTimer = setTimeout(() => {
           dispatch(gameActions.loadNextLevel());
         }, 1000);

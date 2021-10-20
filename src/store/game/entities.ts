@@ -6,7 +6,6 @@ export interface IGame extends IGameData {
   isLoggedIn: boolean;
   isAutoplay: boolean;
   player: string;
-  levels: number;
 }
 
 export enum EActionTypes {
