@@ -133,7 +133,6 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   };
 
   const handleKeyPress = ({ code }: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(code);
     const pressedKey = code.slice(3);
     const { fullscreen, reload, sounds, music, pause } = settingsState.keys;
     if (pressedKey === fullscreen) toggleFullscreenHandler();
