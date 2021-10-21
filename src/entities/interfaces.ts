@@ -3,7 +3,6 @@ import { ECardStatus } from './enums';
 export interface IGameData {
   level: number;
   cards: ICard[];
-  coverColor: string;
   cardsToWin: number;
   score: number;
 }

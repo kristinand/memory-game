@@ -83,7 +83,6 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
     const gameData = {
       cards: gameState.cards,
       level: gameState.level,
-      coverColor: gameState.coverColor,
       score: timer,
       player: gameState.player,
     };

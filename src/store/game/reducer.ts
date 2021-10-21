@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { Reducer } from 'redux';
-import { getRandomColor } from 'utils/functions';
+
 import { TGameActionTypes, EActionTypes, IGame } from './entities';
 import { createCards, updateCardStatus, loadNextLevel } from './functions';
 
 const initState: IGame = {
   level: 1,
-  coverColor: getRandomColor(),
-  cards: createCards(1, getRandomColor()),
+  cards: createCards(1),
   cardsToWin: 2 * (1 * 2 + 2),
   isGamePaused: true,
   isAutoplay: false,
@@ -33,7 +32,7 @@ const gameReducer: Reducer<IGame, TGameActionTypes> = (state = initState, action
 
     case EActionTypes.START_GAME: {
       localStorage.removeItem('gameData');
-      return { ...initState, player: state.player };
+      return { ...initState, player: state.player, cards: createCards(1) };
     }
     case EActionTypes.END_GAME: {
       localStorage.removeItem('gameData');

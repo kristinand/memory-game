@@ -3,10 +3,12 @@ import { CARD_PATTERNS } from 'constants/';
 import { ECardStatus, ICard } from 'entities/';
 import { IChangeCardStatus, IGame } from './entities';
 
-export const createCards = (level: number, coverColor: string): ICard[] => {
+export const createCards = (level: number): ICard[] => {
   let cards: ICard[] = [];
 
   let patterns = CARD_PATTERNS;
+  const coverColor = getRandomColor();
+
   for (let i = 0; i < level * 2 + 2; i++) {
     const key1 = `${level}${i}${Math.ceil(Math.random() * 100000)}`;
     const key2 = `${level}${i}${Math.ceil(Math.random() * 100000)}`;
@@ -55,13 +57,11 @@ export const updateCardStatus = (state: IGame, action: IChangeCardStatus): IGame
 
 export const loadNextLevel = (state: IGame): IGame => {
   const nextLevel = state.level + 1;
-  const coverColor = getRandomColor();
-  const cards = createCards(nextLevel, coverColor);
+  const cards = createCards(nextLevel);
   return {
     ...state,
     cards,
     level: nextLevel,
-    coverColor,
     cardsToWin: cards.length,
     isGamePaused: true,
   };

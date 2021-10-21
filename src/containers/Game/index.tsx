@@ -106,13 +106,7 @@ const Game: React.FC = () => {
           {listToArray(gameState.cards, 4).map((cardsRow: ICard[]) => (
             <div key={cardsRow[0].key}>
               {cardsRow.map((card) => (
-                <Card
-                  onCardClick={() => onCardSelectHandler(card)}
-                  key={card.key}
-                  color={card.color}
-                  pattern={card.pattern}
-                  status={card.status}
-                />
+                <Card onCardClick={() => onCardSelectHandler(card)} key={card.key} card={card} />
               ))}
             </div>
           ))}
