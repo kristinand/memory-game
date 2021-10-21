@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import { Reducer } from 'redux';
 
 import { TGameActionTypes, EActionTypes, IGame } from './entities';
@@ -7,7 +6,7 @@ import { createCards, updateCardStatus, loadNextLevel } from './functions';
 const initState: IGame = {
   level: 1,
   cards: createCards(1),
-  cardsToWin: 2 * (1 * 2 + 2),
+  cardsToWin: 8,
   isGamePaused: true,
   isAutoplay: false,
   player: '',

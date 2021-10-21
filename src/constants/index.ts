@@ -3,4 +3,4 @@ export const CARD_PATTERNS = ['☯', '◑', '◐', '◒', '◓', '♡', '♥', '
 export const MY_GITHUB_NICK = 'kristinand';
 export const MY_GITHUB_LINK = `https://github.com/${MY_GITHUB_NICK}`;
 export const RSSCHOOL_LINK = 'https://rs.school';
-export const LAST_LEVEL = 2;
+export const LAST_LEVEL = 5;
