@@ -8,8 +8,9 @@ import MenuButton from 'components/MenuButton';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
-import { setLocalStorageValue } from 'utils/functions';
+import { setLocalStorageValue, getLocalStorageValue } from 'utils/functions';
 import { IState } from 'store/entities';
+import { IGame } from 'store/game/entities';
 import * as actions from 'store/game/actions';
 import Footer from 'components/Footer';
 import classes from './classes.module.scss';
@@ -18,10 +19,10 @@ const Menu: React.FC = () => {
   const dispatch = useDispatch();
   const state = useSelector((store: IState) => store.game);
   const [helperText, setHelperText] = useState('');
-  const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
+  const [player, setPlayer] = useState(state.player);
 
   const onInputValueChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
-    if (!state.isLoggedIn) {
+    if (!state.player) {
       setPlayer((event.target as HTMLInputElement).value.trim());
     }
   };
@@ -52,7 +53,7 @@ const Menu: React.FC = () => {
     <>
       <Layout centered>
         <div className={classes.loginContainer}>
-          {state.isLoggedIn ? (
+          {state.player ? (
             <div className={classes.playerName}>Hello, {player}!</div>
           ) : (
             <Input
@@ -72,9 +73,9 @@ const Menu: React.FC = () => {
 
           <Button
             className={classes.loginButton}
-            icon={(state.isLoggedIn ? Logout : Login) as ElementType}
-            onClick={state.isLoggedIn ? logout : login}
-            title={state.isLoggedIn ? 'Logout' : 'Login'}
+            icon={(state.player ? Logout : Login) as ElementType}
+            onClick={state.player ? logout : login}
+            title={state.player ? 'Logout' : 'Login'}
           />
         </div>
 
@@ -83,22 +84,20 @@ const Menu: React.FC = () => {
         <div className={classes.buttonGroup}>
           <MenuButton
             onClick={() => dispatch(actions.startGame())}
-            disabled={!state.isLoggedIn}
+            disabled={!state.player}
             path="/game"
             title="New Game"
           />
           <MenuButton
             path="/game"
             disabled={
-              !state.isLoggedIn ||
-              state.isGameEnded ||
-              localStorage.getItem('gameData') === null ||
-              localStorage.getItem('player') !== player
+              !state.player ||
+              (getLocalStorageValue('gameData') as IGame)?.player !== state.player 
             }
             title="Continue"
           />
           <MenuButton path="/rating" title="Rating" />
-          <MenuButton disabled={!state.isLoggedIn} path={!state.isLoggedIn ? '' : '/settings'} title="Settings" />
+          <MenuButton disabled={!state.player} path={!state.player ? '' : '/settings'} title="Settings" />
           <MenuButton path="/about" title="About" />
         </div>
       </Layout>

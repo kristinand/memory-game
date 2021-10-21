@@ -2,7 +2,7 @@ import React, { useState, useEffect, ElementType } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Autoplay from 'assets/icons/autoplay.svg';
-import { musicURL } from 'constants/';
+import { MUSIC_URL } from 'constants/';
 import { IState } from 'store/entities';
 import { ICard, ECardStatus } from 'entities/';
 import * as actions from 'store/game/actions';
@@ -18,7 +18,7 @@ import classes from './classes.module.scss';
 const Game: React.FC = () => {
   const gameState = useSelector((state: IState) => state.game);
   const musicVolume = useSelector((state: IState) => state.settings.musicVolume);
-  const [musicSound] = useState(new Audio(musicURL));
+  const [musicSound] = useState(new Audio(MUSIC_URL));
   const [focusRef, setFocusRef] = useState<HTMLDivElement>();
   musicSound.volume = musicVolume;
 
@@ -101,18 +101,12 @@ const Game: React.FC = () => {
   return (
     <>
       <GameControls getFocusRef={(ref) => setFocusRef(ref)} />
-      <Layout fullWidth centered>
+      <Layout fullWidth>
         <div className={classes.game}>
           {listToArray(gameState.cards, 4).map((cardsRow: ICard[]) => (
             <div key={cardsRow[0].key}>
               {cardsRow.map((card) => (
-                <Card
-                  onCardClick={() => onCardSelectHandler(card)}
-                  key={card.key}
-                  color={card.color}
-                  pattern={card.pattern}
-                  status={card.status}
-                />
+                <Card onCardClick={() => onCardSelectHandler(card)} key={card.key} card={card} />
               ))}
             </div>
           ))}

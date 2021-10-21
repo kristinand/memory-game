@@ -17,6 +17,7 @@ import Music2 from 'assets/icons/music2.svg';
 
 import Button from 'components/Button';
 
+import { LAST_LEVEL } from 'constants/';
 import { IState } from 'store/entities';
 import * as gameActions from 'store/game/actions';
 import * as settingsActions from 'store/settings/actions';
@@ -56,9 +57,9 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   useEffect(() => {
     let timeoutTimer;
     if (!gameState.cardsToWin) {
-      if (gameState.level < gameState.levels) {
+      if (gameState.level < LAST_LEVEL) {
         timeoutTimer = setTimeout(() => {
-          dispatch(gameActions.loadLevel('inc'));
+          dispatch(gameActions.loadNextLevel());
         }, 1000);
       } else {
         dispatch(gameActions.endGame(gameState.player, gameState.score));
@@ -81,8 +82,6 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
     const gameData = {
       cards: gameState.cards,
       level: gameState.level,
-      coverColor: gameState.coverColor,
-      cardsToWin: gameState.cardsToWin,
       score: timer,
       player: gameState.player,
     };
@@ -133,7 +132,6 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   };
 
   const handleKeyPress = ({ code }: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(code);
     const pressedKey = code.slice(3);
     const { fullscreen, reload, sounds, music, pause } = settingsState.keys;
     if (pressedKey === fullscreen) toggleFullscreenHandler();

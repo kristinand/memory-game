@@ -1,12 +1,13 @@
-import { IGameData, ECardStatus, ICard } from 'entities/';
+import { ECardStatus, ICard } from 'entities/';
 
-export interface IGame extends IGameData {
-  isGamePaused: boolean;
-  isGameEnded: boolean;
-  isLoggedIn: boolean;
-  isAutoplay: boolean;
+export interface IGame {
   player: string;
-  levels: number;
+  isGamePaused: boolean;
+  isAutoplay: boolean;
+  level: number;
+  cards: ICard[];
+  cardsToWin: number;
+  score: number;
 }
 
 export enum EActionTypes {
@@ -35,8 +36,6 @@ export interface IEndGame {
 
 export interface ILoadLevel {
   type: typeof EActionTypes.LOAD_LEVEL;
-
-  param: string;
 }
 
 export interface IChangeCardStatus {
@@ -56,8 +55,7 @@ export interface ISetIsGamePaused {
 export interface ILoadLocalGameData {
   type: typeof EActionTypes.LOAD_LOCAL_GAME_DATA;
 
-  player: string;
-  data: IGameData;
+  data: IGame;
 }
 
 export interface ISaveScore {

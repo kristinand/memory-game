@@ -19,12 +19,8 @@ import api from '../../api/api';
 
 export type AppThunk = ActionCreator<ThunkAction<void, IGame, null, Action<string>>>;
 
-export const loadLocalGameData = (
-  player: ILoadLocalGameData['player'],
-  data: ILoadLocalGameData['data'],
-): ILoadLocalGameData => ({
+export const loadLocalGameData = (data: ILoadLocalGameData['data']): ILoadLocalGameData => ({
   type: EActionTypes.LOAD_LOCAL_GAME_DATA,
-  player,
   data,
 });
 
@@ -57,9 +53,8 @@ export const logout = (): ILogout => ({
   type: EActionTypes.LOGOUT,
 });
 
-export const loadLevel = (param = ''): ILoadLevel => ({
+export const loadNextLevel = (): ILoadLevel => ({
   type: EActionTypes.LOAD_LEVEL,
-  param,
 });
 
 export const setIsGamePaused = (isPaused: ISetIsGamePaused['isPaused']): ISetIsGamePaused => ({

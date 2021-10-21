@@ -1,13 +1,5 @@
 import { ECardStatus } from './enums';
 
-export interface IGameData {
-  level: number;
-  cards: ICard[];
-  coverColor: string;
-  cardsToWin: null | number;
-  score: number;
-}
-
 export interface IKeys {
   music: string;
   sounds: string;

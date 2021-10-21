@@ -1,49 +1,40 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import { Reducer } from 'redux';
-import { getRandomColor } from 'utils/functions';
+
 import { TGameActionTypes, EActionTypes, IGame } from './entities';
-import { updateCardStatus, loadLevel, startGame } from './functions';
+import { createCards, updateCardStatus, loadNextLevel } from './functions';
 
 const initState: IGame = {
   level: 1,
-  cards: [],
-  coverColor: getRandomColor(40, 40, 60, 60),
-  cardsToWin: null,
+  cards: createCards(1),
+  cardsToWin: 8,
   isGamePaused: true,
-  isGameEnded: false,
-  isLoggedIn: false,
   isAutoplay: false,
-  player: '',
+  player: localStorage.getItem('player') || '',
   score: 0,
-  levels: 5,
 };
 
 const gameReducer: Reducer<IGame, TGameActionTypes> = (state = initState, action) => {
   switch (action.type) {
     case EActionTypes.LOAD_LOCAL_GAME_DATA: {
-      const { data, player } = action;
-      return {
-        ...state,
-        ...data,
-        player,
-        isLoggedIn: player !== undefined,
-      };
+      return { ...state, ...action.data };
     }
 
     case EActionTypes.LOGIN:
-      return { ...state, player: action.player, isLoggedIn: true };
+      return { ...state, player: action.player };
     case EActionTypes.LOGOUT:
-      return { ...state, player: '', isLoggedIn: false };
+      return { ...state, player: '' };
 
-    case EActionTypes.START_GAME:
-      return startGame(state, initState);
+    case EActionTypes.START_GAME: {
+      localStorage.removeItem('gameData');
+      return { ...initState, player: state.player, cards: createCards(1) };
+    }
     case EActionTypes.END_GAME: {
       localStorage.removeItem('gameData');
-      return { ...state, isGameEnded: true };
+      return { ...initState, player: state.player };
     }
 
     case EActionTypes.LOAD_LEVEL:
-      return loadLevel(state, action);
+      return loadNextLevel(state);
     case EActionTypes.SAVE_SCORE:
       return { ...state, score: action.timer };
     case EActionTypes.AUTOPLAY:

@@ -1,12 +1,14 @@
 import { shuffleList, getRandomNumber, getRandomColor } from 'utils/functions';
-import { cardPatterns } from 'constants/';
+import { CARD_PATTERNS } from 'constants/';
 import { ECardStatus, ICard } from 'entities/';
-import { IChangeCardStatus, IGame, ILoadLevel } from './entities';
+import { IChangeCardStatus, IGame } from './entities';
 
-export const createCards = (level: number, coverColor: string): ICard[] => {
+export const createCards = (level: number): ICard[] => {
   let cards: ICard[] = [];
 
-  let patterns = cardPatterns;
+  let patterns = CARD_PATTERNS;
+  const coverColor = getRandomColor();
+
   for (let i = 0; i < level * 2 + 2; i++) {
     const key1 = `${level}${i}${Math.ceil(Math.random() * 100000)}`;
     const key2 = `${level}${i}${Math.ceil(Math.random() * 100000)}`;
@@ -53,34 +55,14 @@ export const updateCardStatus = (state: IGame, action: IChangeCardStatus): IGame
   return { ...state, cardsToWin, isGamePaused: false };
 };
 
-export const loadLevel = (state: IGame, { param }: ILoadLevel): IGame => {
-  let { level } = state;
-  if (param === 'inc') {
-    level += 1;
-  } else if (param === 'dec') {
-    level -= 1;
-  }
-  const coverColor = getRandomColor(40, 40, 60, 60);
-  const cards = createCards(level, state.coverColor);
+export const loadNextLevel = (state: IGame): IGame => {
+  const nextLevel = state.level + 1;
+  const cards = createCards(nextLevel);
   return {
     ...state,
     cards,
-    level,
-    coverColor,
+    level: nextLevel,
     cardsToWin: cards.length,
     isGamePaused: true,
-  };
-};
-
-export const startGame = (state: IGame, initState: IGame): IGame => {
-  localStorage.removeItem('gameData');
-  const coverColor = getRandomColor(40, 40, 60, 60);
-  const cards = createCards(initState.level, coverColor);
-  return {
-    ...initState,
-    ...state,
-    coverColor,
-    cards,
-    cardsToWin: cards.length,
   };
 };
