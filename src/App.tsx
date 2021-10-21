@@ -25,7 +25,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const gameData = getLocalStorageValue('gameData') as IGame;
-    if (gameData.player === player) {
+    if (gameData?.player === player) {
       dispatch(loadLocalGameData(gameData));
     }
     const settings = getLocalStorageValue('settings') as Partial<ISettings>;
