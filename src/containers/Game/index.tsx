@@ -101,7 +101,7 @@ const Game: React.FC = () => {
   return (
     <>
       <GameControls getFocusRef={(ref) => setFocusRef(ref)} />
-      <Layout fullWidth centered>
+      <Layout fullWidth>
         <div className={classes.game}>
           {listToArray(gameState.cards, 4).map((cardsRow: ICard[]) => (
             <div key={cardsRow[0].key}>
