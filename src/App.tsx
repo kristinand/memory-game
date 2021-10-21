@@ -19,15 +19,15 @@ import './styles/index.scss';
 import classes from './App.module.scss';
 
 const App: React.FC = () => {
-  const isLoggedIn = useSelector((state: IState) => state.game.isLoggedIn);
+  const player = useSelector((state: IState) => state.game.player);
   const theme = useSelector((state: IState) => state.settings.theme);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const player = localStorage.getItem('player');
-    if (player) {
+    const localplayer = localStorage.getItem('player');
+    if (localplayer) {
       const gameData = getLocalStorageValue('gameData') as IGameData;
-      dispatch(loadLocalGameData(player, gameData));
+      dispatch(loadLocalGameData(localplayer, gameData));
     }
     const settings = getLocalStorageValue('settings') as Partial<ISettings>;
     if (settings) {
@@ -39,10 +39,10 @@ const App: React.FC = () => {
     <div className={classNames(classes.App, classes[theme])}>
       <BrowserRouter>
         <Switch>
-          {isLoggedIn && <Route path="/game" component={Game} />}
+          {player && <Route path="/game" component={Game} />}
           <Route path="/about" component={About} />
           <Route path="/rating" component={Rating} />
-          {isLoggedIn && <Route path="/settings" component={Settings} />}
+          {player && <Route path="/settings" component={Settings} />}
           <Route path="/" component={Menu} />
           <Redirect to="/" />
         </Switch>

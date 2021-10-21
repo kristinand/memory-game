@@ -10,7 +10,6 @@ const initState: IGame = {
   cards: createCards(1, getRandomColor()),
   cardsToWin: 2 * (1 * 2 + 2),
   isGamePaused: true,
-  isLoggedIn: false,
   isAutoplay: false,
   player: '',
   score: 0,
@@ -24,22 +23,21 @@ const gameReducer: Reducer<IGame, TGameActionTypes> = (state = initState, action
         ...state,
         ...data,
         player,
-        isLoggedIn: player !== undefined,
       };
     }
 
     case EActionTypes.LOGIN:
-      return { ...state, player: action.player, isLoggedIn: true };
+      return { ...state, player: action.player };
     case EActionTypes.LOGOUT:
-      return { ...state, player: '', isLoggedIn: false };
+      return { ...state, player: '' };
 
-    case EActionTypes.START_GAME:{
+    case EActionTypes.START_GAME: {
       localStorage.removeItem('gameData');
-      return { ...initState, player: state.player, isLoggedIn: true };
+      return { ...initState, player: state.player };
     }
     case EActionTypes.END_GAME: {
       localStorage.removeItem('gameData');
-      return { ...initState, player: state.player, isLoggedIn: true };
+      return { ...initState, player: state.player };
     }
 
     case EActionTypes.LOAD_LEVEL:
