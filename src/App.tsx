@@ -7,7 +7,7 @@ import { loadLocalGameData } from 'store/game/actions';
 import { loadLocalSettingsData } from 'store/settings/actions';
 import { IState } from 'store/entities';
 import { ISettings } from 'store/settings/entities';
-import { IGameData } from 'entities/';
+import { IGame } from 'store/game/entities';
 import { getLocalStorageValue } from 'utils/functions';
 import Game from 'containers/Game';
 import Menu from 'containers/Menu';
@@ -24,16 +24,15 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const localplayer = localStorage.getItem('player');
-    if (localplayer) {
-      const gameData = getLocalStorageValue('gameData') as IGameData;
-      dispatch(loadLocalGameData(localplayer, gameData));
+    const gameData = getLocalStorageValue('gameData') as IGame;
+    if (gameData.player === player) {
+      dispatch(loadLocalGameData(gameData));
     }
     const settings = getLocalStorageValue('settings') as Partial<ISettings>;
     if (settings) {
       dispatch(loadLocalSettingsData(settings));
     }
-  }, []);
+  }, [player]);
 
   return (
     <div className={classNames(classes.App, classes[theme])}>

@@ -9,19 +9,14 @@ const initState: IGame = {
   cardsToWin: 8,
   isGamePaused: true,
   isAutoplay: false,
-  player: '',
+  player: localStorage.getItem('player') || '',
   score: 0,
 };
 
 const gameReducer: Reducer<IGame, TGameActionTypes> = (state = initState, action) => {
   switch (action.type) {
     case EActionTypes.LOAD_LOCAL_GAME_DATA: {
-      const { data, player } = action;
-      return {
-        ...state,
-        ...data,
-        player,
-      };
+      return { ...state, ...action.data };
     }
 
     case EActionTypes.LOGIN:

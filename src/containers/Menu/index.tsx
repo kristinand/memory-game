@@ -8,8 +8,9 @@ import MenuButton from 'components/MenuButton';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
-import { setLocalStorageValue } from 'utils/functions';
+import { setLocalStorageValue, getLocalStorageValue } from 'utils/functions';
 import { IState } from 'store/entities';
+import { IGame } from 'store/game/entities';
 import * as actions from 'store/game/actions';
 import Footer from 'components/Footer';
 import classes from './classes.module.scss';
@@ -18,7 +19,7 @@ const Menu: React.FC = () => {
   const dispatch = useDispatch();
   const state = useSelector((store: IState) => store.game);
   const [helperText, setHelperText] = useState('');
-  const [player, setPlayer] = useState(localStorage.getItem('player') || state.player);
+  const [player, setPlayer] = useState(state.player);
 
   const onInputValueChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
     if (!state.player) {
@@ -91,8 +92,7 @@ const Menu: React.FC = () => {
             path="/game"
             disabled={
               !state.player ||
-              localStorage.getItem('gameData') === null ||
-              localStorage.getItem('player') !== player
+              (getLocalStorageValue('gameData') as IGame)?.player !== state.player 
             }
             title="Continue"
           />
