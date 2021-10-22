@@ -1,9 +1,23 @@
 const express = require('express'); // https://expressjs.com/ru/
+const rateLimit = require('express-rate-limit');
 const Score = require('./models/Score.js');
 
 const app = express();
 
-app.use(express.json({ extended: false }));
+// Limit requests from same API
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: 'Too many requests from this IP',
+});
+app.use('/api', limiter);
+
+// Bode parser: reading data from body into req.body
+app.use(
+  express.json({
+      limit: '10kb',
+  })
+);
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
