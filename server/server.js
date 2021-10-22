@@ -1,53 +1,41 @@
-const express = require('express');
 const path = require('path');
-const connectDB = require('./db.js');
-const Score = require('./models/Score.js');
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const app = require('./app.js');
 
-const app = express();
-
-connectDB();
-
-app.use(express.json({ extended: false }));
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT');
-  next();
+process.on('uncaughtException', (err) => {
+  console.log(err.name, err.message);
+  process.exit(1);
 });
 
-app.put('/game', async (req, res) => {
-  try {
-    const score = await Score.findOneAndUpdate(
-      { player: req.body.player },
-      {
-        $set: {
-          score: req.body.score,
-          date: Date.now(),
-        },
-      },
-      { upsert: true },
-    );
+dotenv.config({ path: '.env' });
 
-    await score.save();
-    res.json(score);
-  } catch (err) {
-    console.error(err);
-  }
-});
+const DB = process.env.MONGO_URI;
 
-app.get('/rating', async (req, res) => {
-  const ratingData = await Score.find();
-  res.send(ratingData);
-});
+mongoose
+    .connect(DB, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true,
+    })
+    .then(() => {
+        console.log('DB connected');
+    });
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.resolve(__dirname, '../public')));
+  app.use(express.static(`${path.dirname('')}/public`));
   app.get('/*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../public/index.html'));
+    res.sendFile(`${path.dirname('')}/public/index.html`);
   });
 }
 
-const PORT = process.env.PORT || 5000;
-
+const PORT = process.env.PORT;
 app.listen(PORT, () => console.log('Server started on PORT: ' + PORT));
+
+process.on('unhandledRejection', (err) => {
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
+});
