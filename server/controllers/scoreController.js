@@ -13,7 +13,7 @@ exports.getAllRatings = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createRating = catchAsync(async (req, res, next) => {
+exports.setRating = catchAsync(async (req, res, next) => {
   const ratingData = await Score.findOneAndUpdate(
     { player: req.body.player },
     {
