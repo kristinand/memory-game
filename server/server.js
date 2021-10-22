@@ -1,4 +1,3 @@
-const path = require('path');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const app = require('./app.js');
@@ -22,13 +21,6 @@ mongoose
     .then(() => {
         console.log('DB connected');
     });
-
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(`${path.dirname('')}/public`));
-  app.get('/*', (req, res) => {
-    res.sendFile(`${path.dirname('')}/public/index.html`);
-  });
-}
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => console.log('Server started on PORT: ' + PORT));

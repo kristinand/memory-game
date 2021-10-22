@@ -1,6 +1,8 @@
 const express = require('express'); // https://expressjs.com/ru/
 const rateLimit = require('express-rate-limit');
-const scoreRouter = require('./routes/scoreRouter.js');
+const scoreRouter = require('./routes/scoreRouter');
+const AppError = require('./utils/AppError');
+const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 
@@ -26,13 +28,19 @@ app.use((req, res, next) => {
   next();
 });
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(`${__dirname}/public`));
+  app.get('/*', (req, res) => {
+    res.sendFile(`${__dirname}/public/index.html`);
+  });
+}
+
 app.use('/api/rating', scoreRouter);
 
-app.all('*', (req, res) => {
-  res.status(404).json({
-    status: 'fail',
-    message: `Can't find ${req.originalUrl} on the server!`,
-  });
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on the server!`, 404));
 });
+
+app.use(globalErrorHandler);
 
 module.exports = app;
