@@ -1,6 +1,6 @@
 const express = require('express'); // https://expressjs.com/ru/
 const rateLimit = require('express-rate-limit');
-const Score = require('./models/Score.js');
+const scoreRouter = require('./routes/scoreRouter.js');
 
 const app = express();
 
@@ -15,8 +15,8 @@ app.use('/api', limiter);
 // Bode parser: reading data from body into req.body
 app.use(
   express.json({
-      limit: '10kb',
-  })
+    limit: '10kb',
+  }),
 );
 
 app.use((req, res, next) => {
@@ -26,29 +26,13 @@ app.use((req, res, next) => {
   next();
 });
 
-app.put('/game', async (req, res) => {
-  try {
-    const score = await Score.findOneAndUpdate(
-      { player: req.body.player },
-      {
-        $set: {
-          score: req.body.score,
-          date: Date.now(),
-        },
-      },
-      { upsert: true },
-    );
+app.use('/api/rating', scoreRouter);
 
-    await score.save();
-    res.json(score);
-  } catch (err) {
-    console.error(err);
-  }
-});
-
-app.get('/rating', async (req, res) => {
-  const ratingData = await Score.find();
-  res.send(ratingData);
+app.all('*', (req, res) => {
+  res.status(404).json({
+    status: 'fail',
+    message: `Can't find ${req.originalUrl} on the server!`,
+  });
 });
 
 module.exports = app;
