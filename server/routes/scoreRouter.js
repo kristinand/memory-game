@@ -3,7 +3,7 @@ const scoreController = require('../controllers/scoreController');
 
 const router = express.Router();
 
-router.route('/').get(scoreController.getAllRatings);
-router.route('/:id').get(scoreController.createRating).delete(scoreController.deleteRating);
+router.route('/').get(scoreController.getAllRatings).put(scoreController.createRating);
+router.route('/:id').delete(scoreController.deleteRating);
 
 module.exports = router;

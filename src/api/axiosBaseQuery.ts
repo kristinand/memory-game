@@ -9,7 +9,7 @@ const axiosBaseQuery = async ({
 }: AxiosRequestConfig): Promise<Partial<AxiosResponse>> => {
   try {
     const result = await instance.request({
-      url,
+      url: `/api${url}`,
       method,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       data,

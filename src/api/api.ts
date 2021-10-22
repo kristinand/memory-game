@@ -8,7 +8,7 @@ const api = {
   },
 
   async saveScore(data: { player: string; score: number }): Promise<void> {
-    await axiosBaseQuery({ url: '/game', data, method: 'PUT' });
+    await axiosBaseQuery({ url: '/rating', data, method: 'PUT' });
   },
 };
 
