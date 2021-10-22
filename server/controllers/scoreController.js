@@ -1,27 +1,37 @@
 const Score = require('../models/Score.js');
+const catchAsync = require('../utils/catchAsync');
 
-exports.getAllRatings = async (req, res) => {
-  const ratingData = await Score.find();
-  res.send(ratingData);
-};
+exports.getAllRatings = catchAsync(async (req, res, next) => {
+  const ratings = await Score.find();
 
-exports.createRating = async (req, res) => {
-  try {
-    const score = await Score.findOneAndUpdate(
-      { player: req.body.player },
-      {
-        $set: {
-          score: req.body.score,
-          date: Date.now(),
-        },
+  res.status(200).json({
+    status: 'success',
+    content: {
+      total: ratings.length,
+      items: ratings,
+    },
+  });
+});
+
+exports.createRating = catchAsync(async (req, res, next) => {
+  const ratingData = await Score.findOneAndUpdate(
+    { player: req.body.player },
+    {
+      $set: {
+        score: req.body.score,
+        date: Date.now(),
       },
-      { upsert: true },
-    );
-    await score.save();
-    res.json(score);
-  } catch (err) {
-    console.error(err);
-  }
-};
+    },
+    { upsert: true },
+  );
+  await ratingData.save();
+
+  res.status(200).json({
+    status: 'success',
+    constnet: {
+      data: ratingData,
+    },
+  });
+});
 
 exports.deleteRating = (req, res) => {};

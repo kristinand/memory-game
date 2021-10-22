@@ -14,6 +14,7 @@ const scoreSchema = new mongoose.Schema({
   score: {
     type: Number,
     required: true,
+    min: [0, "Score can not be lower than 0."],
   },
 });
 
