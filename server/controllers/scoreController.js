@@ -21,7 +21,7 @@ exports.getAllRatings = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.setRating = catchAsync(async (req, res, next) => {
+exports.saveRating = catchAsync(async (req, res, next) => {
   const { player, score } = req.body;
 
   const ratingData = await Score.findOneAndUpdate(
@@ -31,8 +31,9 @@ exports.setRating = catchAsync(async (req, res, next) => {
         score,
       },
     },
-    { upsert: true },
+    { upsert: true, new: true },
   );
+
   await ratingData.save();
 
   res.status(200).json({
