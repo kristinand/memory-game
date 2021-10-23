@@ -31,4 +31,15 @@ exports.setRating = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteRating = (req, res) => {};
+exports.deleteRating = catchAsync(async (req, res) => {
+  const rating = await Score.findByIdAndDelete(req.params.id);
+
+  if (!rating) {
+    return next(new AppError('No document found with that ID', 404));
+  }
+
+  res.status(204).json({
+    status: 'success',
+    content: null,
+  });
+});
