@@ -21,7 +21,7 @@ const Rating: React.FC = () => {
     const loadRatings = async () => {
       const result = await api.loadRatings();
       if (result.status === 'success') {
-        setRatings(result.content.ratings.sort((prev, cur) => prev.score - cur.score));
+        setRatings(result.content.ratings);
       }
     };
 

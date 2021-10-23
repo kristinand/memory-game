@@ -2,7 +2,8 @@ const Score = require('../models/Score.js');
 const catchAsync = require('../utils/catchAsync');
 
 exports.getAllRatings = catchAsync(async (req, res, next) => {
-  const ratings = await Score.find();
+  // const ratings = await Score.aggregate([{ $sort: req.query?.sort || { score: 1 } }]);
+  const ratings = await Score.find().sort(req.query?.sort || 'score');
 
   res.status(200).json({
     status: 'success',
