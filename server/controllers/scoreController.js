@@ -1,13 +1,23 @@
 const Score = require('../models/Score.js');
 const catchAsync = require('../utils/catchAsync');
+const APIFeatures = require('../utils/APIFeatures');
 
 exports.getAllRatings = catchAsync(async (req, res, next) => {
+  // one more way to sort
   // const ratings = await Score.aggregate([{ $sort: req.query?.sort || { score: 1 } }]);
-  const ratings = await Score.find().sort(req.query?.sort || 'score');
+
+  if (!req.query?.sort) {
+    req.query.sort = 'score';
+  }
+
+  const features = new APIFeatures(Score.find(), req.query).sort().paginate();
+  const ratings = await features.query;
+
+  const total = await Score.countDocuments();
 
   res.status(200).json({
     status: 'success',
-    content: { ratings },
+    content: { total, ratings },
   });
 });
 
