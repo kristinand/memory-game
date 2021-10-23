@@ -2,7 +2,7 @@ const Score = require('../models/Score.js');
 const catchAsync = require('../utils/catchAsync');
 const APIFeatures = require('../utils/APIFeatures');
 
-exports.getAllRatings = catchAsync(async (req, res, next) => {
+exports.getAllRatings = catchAsync(async (req, res) => {
   // one more way to sort
   // const ratings = await Score.aggregate([{ $sort: req.query?.sort || { score: 1 } }]);
 
@@ -21,20 +21,18 @@ exports.getAllRatings = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.saveRating = catchAsync(async (req, res, next) => {
+exports.saveRating = catchAsync(async (req, res) => {
   const { player, score } = req.body;
 
-  const ratingData = await Score.findOneAndUpdate(
+  await Score.findOneAndUpdate(
     { player },
     {
       $set: {
         score,
       },
     },
-    { upsert: true, new: true },
+    { upsert: true, new: true, runValidators: true },
   );
-
-  await ratingData.save();
 
   res.status(200).json({
     status: 'success',
