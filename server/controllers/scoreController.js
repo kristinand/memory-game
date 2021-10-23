@@ -6,20 +6,18 @@ exports.getAllRatings = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    content: {
-      total: ratings.length,
-      items: ratings,
-    },
+    content: { ratings },
   });
 });
 
 exports.setRating = catchAsync(async (req, res, next) => {
+  const { player, score } = req.body;
+
   const ratingData = await Score.findOneAndUpdate(
-    { player: req.body.player },
+    { player },
     {
       $set: {
-        score: req.body.score,
-        date: Date.now(),
+        score,
       },
     },
     { upsert: true },
@@ -28,9 +26,7 @@ exports.setRating = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    constnet: {
-      data: ratingData,
-    },
+    contnet: null,
   });
 });
 

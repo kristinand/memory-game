@@ -1,15 +1,16 @@
-import { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
+import { AxiosRequestConfig, AxiosError } from 'axios';
 import instance from './instance';
+import { IError, IResponse, ISuccess } from './entities';
 
-const axiosBaseQuery = async ({
+const axiosBaseQuery = async <T = null>({
   url,
   method = 'GET',
   data,
   params,
-}: AxiosRequestConfig): Promise<Partial<AxiosResponse>> => {
+}: AxiosRequestConfig): Promise<IResponse<T>> => {
   try {
-    const result = await instance.request({
-      url: `/api${url}`,
+    const result = await instance.request<ISuccess<T>>({
+      url,
       method,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       data,
@@ -17,16 +18,11 @@ const axiosBaseQuery = async ({
       params,
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    return { data: result.data };
+    return result.data;
   } catch (axiosError) {
-    const err = axiosError as AxiosError;
-
-    return {
-      status: err.response?.status,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      data: err.response?.data,
-    };
+    const error = (axiosError as AxiosError<IError>).response.data;
+    console.log(error);
+    return error;
   }
 };
 
