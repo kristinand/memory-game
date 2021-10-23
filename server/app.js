@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express'); // https://expressjs.com/ru/
 const rateLimit = require('express-rate-limit');
 const scoreRouter = require('./routes/scoreRouter');
@@ -23,15 +24,15 @@ app.use(
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', '');
   next();
 });
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(`${__dirname}/public`));
+  app.use(express.static(path.resolve('../public')));
   app.get('/*', (req, res) => {
-    res.sendFile(`${__dirname}/public/index.html`);
+    res.sendFile(path.resolve('../public/index.html'));
   });
 }
 
