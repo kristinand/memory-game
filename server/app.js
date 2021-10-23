@@ -29,14 +29,14 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/api/rating', scoreRouter);
+
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.resolve('../public')));
+  app.use(express.static(path.resolve('public')));
   app.get('/*', (req, res) => {
-    res.sendFile(path.resolve('../public/index.html'));
+    res.sendFile(path.resolve('public/index.html'));
   });
 }
-
-app.use('/api/rating', scoreRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on the server!`, 404));
