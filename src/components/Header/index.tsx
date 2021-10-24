@@ -6,10 +6,10 @@ import Button from '../Button';
 import classes from './classes.module.scss';
 
 interface IProps {
-  title: string;
+  title?: string;
 }
 
-const Header: React.FC<IProps> = ({ title }) => {
+const Header: React.FC<IProps> = ({ title = '' }) => {
   const history = useHistory();
   return (
     <header className={classes.header}>

@@ -8,10 +8,11 @@ import Layout from 'components/Layout';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Button from 'components/Button';
+import ErrorPage from 'components/ErrorPage';
 
 import { formatTime } from 'utils/functions';
 import { IState } from 'store/entities';
-import { ILoadRatingsResponse, IPlayerRatingResponse } from '../../api/entities';
+import { ILoadRatingsResponse, IPlayerRatingResponse, IError } from '../../api/entities';
 import api from '../../api/api';
 
 import classes from './classes.module.scss';
@@ -21,6 +22,7 @@ const Rating: React.FC = () => {
   const player = useSelector((state: IState) => state.game.player);
   const [page, setPage] = useState(1);
   const [ratingsData, setRatingsData] = useState<ILoadRatingsResponse>();
+  const [errors, setErrors] = useState<IError>();
   const [playerRatingData, setPlayerRatingData] = useState<IPlayerRatingResponse>();
 
   useEffect(() => {
@@ -28,6 +30,8 @@ const Rating: React.FC = () => {
       const ratings = await api.loadRatings({ page, limit });
       if (ratings.status === 'success') {
         setRatingsData(ratings.content);
+      } else {
+        setErrors(ratings);
       }
 
       if (page === 1) {
@@ -41,15 +45,17 @@ const Rating: React.FC = () => {
     void loadRatings();
   }, [page]);
 
+  if (errors) {
+    return <ErrorPage message={errors.message} />;
+  }
+
   return (
     <>
       <Header title="Rating" />
       <Layout>
-        {playerRatingData && (
-          <p>
-            Your position: {playerRatingData.position} ({formatTime(playerRatingData.rating.score)})
-          </p>
-        )}
+        <p>
+          Your position: {playerRatingData?.position || '—'} ({formatTime(playerRatingData?.rating?.score || 0)})
+        </p>
 
         <div className={classes.table}>
           <div className={classes.tableHeader}>
@@ -72,8 +78,8 @@ const Rating: React.FC = () => {
               <span>{new Date(playerRating.date).toLocaleString()}</span>
             </div>
           ))}
-          {ratingsData?.ratings.length < limit &&
-            Array(limit - ratingsData?.ratings.length)
+          {((!ratingsData && !errors) || ratingsData?.ratings.length < limit) &&
+            Array(limit - (ratingsData?.ratings.length || 0))
               .fill(0)
               .map((row, i) => (
                 <div key={Math.random()} className={classes.tableRow}>
