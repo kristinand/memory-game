@@ -11,22 +11,30 @@ import Button from 'components/Button';
 
 import { formatTime } from 'utils/functions';
 import { IState } from 'store/entities';
-import { ILoadRatingsResponse } from '../../api/entities';
+import { ILoadRatingsResponse, IPlayerRatingResponse } from '../../api/entities';
 import api from '../../api/api';
 
 import classes from './classes.module.scss';
 
 const Rating: React.FC = () => {
-  const playerName = useSelector((state: IState) => state.game.player);
-  const [page, setPage] = useState(1);
   const limit = 10;
+  const player = useSelector((state: IState) => state.game.player);
+  const [page, setPage] = useState(1);
   const [ratingsData, setRatingsData] = useState<ILoadRatingsResponse>();
+  const [playerRatingData, setPlayerRatingData] = useState<IPlayerRatingResponse>();
 
   useEffect(() => {
     const loadRatings = async () => {
-      const result = await api.loadRatings({ page, limit });
-      if (result.status === 'success') {
-        setRatingsData(result.content);
+      const ratings = await api.loadRatings({ page, limit });
+      if (ratings.status === 'success') {
+        setRatingsData(ratings.content);
+      }
+
+      if (page === 1) {
+        const playerRating = await api.loadPlayerRating(player);
+        if (playerRating.status === 'success') {
+          setPlayerRatingData(playerRating.content);
+        }
       }
     };
 
@@ -37,6 +45,12 @@ const Rating: React.FC = () => {
     <>
       <Header title="Rating" />
       <Layout>
+        {playerRatingData && (
+          <p>
+            Your position: {playerRatingData.position} ({formatTime(playerRatingData.rating.score)})
+          </p>
+        )}
+
         <div className={classes.table}>
           <div className={classes.tableHeader}>
             <span>Position</span>
@@ -49,7 +63,7 @@ const Rating: React.FC = () => {
               key={playerRating.player}
               className={classNames({
                 [classes.tableRow]: true,
-                [classes.current]: playerName === playerRating.player,
+                [classes.current]: player === playerRating.player,
               })}
             >
               <span>{page * limit - limit + (i + 1)}</span>

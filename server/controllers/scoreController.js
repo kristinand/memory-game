@@ -1,7 +1,6 @@
 const Score = require('../models/Score.js');
 const catchAsync = require('../utils/catchAsync');
 const APIFeatures = require('../utils/APIFeatures');
-const { listenerCount } = require('../app.js');
 
 exports.getAllRatings = catchAsync(async (req, res) => {
   // one more way to sort
@@ -22,12 +21,28 @@ exports.getAllRatings = catchAsync(async (req, res) => {
   });
 });
 
+exports.getRating = catchAsync(async (req, res) => {
+  // player field is unique (as id)
+  const rating = await Score.findOne({ player: req.params.id });
+
+  if (!rating) {
+    return next(new AppError('No document found with that ID', 404));
+  }
+
+  const position = await Score.find({ score: { $lte: rating.score } }).countDocuments();
+
+  res.status(200).json({
+    status: 'success',
+    content: { rating, position },
+  });
+});
+
 exports.saveRating = catchAsync(async (req, res) => {
   const doc = await Score.findOne({ player: req.body.player });
 
   if (doc) {
     doc.score = req.body.score;
-    await doc;
+    await doc.save();
   } else {
     await Score.create(req.body);
   }

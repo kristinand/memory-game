@@ -17,10 +17,3 @@ export interface ICard {
   status: ECardStatus;
   count: number;
 }
-
-export interface IRating {
-  _id: string;
-  player: string;
-  date: string;
-  score: number;
-}
