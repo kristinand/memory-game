@@ -30,6 +30,23 @@
   border-bottom: 2px solid;
 }
 
+.tableFooter {
+  display: flex;
+
+  & > *:not(:last-child) {
+    margin-right: 10px;
+  }
+
+  & .backwardButton {
+    justify-self: flex-start;
+  }
+
+  & .forwardButton {
+    margin-left: auto;
+    justify-self: flex-end;
+  }
+}
+
 .tableRow {
   &:not(:last-child) {
     border-bottom: 2px solid;
