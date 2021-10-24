@@ -1,9 +1,14 @@
 import axiosBaseQuery from './axiosBaseQuery';
-import { ILoadRatingsResponse, IResponse } from './entities';
+import { ILoadRatingsResponse, IPlayerRatingResponse, IResponse } from './entities';
 
 const api = {
   async loadRatings(params: { page?: number; limit?: number }): Promise<IResponse<ILoadRatingsResponse>> {
     const result = await axiosBaseQuery<ILoadRatingsResponse>({ url: '/rating', params });
+    return result;
+  },
+
+  async loadPlayerRating(playerName: string): Promise<IResponse<IPlayerRatingResponse>> {
+    const result = await axiosBaseQuery<IPlayerRatingResponse>({ url: `/rating/${playerName}` });
     return result;
   },
 

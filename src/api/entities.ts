@@ -1,5 +1,3 @@
-import { IRating } from 'entities';
-
 export interface ISuccess<T = null> {
   status: 'success';
   content: T;
@@ -13,6 +11,18 @@ export interface IError {
 }
 
 export type IResponse<T = null> = ISuccess<T> | IError;
+
+export interface IRating {
+  _id: string;
+  player: string;
+  date: string;
+  score: number;
+}
+
+export interface IPlayerRatingResponse {
+  rating: IRating;
+  position: number;
+}
 
 export interface ILoadRatingsResponse {
   ratings: IRating[];

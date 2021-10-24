@@ -30,7 +30,7 @@ const gameReducer: Reducer<IGame, TGameActionTypes> = (state = initState, action
     }
     case EActionTypes.END_GAME: {
       localStorage.removeItem('gameData');
-      return { ...initState, player: state.player };
+      return { ...initState, player: state.player, score: state.score };
     }
 
     case EActionTypes.LOAD_LEVEL:
