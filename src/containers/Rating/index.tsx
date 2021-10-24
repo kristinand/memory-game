@@ -8,6 +8,7 @@ import Layout from 'components/Layout';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Button from 'components/Button';
+import ErrorPage from 'components/ErrorPage';
 
 import { formatTime } from 'utils/functions';
 import { IState } from 'store/entities';
@@ -45,7 +46,7 @@ const Rating: React.FC = () => {
   }, [page]);
 
   if (errors) {
-    return <p>{errors.message}</p>;
+    return <ErrorPage message={errors.message} />;
   }
 
   return (
