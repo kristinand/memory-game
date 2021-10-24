@@ -16,4 +16,5 @@ export type IResponse<T = null> = ISuccess<T> | IError;
 
 export interface ILoadRatingsResponse {
   ratings: IRating[];
+  total: number;
 }
