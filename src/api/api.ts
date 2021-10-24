@@ -2,7 +2,7 @@ import axiosBaseQuery from './axiosBaseQuery';
 import { ILoadRatingsResponse, IResponse } from './entities';
 
 const api = {
-  async loadRatings(params: { page?: number }): Promise<IResponse<ILoadRatingsResponse>> {
+  async loadRatings(params: { page?: number; limit?: number }): Promise<IResponse<ILoadRatingsResponse>> {
     const result = await axiosBaseQuery<ILoadRatingsResponse>({ url: '/rating', params });
     return result;
   },

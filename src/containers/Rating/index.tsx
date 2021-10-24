@@ -19,11 +19,12 @@ import classes from './classes.module.scss';
 const Rating: React.FC = () => {
   const playerName = useSelector((state: IState) => state.game.player);
   const [page, setPage] = useState(1);
+  const limit = 10;
   const [ratingsData, setRatingsData] = useState<ILoadRatingsResponse>();
 
   useEffect(() => {
     const loadRatings = async () => {
-      const result = await api.loadRatings({ page });
+      const result = await api.loadRatings({ page, limit });
       if (result.status === 'success') {
         setRatingsData(result.content);
       }
@@ -51,18 +52,18 @@ const Rating: React.FC = () => {
                 [classes.current]: playerName === playerRating.player,
               })}
             >
-              <span>{page * 10 - 10 + (i + 1)}</span>
+              <span>{page * limit - limit + (i + 1)}</span>
               <span>{playerRating.player}</span>
               <span>{formatTime(playerRating.score)}</span>
               <span>{new Date(playerRating.date).toLocaleString()}</span>
             </div>
           ))}
-          {ratingsData?.ratings.length < 10 &&
-            Array(10 - ratingsData?.ratings.length)
+          {ratingsData?.ratings.length < limit &&
+            Array(limit - ratingsData?.ratings.length)
               .fill(0)
               .map((row, i) => (
                 <div key={Math.random()} className={classes.tableRow}>
-                  <span>{page * 10 - 10 + (i + 1) + ratingsData?.ratings.length}</span>
+                  <span>{page * limit - limit + (i + 1) + ratingsData?.ratings.length}</span>
                   <span>—</span>
                   <span>—</span>
                   <span>—</span>
