@@ -61,7 +61,7 @@ module.exports = {
     contentBase: './',
     hot: true,
   },
-  devtool: !isProd ? 'eval-cheap-module-source-map' : '',
+  devtool: 'eval-cheap-module-source-map',
   module: {
     rules: [
       {
