@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ElementType } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Autoplay from 'assets/icons/autoplay.svg';
@@ -112,7 +112,7 @@ const Game: React.FC = () => {
           ))}
         </div>
         {!gameState.score && !gameState.isAutoplay && (
-          <Button onClick={onAutoplayHandler} icon={Autoplay as ElementType}>
+          <Button onClick={onAutoplayHandler} icon={<Autoplay />}>
             Autoplay
           </Button>
         )}

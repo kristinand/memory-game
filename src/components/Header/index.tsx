@@ -1,4 +1,4 @@
-import React, { ElementType } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Back from 'assets/icons/left.svg';
@@ -13,7 +13,7 @@ const Header: React.FC<IProps> = ({ title = '' }) => {
   const history = useHistory();
   return (
     <header className={classes.header}>
-      <Button className={classes.button} icon={Back as ElementType} onClick={() => history.push('/')}>
+      <Button className={classes.button} icon={<Back />} onClick={() => history.push('/')}>
         Back to Menu
       </Button>
       <h2>{title}</h2>

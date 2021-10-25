@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, ElementType } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -151,20 +151,16 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
         <Button
           title={isPaused ? 'Play' : 'Pause'}
           onClick={onGamePauseHandler}
-          icon={(isPaused ? Play : Pause) as ElementType}
+          icon={isPaused ? <Play /> : <Pause />}
         />
-        <Button title="Reload Game" onClick={onGameReloadHandler} icon={Refresh as ElementType} />
-        <Button title="Toggle Fullscreen" onClick={toggleFullscreenHandler} icon={Screen as ElementType} />
+        <Button title="Reload Game" onClick={onGameReloadHandler} icon={<Refresh />} />
+        <Button title="Toggle Fullscreen" onClick={toggleFullscreenHandler} icon={<Screen />} />
         <Button
           title="Sound Volume"
           onClick={() => onChangeAudioVolumeHandler('sound')}
           icon={
             // eslint-disable-next-line no-nested-ternary
-            (settingsState.soundVolume === 0
-              ? Sound0
-              : settingsState.soundVolume <= 0.5
-              ? Sound1
-              : Sound2) as ElementType
+            settingsState.soundVolume === 0 ? <Sound0 /> : settingsState.soundVolume <= 0.5 ? <Sound1 /> : <Sound2 />
           }
         />
         <Button
@@ -172,14 +168,10 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
           onClick={() => onChangeAudioVolumeHandler('music')}
           icon={
             // eslint-disable-next-line no-nested-ternary
-            (settingsState.musicVolume === 0
-              ? Music0
-              : settingsState.musicVolume <= 0.5
-              ? Music1
-              : Music2) as ElementType
+            settingsState.musicVolume === 0 ? <Music0 /> : settingsState.musicVolume <= 0.5 ? <Music1 /> : <Music2 />
           }
         />
-        <Button title="Back to Menu" onClick={() => history.push('/')} icon={Back as ElementType} />
+        <Button title="Back to Menu" onClick={() => history.push('/')} icon={<Back />} />
       </span>
     </header>
   );

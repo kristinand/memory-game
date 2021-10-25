@@ -93,7 +93,7 @@ const Rating: React.FC = () => {
             {page > 1 && (
               <Button
                 className={classes.backwardButton}
-                icon={Back as React.ElementType}
+                icon={<Back />}
                 title={`${page - 1}`}
                 onClick={() => setPage((prev) => prev - 1)}
               />
@@ -101,7 +101,7 @@ const Rating: React.FC = () => {
             {page * 10 < ratingsData?.total && (
               <Button
                 className={classes.forwardButton}
-                icon={Forth as React.ElementType}
+                icon={<Forth />}
                 title={`${page + 1}`}
                 onClick={() => setPage((prev) => prev + 1)}
               />

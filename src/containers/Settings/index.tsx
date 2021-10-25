@@ -1,4 +1,4 @@
-import React, { ElementType } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Reset from 'assets/icons/reset.svg';
@@ -121,7 +121,7 @@ const Settings: React.FC = () => {
           )}
         </div>
 
-        <Button className={classes.button} onClick={setDefaultSettingsHandler} icon={Reset as ElementType}>
+        <Button className={classes.button} onClick={setDefaultSettingsHandler} icon={<Reset />}>
           Set Default
         </Button>
       </Layout>

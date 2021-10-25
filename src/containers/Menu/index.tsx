@@ -73,7 +73,7 @@ const Menu: React.FC = () => {
 
           <Button
             className={classes.loginButton}
-            icon={(state.player ? Logout : Login) as ElementType}
+            icon={state.player ? <Logout /> : <Login />}
             onClick={state.player ? logout : login}
             title={state.player ? 'Logout' : 'Login'}
           />
@@ -90,10 +90,7 @@ const Menu: React.FC = () => {
           />
           <MenuButton
             path="/game"
-            disabled={
-              !state.player ||
-              (getLocalStorageValue('gameData') as IGame)?.player !== state.player 
-            }
+            disabled={!state.player || (getLocalStorageValue('gameData') as IGame)?.player !== state.player}
             title="Continue"
           />
           <MenuButton path="/rating" title="Rating" />
