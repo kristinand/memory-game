@@ -1,6 +1,4 @@
-import React, { ElementType } from 'react';
-
-import SvgIcon from '@material-ui/core/SvgIcon';
+import React from 'react';
 
 import { MY_GITHUB_LINK, MY_GITHUB_NICK, RSSCHOOL_LINK } from 'constants/index';
 import Logo from 'assets/icons/rss_logo.svg';
@@ -14,7 +12,7 @@ const Footer: React.FC = () => (
     </a>
     , 2021 /{' '}
     <a rel="noopener noreferrer nofollow" target="_blank" href={RSSCHOOL_LINK}>
-      <SvgIcon component={Logo as ElementType} className={classes.logoSvg} viewBox="0 0 552.8 205.3" />
+      <Logo className={classes.logoSvg} />
     </a>
   </footer>
 );

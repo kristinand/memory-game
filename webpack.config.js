@@ -1,5 +1,6 @@
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -10,7 +11,20 @@ module.exports = {
   entry: ['@babel/polyfill', './index.tsx'],
   output: {
     path: path.resolve(__dirname, 'public'),
-    filename: 'bundle.js',
+    filename: '[name].[hash].js',
+    publicPath: '',
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          name: 'vendors',
+          test: /node_modules/,
+          chunks: 'all',
+          enforce: true,
+        },
+      },
+    },
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],
@@ -30,6 +44,9 @@ module.exports = {
       template: 'index.html',
       collapseWhitespace: isProd,
     }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+    }),
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [
@@ -44,19 +61,14 @@ module.exports = {
     contentBase: './',
     hot: true,
   },
-  devtool: 'eval-cheap-module-source-map',
-  performance: {
-    hints: false,
-    maxEntrypointSize: 512000,
-    maxAssetSize: 512000,
-  },
+  devtool: !isProd ? 'eval-cheap-module-source-map' : '',
   module: {
     rules: [
       {
         test: /\.(s[ac]ss)$/,
         exclude: /node_modules/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-modules-typescript-loader',
           {
             loader: 'css-loader',
@@ -66,7 +78,7 @@ module.exports = {
               },
             },
           },
-          "postcss-loader",
+          'postcss-loader',
           'sass-loader',
         ],
       },
