@@ -85,11 +85,10 @@ export const slice = createSlice({
   name: 'game',
   initialState,
   reducers: {
-    loadLocalGameData(state, { payload }: { payload: IGame }) {
+    loadLocalGameData(state, { payload }: { payload: Partial<IGame> }) {
       return { ...state, ...payload };
     },
     startGame() {
-      localStorage.removeItem('gameData');
       return initialState;
     },
     loadNextLevel(state) {
@@ -108,14 +107,13 @@ export const slice = createSlice({
     saveCurrentScore(state, { payload }: { payload: number }) {
       state.score = payload;
     },
-
     setAutoplay(state, { payload }: { payload: boolean }) {
       state.isAutoplay = payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(saveScore.fulfilled, () => {
-      localStorage.removeItem('gameData');
+      // TODO:
     });
   },
 });

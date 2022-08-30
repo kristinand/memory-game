@@ -8,9 +8,9 @@ import MenuButton from 'components/MenuButton';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
-import { setLocalStorageValue, getLocalStorageValue } from 'utils/functions';
+import { useLocalStorage } from 'utils/hooks';
 import { login, logout, selectPlayerName } from 'store/auth/slice';
-import { startGame, IGame } from 'store/game/slice';
+import { startGame } from 'store/game/slice';
 import Footer from 'components/Footer';
 import classes from './classes.module.scss';
 
@@ -19,11 +19,17 @@ const Menu: React.FC = () => {
   const storedPlayer = useSelector(selectPlayerName);
   const [helperText, setHelperText] = useState('');
   const [player, setPlayer] = useState(storedPlayer);
+  const { playerData, deletePlayerData } = useLocalStorage();
 
   const onInputValueChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
     if (!storedPlayer) {
       setPlayer((event.target as HTMLInputElement).value.trim());
     }
+  };
+
+  const onStartGame = () => {
+    deletePlayerData('game');
+    dispatch(startGame());
   };
 
   const onLogin = () => {
@@ -35,14 +41,12 @@ const Menu: React.FC = () => {
     } else if (playerRegEx.exec(player) === null) {
       setHelperText('Only latin characters allowed');
     } else {
-      setLocalStorageValue('player', player);
       dispatch(login(player));
       setHelperText('');
     }
   };
 
   const onLogout = () => {
-    localStorage.removeItem('player');
     setPlayer('');
     setHelperText('');
     dispatch(logout());
@@ -81,12 +85,8 @@ const Menu: React.FC = () => {
         <div className={classes.separator}>♥ ☀ ♦</div>
 
         <div className={classes.buttonGroup}>
-          <MenuButton onClick={() => dispatch(startGame())} disabled={!storedPlayer} path="/game" title="New Game" />
-          <MenuButton
-            path="/game"
-            disabled={!storedPlayer || !getLocalStorageValue<IGame>('gameData')}
-            title="Continue"
-          />
+          <MenuButton onClick={onStartGame} disabled={!storedPlayer} path="/game" title="New Game" />
+          <MenuButton path="/game" disabled={!storedPlayer || !playerData?.game} title="Continue" />
           <MenuButton path="/rating" title="Rating" />
           <MenuButton disabled={!storedPlayer} path={!storedPlayer ? '' : '/settings'} title="Settings" />
           <MenuButton path="/about" title="About" />

@@ -9,7 +9,6 @@ import Footer from 'components/Footer';
 import Button from 'components/Button';
 import SettingsElement from 'components/SettingsElement';
 
-import { getLocalStorageValue, setLocalStorageValue } from 'utils/functions';
 import { IKeys } from 'entities/';
 import {
   selectSettings,
@@ -21,23 +20,28 @@ import {
   changeVolume,
   useSystemTheme,
   togglePattern,
-} from '../../store/settings/slice';
+} from 'store/settings/slice';
+import { useLocalStorage } from 'utils/hooks';
 import classes from './classes.module.scss';
 
 const Settings: React.FC = () => {
   const dispatch = useDispatch();
+  const { playerData, updatePlayerData, deletePlayerData } = useLocalStorage();
   const { keys, isPatternShown, isSystemTheme, musicVolume, soundVolume, theme } = useSelector(selectSettings);
   const sound = new Audio(menuSound);
 
   const setLocalStorageSettingsItem = (obj: Partial<ISettings>) => {
-    let savedSettings = getLocalStorageValue<Partial<ISettings>>('settings');
-    savedSettings = { ...savedSettings, ...obj };
-    setLocalStorageValue('settings', savedSettings);
+    updatePlayerData({
+      settings: {
+        ...playerData?.settings,
+        ...obj,
+      },
+    });
   };
 
   const setDefaultSettingsHandler = () => {
     dispatch(setDefaultSettings());
-    localStorage.removeItem('settings');
+    deletePlayerData('settings');
   };
 
   const onVolumeChangeHandler = (audio: string, volume: number) => {

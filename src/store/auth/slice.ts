@@ -7,7 +7,7 @@ export interface IAuth {
 }
 
 const initialState: IAuth = {
-  player: localStorage.getItem('player') || '',
+  player: '',
 };
 
 export const slice = createSlice({

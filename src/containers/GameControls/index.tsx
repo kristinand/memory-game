@@ -23,8 +23,8 @@ import { selectPlayerName } from 'store/auth/slice';
 import { selectGameData, loadNextLevel, saveCurrentScore, startGame, setIsGamePaused } from 'store/game/slice';
 import { saveScore } from 'store/game/thunks/saveScore';
 import { selectSettings, changeVolume } from 'store/settings/slice';
-import { useTimer } from 'utils/hooks';
-import { formatTime, setLocalStorageValue } from 'utils/functions';
+import { useTimer, useLocalStorage } from 'utils/hooks';
+import { formatTime } from 'utils/functions';
 import classes from './classes.module.scss';
 
 interface IProps {
@@ -41,6 +41,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   const { soundVolume, musicVolume, keys } = useSelector(selectSettings);
   const [isLevelCompleted, setIsLevelCompleted] = useState(false);
   const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer(score);
+  const { updatePlayerData } = useLocalStorage();
 
   const menuClickSound = new Audio(menuSound);
   menuClickSound.volume = soundVolume;
@@ -84,11 +85,12 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   }, [isGamePaused]);
 
   const saveGameData = () => {
-    setLocalStorageValue('gameData', {
-      cards,
-      level,
-      score: timer,
-      player,
+    updatePlayerData({
+      game: {
+        cards,
+        level,
+        score: timer,
+      },
     });
   };
 
