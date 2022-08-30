@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
-import { IState } from 'store/entities';
+import { selectTheme } from 'store/settings/slice';
 import classes from './classes.module.scss';
 
 interface IProps extends React.HTMLProps<HTMLInputElement> {
@@ -13,7 +13,7 @@ interface IProps extends React.HTMLProps<HTMLInputElement> {
 }
 
 const Input: React.FC<IProps> = ({ withHelperText = false, helperText, ConatinerClassName, className, ...other }) => {
-  const theme = useSelector((store: IState) => store.settings.theme);
+  const theme = useSelector(selectTheme);
 
   return (
     <div className={classNames(classes.inputContainer, ConatinerClassName, { [classes.withHT]: withHelperText })}>

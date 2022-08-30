@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
-import { IState } from 'store/entities';
+import { selectTheme } from 'store/settings/slice';
 import classes from './classes.module.scss';
 
 interface IProps extends React.HTMLProps<HTMLButtonElement> {
@@ -12,7 +12,7 @@ interface IProps extends React.HTMLProps<HTMLButtonElement> {
 }
 
 const Button: React.FC<IProps> = ({ title, onClick, icon, children, className }) => {
-  const { theme } = useSelector((store: IState) => store.settings);
+  const theme = useSelector(selectTheme);
 
   return (
     <button

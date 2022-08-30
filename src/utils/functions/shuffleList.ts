@@ -1,4 +1,4 @@
-export function shuffleList<T = any>(list: T[]): T[] {
+export function shuffleList<T>(list: T[]): T[] {
   const newList = list;
   let currentIndex = list.length;
 

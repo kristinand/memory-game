@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
 import Back from 'assets/icons/left.svg';
@@ -8,53 +8,38 @@ import Layout from 'components/Layout';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import Button from 'components/Button';
-import ErrorPage from 'components/ErrorPage';
 
 import { formatTime } from 'utils/functions';
-import { IState } from 'store/entities';
-import { ILoadRatingsResponse, IPlayerRatingResponse, IError } from '../../api/entities';
-import api from '../../api/api';
+import { selectPlayerName } from 'store/game/slice';
+import { selectAllRatings, selectPlayerRating } from 'store/rating/slice';
+import { getRating } from 'store/rating/thunks/getPlayerRatings';
+import { getAllRatings } from 'store/rating/thunks/getRatings';
 
 import classes from './classes.module.scss';
 
+const limit = 10;
+
 const Rating: React.FC = () => {
-  const limit = 10;
-  const player = useSelector((state: IState) => state.game.player);
+  const dispatch = useDispatch();
   const [page, setPage] = useState(1);
-  const [ratingsData, setRatingsData] = useState<ILoadRatingsResponse>();
-  const [errors, setErrors] = useState<IError>();
-  const [playerRatingData, setPlayerRatingData] = useState<IPlayerRatingResponse>();
+  const player = useSelector(selectPlayerName);
+  const allRatings = useSelector(selectAllRatings);
+  const playerRating = useSelector(selectPlayerRating);
 
   useEffect(() => {
-    const loadRatings = async () => {
-      const ratings = await api.loadRatings({ page, limit });
-      if (ratings.status === 'success') {
-        setRatingsData(ratings.content);
-      } else {
-        setErrors(ratings);
-      }
+    void dispatch(getRating(player));
+  }, [player]);
 
-      if (page === 1) {
-        const playerRating = await api.loadPlayerRating(player);
-        if (playerRating.status === 'success') {
-          setPlayerRatingData(playerRating.content);
-        }
-      }
-    };
-
-    void loadRatings();
-  }, [page]);
-
-  if (errors) {
-    return <ErrorPage message={errors.message} />;
-  }
+  useEffect(() => {
+    void dispatch(getAllRatings({ page, limit }));
+  }, [page, limit]);
 
   return (
     <>
       <Header title="Rating" />
       <Layout>
         <p>
-          Your position: {playerRatingData?.position || '—'} ({formatTime(playerRatingData?.rating?.score || 0)})
+          Your position: {playerRating?.position || '—'} ({formatTime(playerRating?.rating?.score || 0)})
         </p>
 
         <div className={classes.table}>
@@ -64,31 +49,29 @@ const Rating: React.FC = () => {
             <span>Completed Time</span>
             <span>Date</span>
           </div>
-          {ratingsData?.ratings.map((playerRating, i) => (
+          {allRatings?.ratings.map((rating, i) => (
             <div
-              key={playerRating.player}
+              key={rating.player}
               className={classNames({
                 [classes.tableRow]: true,
-                [classes.current]: player === playerRating.player,
+                [classes.current]: player === rating.player,
               })}
             >
               <span>{page * limit - limit + (i + 1)}</span>
-              <span>{playerRating.player}</span>
-              <span>{formatTime(playerRating.score)}</span>
-              <span>{new Date(playerRating.date).toLocaleString()}</span>
+              <span>{rating.player}</span>
+              <span>{formatTime(rating.score)}</span>
+              <span>{new Date(rating.date).toLocaleString()}</span>
             </div>
           ))}
-          {((!ratingsData && !errors) || ratingsData?.ratings.length < limit) &&
-            Array(limit - (ratingsData?.ratings.length || 0))
-              .fill(0)
-              .map((row, i) => (
-                <div key={Math.random()} className={classes.tableRow}>
-                  <span>{page * limit - limit + (i + 1) + ratingsData?.ratings.length}</span>
-                  <span>—</span>
-                  <span>—</span>
-                  <span>—</span>
-                </div>
-              ))}
+          {allRatings?.ratings.length < limit &&
+            Array.from(Array(limit - (allRatings?.ratings.length ?? 0)).keys()).map((row) => (
+              <div key={row} className={classes.tableRow}>
+                <span>{page * limit - limit + (row + 1) + (allRatings?.ratings.length ?? 0)}</span>
+                <span>—</span>
+                <span>—</span>
+                <span>—</span>
+              </div>
+            ))}
           <div className={classes.tableFooter}>
             {page > 1 && (
               <Button
@@ -98,7 +81,7 @@ const Rating: React.FC = () => {
                 onClick={() => setPage((prev) => prev - 1)}
               />
             )}
-            {page * 10 < ratingsData?.total && (
+            {page * 10 < allRatings?.total && (
               <Button
                 className={classes.forwardButton}
                 icon={<Forth />}

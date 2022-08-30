@@ -1,33 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Autoplay from 'assets/icons/autoplay.svg';
 import { MUSIC_URL } from 'constants/';
-import { IState } from 'store/entities';
 import { ICard, ECardStatus } from 'entities/';
-import * as actions from 'store/game/actions';
 import { listToArray, getRandomNumber } from 'utils/functions';
+import { selectGameData, startGame, changeCardStatus, setAutoplay } from 'store/game/slice';
+import { selectSettings } from 'store/settings/slice';
 
 import Layout from 'components/Layout';
 import Button from 'components/Button';
 import Card from '../Card';
 import GameControls from '../GameControls';
-
 import classes from './classes.module.scss';
 
 const Game: React.FC = () => {
-  const gameState = useSelector((state: IState) => state.game);
-  const musicVolume = useSelector((state: IState) => state.settings.musicVolume);
-  const [musicSound] = useState(new Audio(MUSIC_URL));
-  const [focusRef, setFocusRef] = useState<HTMLDivElement>();
-  musicSound.volume = musicVolume;
-
   const dispatch = useDispatch();
+  const { cards, isAutoplay, level } = useSelector(selectGameData);
+  const { musicVolume } = useSelector(selectSettings);
+  const [focusRef, setFocusRef] = useState<HTMLDivElement>();
+
+  const musicSound = new Audio(MUSIC_URL);
+  musicSound.volume = musicVolume;
 
   useEffect(() => {
     void musicSound.play();
     musicSound.loop = true;
-    if (!gameState.cards.length) dispatch(actions.startGame());
+    if (!cards.length) dispatch(startGame());
     return () => musicSound.pause();
   }, []);
 
@@ -37,50 +35,49 @@ const Game: React.FC = () => {
     // do not change status of already opened card
     if (selectedCard.status !== ECardStatus.Closed) return;
 
-    const openedCardIndex = gameState.cards.findIndex((card) => card.status === ECardStatus.Opened);
-    const openedCard = gameState.cards[openedCardIndex];
+    const openedCardIndex = cards.findIndex(({ status }) => status === ECardStatus.Opened);
+    const openedCard = cards[openedCardIndex];
 
     if (!openedCard) {
-      dispatch(actions.changeCardStatus(ECardStatus.Opened, selectedCard));
+      dispatch(changeCardStatus({ status: ECardStatus.Opened, selectedCard }));
       return;
     }
 
     if (openedCard.pairKey === selectedCard.key) {
-      dispatch(actions.changeCardStatus(ECardStatus.Guessed, selectedCard, openedCard));
+      dispatch(changeCardStatus({ status: ECardStatus.Guessed, selectedCard, oldCard: openedCard }));
     } else {
-      dispatch(actions.changeCardStatus(ECardStatus.NotGuessed, selectedCard, openedCard));
+      dispatch(changeCardStatus({ status: ECardStatus.NotGuessed, selectedCard, oldCard: openedCard }));
       setTimeout(() => {
-        dispatch(actions.changeCardStatus(ECardStatus.Closed, selectedCard, openedCard));
+        dispatch(changeCardStatus({ status: ECardStatus.Closed, selectedCard, oldCard: openedCard }));
       }, 500);
     }
   };
 
-  const autoplay = (cards: ICard[], prevCard?: ICard, nextCard?: ICard) => {
+  const autoplay = (allCards: ICard[], prevCard?: ICard, nextCard?: ICard) => {
     if (window.location.pathname !== '/game') {
-      dispatch(actions.setAutoplay(false));
+      dispatch(setAutoplay(false));
       return;
     }
 
-    if (cards.length) {
-      const closedCards = cards.filter((card) => card.status === ECardStatus.Closed);
+    if (allCards.length) {
+      const closedCards = allCards.filter(({ status }) => status === ECardStatus.Closed);
 
       const chosenCard = nextCard || closedCards[getRandomNumber(0, closedCards.length)];
 
       // выбрали карту, ищем ее пару среди доступных карточек
-      const pairCard = cards.find((card) => card.key === chosenCard.pairKey);
+      const pairCard = allCards.find(({ key }) => key === chosenCard.pairKey);
 
       setTimeout(() => {
         onCardSelectHandler(chosenCard);
 
-        const notGuessedCards = cards.filter((card) => card.status !== ECardStatus.Guessed);
+        const notGuessedCards = allCards.filter(({ status }) => status !== ECardStatus.Guessed);
 
         // "запоминаем" карту, если число ее открытий (count) >= текущему ур.
         // или же она была открыта предыдущей, в ином случае, открываем любую карту.
         // уже угаданную парную карту не нужно ставить в следущую
         // eslint-disable-next-line no-param-reassign
         nextCard =
-          (pairCard?.key === prevCard?.key || pairCard?.count >= gameState.level) &&
-          pairCard?.status !== ECardStatus.Guessed
+          (pairCard?.key === prevCard?.key || pairCard?.count >= level) && pairCard?.status !== ECardStatus.Guessed
             ? pairCard
             : undefined;
 
@@ -88,14 +85,14 @@ const Game: React.FC = () => {
       }, 800);
     } else {
       setTimeout(() => {
-        dispatch(actions.startGame());
+        dispatch(startGame());
       }, 800);
     }
   };
 
   const onAutoplayHandler = () => {
-    dispatch(actions.setAutoplay(true));
-    autoplay(gameState.cards);
+    dispatch(setAutoplay(true));
+    autoplay(cards);
   };
 
   return (
@@ -103,7 +100,7 @@ const Game: React.FC = () => {
       <GameControls getFocusRef={(ref) => setFocusRef(ref)} />
       <Layout fullWidth>
         <div className={classes.game}>
-          {listToArray(gameState.cards, 4).map((cardsRow: ICard[]) => (
+          {listToArray(cards, 4).map((cardsRow: ICard[]) => (
             <div key={cardsRow[0].key}>
               {cardsRow.map((card) => (
                 <Card onCardClick={() => onCardSelectHandler(card)} key={card.key} card={card} />
@@ -111,11 +108,7 @@ const Game: React.FC = () => {
             </div>
           ))}
         </div>
-        {!gameState.score && !gameState.isAutoplay && (
-          <Button onClick={onAutoplayHandler} icon={<Autoplay />}>
-            Autoplay
-          </Button>
-        )}
+        {level === 1 && !isAutoplay && <Button onClick={onAutoplayHandler}>See how to play</Button>}
       </Layout>
     </>
   );

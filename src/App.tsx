@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
-import { loadLocalGameData } from 'store/game/actions';
-import { loadLocalSettingsData } from 'store/settings/actions';
-import { IState } from 'store/entities';
-import { ISettings } from 'store/settings/entities';
-import { IGame } from 'store/game/entities';
+import { HandleResponseErrors } from 'api/HandleResponseErrors';
+import { selectPlayerName, loadLocalGameData, IGame } from 'store/game/slice';
+import { selectTheme, loadLocalSettingsData, ISettings } from 'store/settings/slice';
 import { getLocalStorageValue } from 'utils/functions';
 import Game from 'containers/Game';
 import Menu from 'containers/Menu';
@@ -19,8 +17,8 @@ import './styles/index.scss';
 import classes from './App.module.scss';
 
 const App: React.FC = () => {
-  const player = useSelector((state: IState) => state.game.player);
-  const theme = useSelector((state: IState) => state.settings.theme);
+  const player = useSelector(selectPlayerName);
+  const theme = useSelector(selectTheme);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,6 +35,7 @@ const App: React.FC = () => {
   return (
     <div className={classNames(classes.App, classes[theme])}>
       <BrowserRouter>
+        <HandleResponseErrors />
         <Switch>
           {player && <Route path="/game" component={Game} />}
           <Route path="/about" component={About} />

@@ -1,16 +1,19 @@
-import { Store, createStore, applyMiddleware, combineReducers } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+import { AnyAction, Reducer, configureStore, combineReducers } from '@reduxjs/toolkit';
 
-import { TActionTypes, IState } from './entities';
-import gameReducer from './game/reducer';
-import settingsReducer from './settings/reducer';
+import settingsReducer from 'store/settings/slice';
+import ratingsReducer from 'store/rating/slice';
+import gameReducer from './game/slice';
 
-const rootReducer = combineReducers({
-  game: gameReducer,
+export type RootState = ReturnType<typeof reducers>;
+
+const reducers = combineReducers({
   settings: settingsReducer,
+  game: gameReducer,
+  ratings: ratingsReducer,
 });
 
-const store: Store<IState, TActionTypes> = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+const rootReducer: Reducer = (state: RootState, action: AnyAction) => reducers(state, action);
 
-export default store;
+export const store = configureStore({
+  reducer: rootReducer,
+});
