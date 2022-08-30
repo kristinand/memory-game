@@ -9,7 +9,8 @@ import Button from 'components/Button';
 import Input from 'components/Input';
 
 import { setLocalStorageValue, getLocalStorageValue } from 'utils/functions';
-import { login, logout, startGame, selectPlayerName, IGame } from 'store/game/slice';
+import { login, logout, selectPlayerName } from 'store/auth/slice';
+import { startGame, IGame } from 'store/game/slice';
 import Footer from 'components/Footer';
 import classes from './classes.module.scss';
 
@@ -83,7 +84,7 @@ const Menu: React.FC = () => {
           <MenuButton onClick={() => dispatch(startGame())} disabled={!storedPlayer} path="/game" title="New Game" />
           <MenuButton
             path="/game"
-            disabled={!storedPlayer || (getLocalStorageValue('gameData') as IGame)?.player !== storedPlayer}
+            disabled={!storedPlayer || !getLocalStorageValue<IGame>('gameData')}
             title="Continue"
           />
           <MenuButton path="/rating" title="Rating" />

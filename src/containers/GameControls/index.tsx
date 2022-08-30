@@ -19,6 +19,7 @@ import Button from 'components/Button';
 
 import { LAST_LEVEL } from 'constants/';
 import { ECardStatus } from 'entities';
+import { selectPlayerName } from 'store/auth/slice';
 import { selectGameData, loadNextLevel, saveCurrentScore, startGame, setIsGamePaused } from 'store/game/slice';
 import { saveScore } from 'store/game/thunks/saveScore';
 import { selectSettings, changeVolume } from 'store/settings/slice';
@@ -35,7 +36,8 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   const history = useHistory();
   const focusRef = useRef<HTMLDivElement>();
 
-  const { player, cards, score, level, isAutoplay, isGamePaused } = useSelector(selectGameData);
+  const player = useSelector(selectPlayerName);
+  const { cards, score, level, isAutoplay, isGamePaused } = useSelector(selectGameData);
   const { soundVolume, musicVolume, keys } = useSelector(selectSettings);
   const [isLevelCompleted, setIsLevelCompleted] = useState(false);
   const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer(score);

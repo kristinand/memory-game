@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
 import { HandleResponseErrors } from 'api/HandleResponseErrors';
-import { selectPlayerName, loadLocalGameData, IGame } from 'store/game/slice';
+import { selectPlayerName } from 'store/auth/slice';
+import { loadLocalGameData, IGame } from 'store/game/slice';
 import { selectTheme, loadLocalSettingsData, ISettings } from 'store/settings/slice';
 import { getLocalStorageValue } from 'utils/functions';
 import Game from 'containers/Game';
@@ -22,11 +23,11 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const gameData = getLocalStorageValue('gameData') as IGame;
-    if (gameData?.player === player) {
+    const gameData = getLocalStorageValue<IGame>('gameData');
+    if (gameData) {
       dispatch(loadLocalGameData(gameData));
     }
-    const settings = getLocalStorageValue('settings') as Partial<ISettings>;
+    const settings = getLocalStorageValue<Partial<ISettings>>('settings');
     if (settings) {
       dispatch(loadLocalSettingsData(settings));
     }

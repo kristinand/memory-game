@@ -10,7 +10,7 @@ import Footer from 'components/Footer';
 import Button from 'components/Button';
 
 import { formatTime } from 'utils/functions';
-import { selectPlayerName } from 'store/game/slice';
+import { selectPlayerName } from 'store/auth/slice';
 import { selectAllRatings, selectPlayerRating } from 'store/rating/slice';
 import { getRating } from 'store/rating/thunks/getPlayerRatings';
 import { getAllRatings } from 'store/rating/thunks/getRatings';

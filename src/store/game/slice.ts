@@ -7,7 +7,6 @@ import { RootState } from '..';
 import { saveScore } from './thunks/saveScore';
 
 export interface IGame {
-  player: string;
   isGamePaused: boolean;
   isAutoplay: boolean;
   level: number;
@@ -75,7 +74,6 @@ const updateCardStatus = (state: IGame, action: IChangeCardStatus): ICard[] => {
 };
 
 const initialState: IGame = {
-  player: localStorage.getItem('player') || '',
   isGamePaused: true,
   isAutoplay: false,
   level: 1,
@@ -93,12 +91,6 @@ export const slice = createSlice({
     startGame() {
       localStorage.removeItem('gameData');
       return initialState;
-    },
-    login(state, { payload }: { payload: string }) {
-      state.player = payload;
-    },
-    logout(state) {
-      state.player = '';
     },
     loadNextLevel(state) {
       const nextLevel = state.level + 1;
@@ -131,8 +123,6 @@ export const slice = createSlice({
 export const {
   loadLocalGameData,
   startGame,
-  login,
-  logout,
   loadNextLevel,
   setIsGamePaused,
   changeCardStatus,
@@ -141,6 +131,5 @@ export const {
 } = slice.actions;
 
 export const selectGameData = (state: RootState): IGame => state.game;
-export const selectPlayerName = (state: RootState): string => state.game.player;
 
 export default slice.reducer;

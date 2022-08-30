@@ -30,7 +30,7 @@ const Settings: React.FC = () => {
   const sound = new Audio(menuSound);
 
   const setLocalStorageSettingsItem = (obj: Partial<ISettings>) => {
-    let savedSettings = getLocalStorageValue('settings') as Partial<ISettings>;
+    let savedSettings = getLocalStorageValue<Partial<ISettings>>('settings');
     savedSettings = { ...savedSettings, ...obj };
     setLocalStorageValue('settings', savedSettings);
   };
