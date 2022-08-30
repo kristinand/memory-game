@@ -64,6 +64,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "@reduxjs/toolkit": "^1.6.1",
     "@types/mini-css-extract-plugin": "^2.4.0",
     "@types/node": "^16.10.3",
     "@types/react": "^17.0.27",
