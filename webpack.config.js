@@ -29,6 +29,7 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],
     alias: {
+      api: path.resolve(__dirname, 'src/api/'),
       assets: path.resolve(__dirname, 'src/assets/'),
       utils: path.resolve(__dirname, 'src/utils/'),
       entities: path.resolve(__dirname, 'src/entities/'),
