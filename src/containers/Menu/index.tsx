@@ -1,4 +1,4 @@
-import React, { ElementType, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Layout from 'components/Layout';
@@ -9,25 +9,24 @@ import Button from 'components/Button';
 import Input from 'components/Input';
 
 import { setLocalStorageValue, getLocalStorageValue } from 'utils/functions';
-import { IState } from 'store/entities';
-import { IGame } from 'store/game/entities';
-import * as actions from 'store/game/actions';
+import { login, logout, selectPlayerName } from 'store/auth/slice';
+import { startGame, IGame } from 'store/game/slice';
 import Footer from 'components/Footer';
 import classes from './classes.module.scss';
 
 const Menu: React.FC = () => {
   const dispatch = useDispatch();
-  const state = useSelector((store: IState) => store.game);
+  const storedPlayer = useSelector(selectPlayerName);
   const [helperText, setHelperText] = useState('');
-  const [player, setPlayer] = useState(state.player);
+  const [player, setPlayer] = useState(storedPlayer);
 
   const onInputValueChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
-    if (!state.player) {
+    if (!storedPlayer) {
       setPlayer((event.target as HTMLInputElement).value.trim());
     }
   };
 
-  const login = () => {
+  const onLogin = () => {
     const playerRegEx = new RegExp(/^[a-zA-Z]{3,10}$/);
     if (!player.length) {
       setHelperText('Please, enter your name');
@@ -37,29 +36,29 @@ const Menu: React.FC = () => {
       setHelperText('Only latin characters allowed');
     } else {
       setLocalStorageValue('player', player);
-      dispatch(actions.login(player));
+      dispatch(login(player));
       setHelperText('');
     }
   };
 
-  const logout = () => {
+  const onLogout = () => {
     localStorage.removeItem('player');
     setPlayer('');
     setHelperText('');
-    dispatch(actions.logout());
+    dispatch(logout());
   };
 
   return (
     <>
       <Layout centered>
         <div className={classes.loginContainer}>
-          {state.player ? (
+          {storedPlayer ? (
             <div className={classes.playerName}>Hello, {player}!</div>
           ) : (
             <Input
               onChange={onInputValueChangeHandler}
               onKeyPress={(event) => {
-                if (event.key === 'Enter') login();
+                if (event.key === 'Enter') onLogin();
               }}
               withHelperText
               helperText={helperText}
@@ -73,28 +72,23 @@ const Menu: React.FC = () => {
 
           <Button
             className={classes.loginButton}
-            icon={state.player ? <Logout /> : <Login />}
-            onClick={state.player ? logout : login}
-            title={state.player ? 'Logout' : 'Login'}
+            icon={storedPlayer ? <Logout /> : <Login />}
+            onClick={storedPlayer ? onLogout : onLogin}
+            title={storedPlayer ? 'Logout' : 'Login'}
           />
         </div>
 
         <div className={classes.separator}>♥ ☀ ♦</div>
 
         <div className={classes.buttonGroup}>
-          <MenuButton
-            onClick={() => dispatch(actions.startGame())}
-            disabled={!state.player}
-            path="/game"
-            title="New Game"
-          />
+          <MenuButton onClick={() => dispatch(startGame())} disabled={!storedPlayer} path="/game" title="New Game" />
           <MenuButton
             path="/game"
-            disabled={!state.player || (getLocalStorageValue('gameData') as IGame)?.player !== state.player}
+            disabled={!storedPlayer || !getLocalStorageValue<IGame>('gameData')}
             title="Continue"
           />
           <MenuButton path="/rating" title="Rating" />
-          <MenuButton disabled={!state.player} path={!state.player ? '' : '/settings'} title="Settings" />
+          <MenuButton disabled={!storedPlayer} path={!storedPlayer ? '' : '/settings'} title="Settings" />
           <MenuButton path="/about" title="About" />
         </div>
       </Layout>

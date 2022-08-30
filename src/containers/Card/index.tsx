@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 import { ECardStatus, ICard } from 'entities/';
-import { IState } from 'store/entities';
+import { selectSettings } from 'store/settings/slice';
 import audio from 'assets/card-click.opus';
 import classes from './classes.module.scss';
 
@@ -14,7 +14,7 @@ interface IProps {
 
 const Card: React.FC<IProps> = ({ card, onCardClick }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { soundVolume, isPatternShown, theme } = useSelector((state: IState) => state.settings);
+  const { soundVolume, isPatternShown, theme } = useSelector(selectSettings);
   const clickAudio = new Audio(audio);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Card: React.FC<IProps> = ({ card, onCardClick }) => {
     <div className={classNames(classes.card, { [classes.opened]: isOpen })}>
       <button
         type="button"
-        onClick={card.status === ECardStatus.Closed ? onCardClick : undefined}
+        onClick={onCardClick}
         className={classNames(classes.innerCard, classes[theme], { [classes.opened]: isOpen })}
       >
         <div className={classes.cardCover} style={{ backgroundColor: card.coverColor }}>

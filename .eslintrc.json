@@ -32,6 +32,15 @@
     "no-void": "off",
     "react/jsx-props-no-spreading": "off"
   },
+  "overrides": [
+    {
+      "files": ["src/store/**"],
+      "rules": {
+        "no-param-reassign": "off",
+        "import/no-cycle": "off"
+      }
+    }
+  ],
   "settings": {
     "import/resolver": "webpack"
   }

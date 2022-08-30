@@ -1,1 +1,3 @@
-export const getLocalStorageValue = (prop: string): unknown => JSON.parse(localStorage.getItem(prop));
+export function getLocalStorageValue<T>(prop: string): T | null {
+  return JSON.parse(localStorage.getItem(prop)) as (T | null);
+}
