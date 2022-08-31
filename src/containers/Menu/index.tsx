@@ -11,6 +11,7 @@ import Input from 'components/Input';
 import { useLocalStorage } from 'utils/hooks';
 import { login, logout, selectPlayerName } from 'store/auth/slice';
 import { startGame } from 'store/game/slice';
+import { setDefaultSettings } from 'store/settings/slice';
 import Footer from 'components/Footer';
 import classes from './classes.module.scss';
 
@@ -49,6 +50,7 @@ const Menu: React.FC = () => {
   const onLogout = () => {
     setPlayer('');
     setHelperText('');
+    dispatch(setDefaultSettings());
     dispatch(logout());
   };
 
