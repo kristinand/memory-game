@@ -1,3 +1,5 @@
+import { IGame } from 'store/game/slice';
+import { ISettings } from 'store/settings/slice';
 import { ECardStatus } from './enums';
 
 export interface IKeys {
@@ -16,4 +18,9 @@ export interface ICard {
   coverColor: string;
   status: ECardStatus;
   count: number;
+}
+
+export interface IPlayerData {
+  game: Partial<IGame>;
+  settings: Partial<ISettings>;
 }

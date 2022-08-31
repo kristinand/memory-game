@@ -6,6 +6,7 @@ import { ICard, ECardStatus } from 'entities/';
 import { listToArray, getRandomNumber } from 'utils/functions';
 import { selectGameData, startGame, changeCardStatus, setAutoplay } from 'store/game/slice';
 import { selectSettings } from 'store/settings/slice';
+import { useLocalStorage } from 'utils/hooks';
 
 import Layout from 'components/Layout';
 import Button from 'components/Button';
@@ -18,14 +19,20 @@ const Game: React.FC = () => {
   const { cards, isAutoplay, level } = useSelector(selectGameData);
   const { musicVolume } = useSelector(selectSettings);
   const [focusRef, setFocusRef] = useState<HTMLDivElement>();
+  const { deletePlayerData } = useLocalStorage();
 
   const musicSound = new Audio(MUSIC_URL);
   musicSound.volume = musicVolume;
 
+  const onGameStart = () => {
+    deletePlayerData('game');
+    dispatch(startGame());
+  };
+
   useEffect(() => {
     void musicSound.play();
     musicSound.loop = true;
-    if (!cards.length) dispatch(startGame());
+    if (!cards.length) onGameStart();
     return () => musicSound.pause();
   }, []);
 
@@ -85,7 +92,7 @@ const Game: React.FC = () => {
       }, 800);
     } else {
       setTimeout(() => {
-        dispatch(startGame());
+        onGameStart();
       }, 800);
     }
   };

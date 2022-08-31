@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { getCookie } from 'utils/functions';
 import { RootState } from '..';
 
 export interface IAuth {
@@ -7,7 +8,7 @@ export interface IAuth {
 }
 
 const initialState: IAuth = {
-  player: localStorage.getItem('player') || '',
+  player: getCookie('player') || '',
 };
 
 export const slice = createSlice({
@@ -23,10 +24,7 @@ export const slice = createSlice({
   },
 });
 
-export const {
-  login,
-  logout,
-} = slice.actions;
+export const { login, logout } = slice.actions;
 
 export const selectPlayerName = (state: RootState): string => state.auth.player;
 

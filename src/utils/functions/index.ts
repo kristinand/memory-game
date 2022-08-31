@@ -5,3 +5,5 @@ export * from './formatTime';
 export * from './shuffleList';
 export * from './getLocalStorageValue';
 export * from './setLocalStorageValue';
+export * from './getCookie';
+export * from './removeCookie';

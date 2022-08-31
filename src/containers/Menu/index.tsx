@@ -8,10 +8,13 @@ import MenuButton from 'components/MenuButton';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
-import { setLocalStorageValue, getLocalStorageValue } from 'utils/functions';
+import { useLocalStorage } from 'utils/hooks';
+import { removeCookie } from 'utils/functions';
 import { login, logout, selectPlayerName } from 'store/auth/slice';
-import { startGame, IGame } from 'store/game/slice';
+import { startGame } from 'store/game/slice';
+import { setDefaultSettings } from 'store/settings/slice';
 import Footer from 'components/Footer';
+import { setCookie } from 'utils/functions/setCookie';
 import classes from './classes.module.scss';
 
 const Menu: React.FC = () => {
@@ -19,11 +22,17 @@ const Menu: React.FC = () => {
   const storedPlayer = useSelector(selectPlayerName);
   const [helperText, setHelperText] = useState('');
   const [player, setPlayer] = useState(storedPlayer);
+  const { playerData, deletePlayerData } = useLocalStorage();
 
   const onInputValueChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
     if (!storedPlayer) {
       setPlayer((event.target as HTMLInputElement).value.trim());
     }
+  };
+
+  const onStartGame = () => {
+    deletePlayerData('game');
+    dispatch(startGame());
   };
 
   const onLogin = () => {
@@ -35,16 +44,17 @@ const Menu: React.FC = () => {
     } else if (playerRegEx.exec(player) === null) {
       setHelperText('Only latin characters allowed');
     } else {
-      setLocalStorageValue('player', player);
+      setCookie('player', player, 1);
       dispatch(login(player));
       setHelperText('');
     }
   };
 
   const onLogout = () => {
-    localStorage.removeItem('player');
     setPlayer('');
     setHelperText('');
+    removeCookie('player', storedPlayer);
+    dispatch(setDefaultSettings());
     dispatch(logout());
   };
 
@@ -53,7 +63,7 @@ const Menu: React.FC = () => {
       <Layout centered>
         <div className={classes.loginContainer}>
           {storedPlayer ? (
-            <div className={classes.playerName}>Hello, {player}!</div>
+            <div className={classes.playerName}>Hello, {storedPlayer}!</div>
           ) : (
             <Input
               onChange={onInputValueChangeHandler}
@@ -81,12 +91,8 @@ const Menu: React.FC = () => {
         <div className={classes.separator}>♥ ☀ ♦</div>
 
         <div className={classes.buttonGroup}>
-          <MenuButton onClick={() => dispatch(startGame())} disabled={!storedPlayer} path="/game" title="New Game" />
-          <MenuButton
-            path="/game"
-            disabled={!storedPlayer || !getLocalStorageValue<IGame>('gameData')}
-            title="Continue"
-          />
+          <MenuButton onClick={onStartGame} disabled={!storedPlayer} path="/game" title="New Game" />
+          <MenuButton path="/game" disabled={!storedPlayer || !playerData?.game} title="Continue" />
           <MenuButton path="/rating" title="Rating" />
           <MenuButton disabled={!storedPlayer} path={!storedPlayer ? '' : '/settings'} title="Settings" />
           <MenuButton path="/about" title="About" />

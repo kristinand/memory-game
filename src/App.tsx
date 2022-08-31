@@ -5,9 +5,9 @@ import classNames from 'classnames';
 
 import { HandleResponseErrors } from 'api/HandleResponseErrors';
 import { selectPlayerName } from 'store/auth/slice';
-import { loadLocalGameData, IGame } from 'store/game/slice';
-import { selectTheme, loadLocalSettingsData, ISettings } from 'store/settings/slice';
-import { getLocalStorageValue } from 'utils/functions';
+import { loadLocalGameData } from 'store/game/slice';
+import { selectTheme, loadLocalSettingsData } from 'store/settings/slice';
+import { useLocalStorage } from 'utils/hooks';
 import Game from 'containers/Game';
 import Menu from 'containers/Menu';
 import Rating from 'containers/Rating';
@@ -18,17 +18,15 @@ import './styles/index.scss';
 import classes from './App.module.scss';
 
 const App: React.FC = () => {
+  const dispatch = useDispatch();
   const player = useSelector(selectPlayerName);
   const theme = useSelector(selectTheme);
-  const dispatch = useDispatch();
+  const { playerData } = useLocalStorage();
 
   useEffect(() => {
-    const gameData = getLocalStorageValue<IGame>('gameData');
-    if (gameData) {
-      dispatch(loadLocalGameData(gameData));
-    }
-    const settings = getLocalStorageValue<Partial<ISettings>>('settings');
-    if (settings) {
+    if (playerData) {
+      const { game, settings } = playerData;
+      dispatch(loadLocalGameData(game));
       dispatch(loadLocalSettingsData(settings));
     }
   }, [player]);
