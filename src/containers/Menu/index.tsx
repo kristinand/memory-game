@@ -9,10 +9,12 @@ import Button from 'components/Button';
 import Input from 'components/Input';
 
 import { useLocalStorage } from 'utils/hooks';
+import { removeCookie } from 'utils/functions';
 import { login, logout, selectPlayerName } from 'store/auth/slice';
 import { startGame } from 'store/game/slice';
 import { setDefaultSettings } from 'store/settings/slice';
 import Footer from 'components/Footer';
+import { setCookie } from 'utils/functions/setCookie';
 import classes from './classes.module.scss';
 
 const Menu: React.FC = () => {
@@ -42,6 +44,7 @@ const Menu: React.FC = () => {
     } else if (playerRegEx.exec(player) === null) {
       setHelperText('Only latin characters allowed');
     } else {
+      setCookie('player', player, 1);
       dispatch(login(player));
       setHelperText('');
     }
@@ -50,6 +53,7 @@ const Menu: React.FC = () => {
   const onLogout = () => {
     setPlayer('');
     setHelperText('');
+    removeCookie('player', storedPlayer);
     dispatch(setDefaultSettings());
     dispatch(logout());
   };
@@ -59,7 +63,7 @@ const Menu: React.FC = () => {
       <Layout centered>
         <div className={classes.loginContainer}>
           {storedPlayer ? (
-            <div className={classes.playerName}>Hello, {player}!</div>
+            <div className={classes.playerName}>Hello, {storedPlayer}!</div>
           ) : (
             <Input
               onChange={onInputValueChangeHandler}
