@@ -6,7 +6,7 @@ import { ICard } from 'entities/';
 import { listToArray } from 'utils/functions';
 import { selectGameData, setIsGamePaused, startGame } from 'store/game/slice';
 import { selectSettings } from 'store/settings/slice';
-import { useLocalStorage } from 'utils/hooks';
+import { usePlayerData } from 'utils/hooks';
 
 import Layout from 'components/Layout';
 import Button from 'components/Button';
@@ -21,7 +21,7 @@ const Game: React.FC = () => {
   const { cards, level, isAutoplay, isGamePaused, score } = useSelector(selectGameData);
   const { musicVolume } = useSelector(selectSettings);
   const [focusRef, setFocusRef] = useState<HTMLDivElement>();
-  const { deletePlayerData } = useLocalStorage();
+  const { deletePlayerData } = usePlayerData();
   const { onSelectCard } = usePlay();
   const { start: startAutoplay, stop: stopAutoplay } = useAutoplay();
 

@@ -7,7 +7,7 @@ import { HandleResponseErrors } from 'api/HandleResponseErrors';
 import { selectPlayerName } from 'store/auth/slice';
 import { loadLocalGameData } from 'store/game/slice';
 import { selectTheme, loadLocalSettingsData } from 'store/settings/slice';
-import { useLocalStorage } from 'utils/hooks';
+import { usePlayerData } from 'utils/hooks';
 import Game from 'containers/Game';
 import Menu from 'containers/Menu';
 import Rating from 'containers/Rating';
@@ -21,7 +21,7 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const player = useSelector(selectPlayerName);
   const theme = useSelector(selectTheme);
-  const { playerData } = useLocalStorage();
+  const { playerData } = usePlayerData();
 
   useEffect(() => {
     if (playerData) {
@@ -29,7 +29,7 @@ const App: React.FC = () => {
       dispatch(loadLocalGameData(game));
       dispatch(loadLocalSettingsData(settings));
     }
-  }, [player]);
+  }, [dispatch, playerData]);
 
   return (
     <div className={classNames(classes.App, classes[theme])}>

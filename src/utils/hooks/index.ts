@@ -1,2 +1,2 @@
 export * from './useTimer';
-export * from './useLocalStorage';
+export * from './usePlayerData';

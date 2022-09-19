@@ -21,12 +21,12 @@ import {
   useSystemTheme,
   togglePattern,
 } from 'store/settings/slice';
-import { useLocalStorage } from 'utils/hooks';
+import { usePlayerData } from 'utils/hooks';
 import classes from './classes.module.scss';
 
 const Settings: React.FC = () => {
   const dispatch = useDispatch();
-  const { playerData, updatePlayerData, deletePlayerData } = useLocalStorage();
+  const { playerData, updatePlayerData, deletePlayerData } = usePlayerData();
   const { keys, isPatternShown, isSystemTheme, musicVolume, soundVolume, theme } = useSelector(selectSettings);
   const sound = new Audio(menuSound);
 

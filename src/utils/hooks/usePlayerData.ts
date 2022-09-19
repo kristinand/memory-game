@@ -4,7 +4,7 @@ import { getLocalStorageValue, setLocalStorageValue } from 'utils/functions';
 import { IPlayerData } from 'entities/';
 import { selectPlayerName } from 'store/auth/slice';
 
-export const useLocalStorage = () => {
+export const usePlayerData = () => {
   const player = useSelector(selectPlayerName);
   const playerData = getLocalStorageValue<IPlayerData>(player);
 
