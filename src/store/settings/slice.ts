@@ -64,7 +64,7 @@ export const slice = createSlice({
     togglePattern(state) {
       state.isPatternShown = !state.isPatternShown;
     },
-    useSystemTheme(state) {
+    applySystemTheme(state) {
       state.isSystemTheme = !state.isSystemTheme;
       state.theme = systemTheme;
     },
@@ -80,7 +80,7 @@ export const {
   changeHotkey,
   changeTheme,
   togglePattern,
-  useSystemTheme,
+  applySystemTheme,
   setDefaultSettings,
 } = slice.actions;
 

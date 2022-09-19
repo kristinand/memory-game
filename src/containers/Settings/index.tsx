@@ -18,7 +18,7 @@ import {
   changeHotkey,
   changeTheme,
   changeVolume,
-  useSystemTheme,
+  applySystemTheme,
   togglePattern,
 } from 'store/settings/slice';
 import { usePlayerData } from 'utils/hooks';
@@ -81,8 +81,8 @@ const Settings: React.FC = () => {
     setLocalStorageSettingsItem({ isPatternShown: !isPatternShown });
   };
 
-  const onUseSystemThemeHandler = () => {
-    dispatch(useSystemTheme());
+  const onApplySystemThemeHandler = () => {
+    dispatch(applySystemTheme());
     setLocalStorageSettingsItem({ isSystemTheme: !isSystemTheme, theme: undefined });
   };
 
@@ -127,7 +127,7 @@ const Settings: React.FC = () => {
             val={keys.sounds}
           />
           <SettingsElement title="Show Card Pattern" val={isPatternShown} onChange={onToggleCardPatternHandler} />
-          <SettingsElement title="System Theme" val={isSystemTheme} onChange={onUseSystemThemeHandler} />
+          <SettingsElement title="System Theme" val={isSystemTheme} onChange={onApplySystemThemeHandler} />
           {!isSystemTheme && (
             <SettingsElement title="Dark Theme" val={theme === ETheme.dark} onChange={onThemeChangeHandler} />
           )}
