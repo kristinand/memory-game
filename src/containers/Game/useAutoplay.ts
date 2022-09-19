@@ -26,12 +26,14 @@ export const useAutoplay: IUseAutoplay = () => {
       handleReset();
     }
     return () => handleReset();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAutoplay]);
 
   useEffect(() => {
     if (isAutoplay) {
       autoplay();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timer]);
 
   const start = () => {

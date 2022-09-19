@@ -30,14 +30,14 @@ const Game: React.FC = () => {
     music.volume = musicVolume;
   }, [musicVolume, music]);
 
-  const resetGame = () => {
-    deletePlayerData('game');
-    dispatch(startGame());
-  };
-
-  useEffect(() => {
-    if (!cards.length) resetGame();
-  }, []);
+  // TODO:
+  // useEffect(() => {
+  //   if (!cards.length) {
+  //     console.log(cards.length);
+  //     deletePlayerData('game');
+  //     dispatch(startGame());
+  //   }
+  // }, [cards.length, deletePlayerData, dispatch]);
 
   const onCardSelectHandler = (selectedCard: ICard) => {
     focusRef.focus();

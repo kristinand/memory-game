@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -18,7 +18,6 @@ import Button from 'components/Button';
 
 import { LAST_LEVEL } from 'constants/';
 import { ECardStatus } from 'entities';
-import { selectPlayerName } from 'store/auth/slice';
 import { selectGameData, loadNextLevel, saveCurrentScore, startGame, setIsGamePaused } from 'store/game/slice';
 import { saveScore } from 'store/game/thunks/saveScore';
 import { selectSettings, changeVolume } from 'store/settings/slice';
@@ -35,54 +34,47 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   const history = useHistory();
   const focusRef = useRef<HTMLDivElement>();
 
-  const player = useSelector(selectPlayerName);
   const { cards, score, level, isAutoplay, isGamePaused } = useSelector(selectGameData);
   const { soundVolume, musicVolume, keys } = useSelector(selectSettings);
-  const [isLevelCompleted, setIsLevelCompleted] = useState(false);
-  const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer({ initTimer: score });
+  const { timer, isPaused, handleStart, handlePause, handleReset } = useTimer({ initTimer: score });
   const { updatePlayerData } = usePlayerData();
   const clickSound = useAudio('sound', { volume: musicVolume });
 
   useEffect(() => {
-    setIsLevelCompleted(cards.every(({ status }) => status === ECardStatus.Guessed));
-  }, [cards]);
-
-  useEffect(() => {
     const screen = focusRef.current;
-    getFocusRef(screen);
+    getFocusRef(focusRef.current);
     screen.focus();
-    if (!score) {
-      handleStart();
-    }
-  }, []);
+  }, [getFocusRef]);
 
   useEffect(() => {
     let timeoutTimer;
-    if (isLevelCompleted && !isAutoplay) {
+
+    if (!isAutoplay && cards.every(card => card.status === ECardStatus.Guessed)) {
       if (level < LAST_LEVEL) {
         timeoutTimer = setTimeout(() => {
           dispatch(loadNextLevel());
         }, 1000);
       } else {
-        void dispatch(saveScore({ player, score }));
+        void dispatch(saveScore(score));
         history.push('/rating');
       }
     }
 
     return () => clearTimeout(timeoutTimer);
-  }, [isLevelCompleted, isAutoplay]);
+  }, [isAutoplay, level, dispatch, score, history, cards]);
 
   useEffect(() => {
     if (isGamePaused) {
       handlePause();
     } else {
-      handleResume();
+      handleStart();
     }
-    return () => handlePause();
-  }, [isGamePaused]);
 
-  const saveGameData = () => {
-    if (!isAutoplay) {
+    return () => handlePause();
+  }, [handlePause, handleStart, isGamePaused]);
+
+  useEffect(() => {
+    if (timer && !isAutoplay) {
       updatePlayerData({
         game: {
           cards,
@@ -92,20 +84,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
       });
       dispatch(saveCurrentScore(timer));
     }
-  };
-
-  useEffect(() => {
-    if (timer) {
-      saveGameData();
-    }
-  }, [timer]);
-
-  useEffect(() => {
-    if (!isAutoplay && !score) {
-      handleReset();
-      handlePause();
-    }
-  }, [isAutoplay, score]);
+  }, [cards, dispatch, isAutoplay, level, timer, updatePlayerData]);
 
   const onChangeAudioVolumeHandler = (audio: 'sound' | 'music') => {
     let volume = audio === 'sound' ? soundVolume : musicVolume;
