@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate  } from 'react-router-dom';
 
 import Refresh from 'assets/icons/refresh.svg';
 import Pause from 'assets/icons/pause.svg';
@@ -31,7 +31,7 @@ interface IProps {
 
 const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const focusRef = useRef<HTMLDivElement>();
 
   const { cards, score, level, isAutoplay, isGamePaused } = useSelector(selectGameData);
@@ -56,12 +56,12 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
         }, 1000);
       } else {
         void dispatch(saveScore(score));
-        history.push('/rating');
+        navigate('/rating');
       }
     }
 
     return () => clearTimeout(timeoutTimer);
-  }, [isAutoplay, level, dispatch, score, history, cards]);
+  }, [isAutoplay, level, dispatch, score, navigate, cards]);
 
   useEffect(() => {
     if (isGamePaused) {
@@ -162,7 +162,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
             musicVolume === 0 ? <Music0 /> : musicVolume <= 0.5 ? <Music1 /> : <Music2 />
           }
         />
-        <Button title="Back to Menu" onClick={() => history.push('/')} icon={<Back />} />
+        <Button title="Back to Menu" onClick={() => navigate('/')} icon={<Back />} />
       </span>
     </header>
   );
