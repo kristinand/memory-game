@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 
 import { getLocalStorageValue, setLocalStorageValue } from 'utils/functions';
-import { IPlayerData } from 'entities/';
+import { IPlayerData } from 'types/';
 import { selectPlayerName } from 'store/auth/slice';
 
 type IUsePlayerData = () => {

@@ -6,4 +6,5 @@ export * from './shuffleList';
 export * from './getLocalStorageValue';
 export * from './setLocalStorageValue';
 export * from './getCookie';
+export * from './setCookie';
 export * from './removeCookie';

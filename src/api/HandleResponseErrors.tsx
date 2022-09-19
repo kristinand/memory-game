@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { IErrorResponse, ServerResponse, ServerError } from './entities';
+import { IErrorResponse, ServerResponse, ServerError } from './types';
 import instance from './instance';
 
 export const HandleResponseErrors: React.FC = () => {

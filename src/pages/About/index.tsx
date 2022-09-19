@@ -2,9 +2,9 @@
 import React from 'react';
 
 import AboutGif from 'assets/about.gif';
-import Layout from '../Layout';
-import Header from '../Header';
-import Footer from '../Footer';
+import Layout from 'components/Layout';
+import Header from 'components/Header';
+import Footer from 'components/Footer';
 import classes from './classes.module.scss';
 
 const About: React.FC = () => (

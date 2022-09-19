@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { IKeys } from 'entities';
+import { IKeys } from 'types';
 import { RootState } from 'store';
 
 export enum ETheme {

@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { updateCards, increaseCountBy1 } from 'store/game/slice';
-import { ICard, ECardStatus } from 'entities/';
+import { ICard, ECardStatus } from 'types/';
 
 const getCardsStatus = (selectedCardKey: string, oldCardKey?: string): ECardStatus => {
   switch (oldCardKey) {

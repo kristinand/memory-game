@@ -2,20 +2,18 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
-
 import { HandleResponseErrors } from 'api/HandleResponseErrors';
 import { selectPlayerName } from 'store/auth/slice';
 import { loadLocalGameData } from 'store/game/slice';
 import { selectTheme, loadLocalSettingsData } from 'store/settings/slice';
 import { usePlayerData } from 'utils/hooks';
-import Game from 'containers/Game';
-import Menu from 'containers/Menu';
-import Rating from 'containers/Rating';
-import Settings from 'containers/Settings';
-import About from 'components/About';
-
-import './styles/index.scss';
-import classes from './App.module.scss';
+import Game from 'pages/Game';
+import Menu from 'pages/Menu';
+import Rating from 'pages/Rating';
+import Settings from 'pages/Settings';
+import About from 'pages/About';
+import 'styles/index.scss';
+import classes from './classes.module.scss';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -36,8 +34,8 @@ const App: React.FC = () => {
       <BrowserRouter>
         <HandleResponseErrors />
         <Switch>
-          {player && <Route path="/game" component={Game} />}
           <Route path="/about" component={About} />
+          {player && <Route path="/game" component={Game} />}
           <Route path="/rating" component={Rating} />
           {player && <Route path="/settings" component={Settings} />}
           <Route path="/" component={Menu} />

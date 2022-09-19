@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { IGetRatingsResponse, IPlayerRatingResponse } from 'api/entities';
+import { IGetRatingsResponse, IPlayerRatingResponse } from 'api/types';
 import { getAllRatings } from 'store/rating/thunks/getRatings';
 import { getRating } from 'store/rating/thunks/getPlayerRatings';
 import { RootState } from '..';
