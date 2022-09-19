@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import menuSound from 'assets/menu-click.opus';
 import Refresh from 'assets/icons/refresh.svg';
 import Pause from 'assets/icons/pause.svg';
 import Play from 'assets/icons/play.svg';
@@ -23,7 +22,7 @@ import { selectPlayerName } from 'store/auth/slice';
 import { selectGameData, loadNextLevel, saveCurrentScore, startGame, setIsGamePaused } from 'store/game/slice';
 import { saveScore } from 'store/game/thunks/saveScore';
 import { selectSettings, changeVolume } from 'store/settings/slice';
-import { useTimer, usePlayerData } from 'utils/hooks';
+import { useTimer, usePlayerData, useAudio } from 'utils/hooks';
 import { formatTime } from 'utils/functions';
 import classes from './classes.module.scss';
 
@@ -42,9 +41,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   const [isLevelCompleted, setIsLevelCompleted] = useState(false);
   const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer({ initTimer: score });
   const { updatePlayerData } = usePlayerData();
-
-  const menuClickSound = new Audio(menuSound);
-  menuClickSound.volume = soundVolume;
+  const clickSound = useAudio('sound', { volume: musicVolume });
 
   useEffect(() => {
     setIsLevelCompleted(cards.every(({ status }) => status === ECardStatus.Guessed));
@@ -117,9 +114,8 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
     else volume = 0;
 
     if (audio === 'sound') {
-      menuClickSound.currentTime = 0;
-      menuClickSound.volume = volume;
-      void menuClickSound.play();
+      clickSound.volume = volume;
+      clickSound.replay();
     }
     dispatch(changeVolume({ audio, volume }));
   };

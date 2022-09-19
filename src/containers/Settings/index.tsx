@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Reset from 'assets/icons/reset.svg';
-import menuSound from 'assets/menu-click.opus';
 import Layout from 'components/Layout';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -21,14 +20,14 @@ import {
   applySystemTheme,
   togglePattern,
 } from 'store/settings/slice';
-import { usePlayerData } from 'utils/hooks';
+import { useAudio, usePlayerData } from 'utils/hooks';
 import classes from './classes.module.scss';
 
 const Settings: React.FC = () => {
   const dispatch = useDispatch();
   const { playerData, updatePlayerData, deletePlayerData } = usePlayerData();
   const { keys, isPatternShown, isSystemTheme, musicVolume, soundVolume, theme } = useSelector(selectSettings);
-  const sound = new Audio(menuSound);
+  const sound = useAudio('sound', { volume: soundVolume });
 
   const setLocalStorageSettingsItem = (obj: Partial<ISettings>) => {
     updatePlayerData({
@@ -46,9 +45,8 @@ const Settings: React.FC = () => {
 
   const onVolumeChangeHandler = (audio: string, volume: number) => {
     if (volume >= 0 && volume <= 1) {
-      sound.volume = volume;
-      sound.currentTime = 0;
-      void sound.play();
+      sound.volume =volume;
+      sound.replay();
 
       dispatch(changeVolume({ audio, volume }));
       setLocalStorageSettingsItem({ [audio.concat('Volume')]: volume });
