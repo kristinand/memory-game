@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
@@ -12,19 +12,15 @@ interface IProps {
 }
 
 const Card: React.FC<IProps> = ({ card, onClick }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const isOpen = card.status !== ECardStatus.Closed;
   const { isPatternShown, theme } = useSelector(selectSettings);
 
-  useEffect(() => {
-    setIsOpen(card.status !== ECardStatus.Closed)
-  }, [card.status]);
-
   return (
-    <div className={classNames(classes.card, { [classes.opened]: isOpen })}>
+    <div className={classNames(classes.card, isOpen && classes.opened)}>
       <button
         type="button"
         onClick={onClick}
-        className={classNames(classes.innerCard, classes[theme], { [classes.opened]: isOpen })}
+        className={classNames(classes.innerCard, classes[theme], isOpen && classes.opened)}
       >
         <div className={classes.cardCover} style={{ backgroundColor: card.coverColor }}>
           <span>?</span>
