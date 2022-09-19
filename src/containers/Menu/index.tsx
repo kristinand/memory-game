@@ -8,7 +8,7 @@ import MenuButton from 'components/MenuButton';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
-import { useLocalStorage } from 'utils/hooks';
+import { usePlayerData } from 'utils/hooks';
 import { removeCookie } from 'utils/functions';
 import { login, logout, selectPlayerName } from 'store/auth/slice';
 import { startGame } from 'store/game/slice';
@@ -22,7 +22,7 @@ const Menu: React.FC = () => {
   const storedPlayer = useSelector(selectPlayerName);
   const [helperText, setHelperText] = useState('');
   const [player, setPlayer] = useState(storedPlayer);
-  const { playerData, deletePlayerData } = useLocalStorage();
+  const { playerData, deletePlayerData } = usePlayerData();
 
   const onInputValueChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
     if (!storedPlayer) {

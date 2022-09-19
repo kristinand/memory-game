@@ -4,7 +4,9 @@
     "es2021": true
   },
   "extends": [
+    "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "airbnb",
     "airbnb-typescript",
     "plugin:@typescript-eslint/recommended",
@@ -31,7 +33,10 @@
     "react/require-default-props": "off",
     "no-void": "off",
     "react/jsx-props-no-spreading": "off",
-    "@typescript-eslint/no-use-before-define": "warn"
+    "@typescript-eslint/no-use-before-define": "warn",
+    "import/no-cycle": "warn",
+    "no-param-reassign": "warn",
+    "react-hooks/exhaustive-deps": "error"
   },
   "overrides": [
     {

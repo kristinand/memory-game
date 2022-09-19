@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { MUSIC_URL } from 'constants/';
-import { ICard } from 'entities/';
+import { ECardStatus, ICard } from 'entities/';
 import { listToArray } from 'utils/functions';
 import { selectGameData, setIsGamePaused, startGame } from 'store/game/slice';
 import { selectSettings } from 'store/settings/slice';
-import { useLocalStorage } from 'utils/hooks';
+import { usePlayerData, useAudio } from 'utils/hooks';
 
 import Layout from 'components/Layout';
 import Button from 'components/Button';
@@ -19,39 +18,35 @@ import classes from './classes.module.scss';
 const Game: React.FC = () => {
   const dispatch = useDispatch();
   const { cards, level, isAutoplay, isGamePaused, score } = useSelector(selectGameData);
-  const { musicVolume } = useSelector(selectSettings);
+  const { musicVolume, soundVolume } = useSelector(selectSettings);
   const [focusRef, setFocusRef] = useState<HTMLDivElement>();
-  const { deletePlayerData } = useLocalStorage();
+  const { deletePlayerData } = usePlayerData();
   const { onSelectCard } = usePlay();
   const { start: startAutoplay, stop: stopAutoplay } = useAutoplay();
-
-  const musicSound = new Audio(MUSIC_URL);
-  musicSound.loop = true;
-
-  useEffect(() => {
-    musicSound.volume = musicVolume;
-    if (musicSound.paused && musicVolume) {
-      void musicSound.play();
-    } else {
-      musicSound.pause();
-    }
-
-    return () => musicSound.pause();
-  }, [musicVolume]);
-
-  const resetGame = () => {
-    deletePlayerData('game');
-    dispatch(startGame());
-  };
+  const sound = useAudio('sound', { volume: soundVolume });
+  const music = useAudio('music', { volume: musicVolume, loop: true }, true);
 
   useEffect(() => {
-    if (!cards.length) resetGame();
-  }, []);
+    music.volume = musicVolume;
+  }, [musicVolume, music]);
+
+  // TODO:
+  // useEffect(() => {
+  //   if (!cards.length) {
+  //     console.log(cards.length);
+  //     deletePlayerData('game');
+  //     dispatch(startGame());
+  //   }
+  // }, [cards.length, deletePlayerData, dispatch]);
 
   const onCardSelectHandler = (selectedCard: ICard) => {
     focusRef.focus();
-    if (isGamePaused) dispatch(setIsGamePaused(false));
-    onSelectCard(cards, selectedCard);
+
+    if (selectedCard.status === ECardStatus.Closed && !isAutoplay) {
+      if (isGamePaused) dispatch(setIsGamePaused(false));
+      sound.replay();
+      onSelectCard(cards, selectedCard);
+    }
   };
 
   return (
@@ -62,7 +57,7 @@ const Game: React.FC = () => {
           {listToArray(cards, 4).map((cardsRow: ICard[]) => (
             <div key={cardsRow[0].key}>
               {cardsRow.map((card) => (
-                <Card onClick={() => !isAutoplay && onCardSelectHandler(card)} key={card.key} card={card} />
+                <Card onClick={() => onCardSelectHandler(card)} key={card.key} card={card} />
               ))}
             </div>
           ))}

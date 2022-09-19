@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { selectSettings } from 'store/settings/slice';
-import sound from 'assets/menu-click.opus';
+import { useAudio } from 'utils/hooks';
 import classes from './classes.module.scss';
 
 interface IProps {
@@ -15,14 +15,12 @@ interface IProps {
 }
 
 const MenuButton: React.FC<IProps> = ({ path, title, onClick, disabled }) => {
-  const clickSound = new Audio(sound);
   const { soundVolume, theme } = useSelector(selectSettings);
-  clickSound.volume = soundVolume;
+  const sound = useAudio('sound', { volume: soundVolume });
 
-  const onClickButtonHandler = async () => {
+  const onClickButtonHandler = () => {
     if (onClick) onClick();
-    clickSound.currentTime = 0;
-    await clickSound.play();
+    sound.replay();
   };
 
   return (

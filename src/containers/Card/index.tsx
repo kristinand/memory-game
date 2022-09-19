@@ -4,7 +4,6 @@ import classNames from 'classnames';
 
 import { ECardStatus, ICard } from 'entities/';
 import { selectSettings } from 'store/settings/slice';
-import audio from 'assets/card-click.opus';
 import classes from './classes.module.scss';
 
 interface IProps {
@@ -14,17 +13,10 @@ interface IProps {
 
 const Card: React.FC<IProps> = ({ card, onClick }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { soundVolume, isPatternShown, theme } = useSelector(selectSettings);
-  const clickAudio = new Audio(audio);
-  clickAudio.volume = soundVolume;
+  const { isPatternShown, theme } = useSelector(selectSettings);
 
   useEffect(() => {
-    if (card.status === ECardStatus.Closed) {
-      setIsOpen(false);
-    } else {
-      void clickAudio.play();
-      setIsOpen(true);
-    }
+    setIsOpen(card.status !== ECardStatus.Closed)
   }, [card.status]);
 
   return (

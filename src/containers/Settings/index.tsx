@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Reset from 'assets/icons/reset.svg';
-import menuSound from 'assets/menu-click.opus';
 import Layout from 'components/Layout';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -18,17 +17,17 @@ import {
   changeHotkey,
   changeTheme,
   changeVolume,
-  useSystemTheme,
+  applySystemTheme,
   togglePattern,
 } from 'store/settings/slice';
-import { useLocalStorage } from 'utils/hooks';
+import { useAudio, usePlayerData } from 'utils/hooks';
 import classes from './classes.module.scss';
 
 const Settings: React.FC = () => {
   const dispatch = useDispatch();
-  const { playerData, updatePlayerData, deletePlayerData } = useLocalStorage();
+  const { playerData, updatePlayerData, deletePlayerData } = usePlayerData();
   const { keys, isPatternShown, isSystemTheme, musicVolume, soundVolume, theme } = useSelector(selectSettings);
-  const sound = new Audio(menuSound);
+  const sound = useAudio('sound', { volume: soundVolume });
 
   const setLocalStorageSettingsItem = (obj: Partial<ISettings>) => {
     updatePlayerData({
@@ -46,9 +45,8 @@ const Settings: React.FC = () => {
 
   const onVolumeChangeHandler = (audio: string, volume: number) => {
     if (volume >= 0 && volume <= 1) {
-      sound.volume = volume;
-      sound.currentTime = 0;
-      void sound.play();
+      sound.volume =volume;
+      sound.replay();
 
       dispatch(changeVolume({ audio, volume }));
       setLocalStorageSettingsItem({ [audio.concat('Volume')]: volume });
@@ -81,8 +79,8 @@ const Settings: React.FC = () => {
     setLocalStorageSettingsItem({ isPatternShown: !isPatternShown });
   };
 
-  const onUseSystemThemeHandler = () => {
-    dispatch(useSystemTheme());
+  const onApplySystemThemeHandler = () => {
+    dispatch(applySystemTheme());
     setLocalStorageSettingsItem({ isSystemTheme: !isSystemTheme, theme: undefined });
   };
 
@@ -127,7 +125,7 @@ const Settings: React.FC = () => {
             val={keys.sounds}
           />
           <SettingsElement title="Show Card Pattern" val={isPatternShown} onChange={onToggleCardPatternHandler} />
-          <SettingsElement title="System Theme" val={isSystemTheme} onChange={onUseSystemThemeHandler} />
+          <SettingsElement title="System Theme" val={isSystemTheme} onChange={onApplySystemThemeHandler} />
           {!isSystemTheme && (
             <SettingsElement title="Dark Theme" val={theme === ETheme.dark} onChange={onThemeChangeHandler} />
           )}

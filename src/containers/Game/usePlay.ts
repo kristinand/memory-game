@@ -14,7 +14,11 @@ const getCardsStatus = (selectedCardKey: string, oldCardKey?: string): ECardStat
   }
 };
 
-export const usePlay = () => {
+type IUsePlay = () => {
+  onSelectCard: (cards: ICard[], selectedCard: ICard) => void
+}
+
+export const usePlay: IUsePlay = () => {
   const dispatch = useDispatch();
 
   const onSelectCard = (cards: ICard[], selectedCard: ICard) => {

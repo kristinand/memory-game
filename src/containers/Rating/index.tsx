@@ -28,11 +28,11 @@ const Rating: React.FC = () => {
 
   useEffect(() => {
     void dispatch(getRating(player));
-  }, [player]);
+  }, [dispatch, player]);
 
   useEffect(() => {
     void dispatch(getAllRatings({ page, limit }));
-  }, [page, limit]);
+  }, [page, dispatch]);
 
   return (
     <>

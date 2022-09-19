@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import menuSound from 'assets/menu-click.opus';
 import Refresh from 'assets/icons/refresh.svg';
 import Pause from 'assets/icons/pause.svg';
 import Play from 'assets/icons/play.svg';
@@ -19,11 +18,10 @@ import Button from 'components/Button';
 
 import { LAST_LEVEL } from 'constants/';
 import { ECardStatus } from 'entities';
-import { selectPlayerName } from 'store/auth/slice';
 import { selectGameData, loadNextLevel, saveCurrentScore, startGame, setIsGamePaused } from 'store/game/slice';
 import { saveScore } from 'store/game/thunks/saveScore';
 import { selectSettings, changeVolume } from 'store/settings/slice';
-import { useTimer, useLocalStorage } from 'utils/hooks';
+import { useTimer, usePlayerData, useAudio } from 'utils/hooks';
 import { formatTime } from 'utils/functions';
 import classes from './classes.module.scss';
 
@@ -36,56 +34,47 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   const history = useHistory();
   const focusRef = useRef<HTMLDivElement>();
 
-  const player = useSelector(selectPlayerName);
   const { cards, score, level, isAutoplay, isGamePaused } = useSelector(selectGameData);
   const { soundVolume, musicVolume, keys } = useSelector(selectSettings);
-  const [isLevelCompleted, setIsLevelCompleted] = useState(false);
-  const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer({ initTimer: score });
-  const { updatePlayerData } = useLocalStorage();
-
-  const menuClickSound = new Audio(menuSound);
-  menuClickSound.volume = soundVolume;
-
-  useEffect(() => {
-    setIsLevelCompleted(cards.every(({ status }) => status === ECardStatus.Guessed));
-  }, [cards]);
+  const { timer, isPaused, handleStart, handlePause, handleReset } = useTimer({ initTimer: score });
+  const { updatePlayerData } = usePlayerData();
+  const clickSound = useAudio('sound', { volume: musicVolume });
 
   useEffect(() => {
     const screen = focusRef.current;
-    getFocusRef(screen);
+    getFocusRef(focusRef.current);
     screen.focus();
-    if (!score) {
-      handleStart();
-    }
-  }, []);
+  }, [getFocusRef]);
 
   useEffect(() => {
     let timeoutTimer;
-    if (isLevelCompleted && !isAutoplay) {
+
+    if (!isAutoplay && cards.every(card => card.status === ECardStatus.Guessed)) {
       if (level < LAST_LEVEL) {
         timeoutTimer = setTimeout(() => {
           dispatch(loadNextLevel());
         }, 1000);
       } else {
-        void dispatch(saveScore({ player, score }));
+        void dispatch(saveScore(score));
         history.push('/rating');
       }
     }
 
     return () => clearTimeout(timeoutTimer);
-  }, [isLevelCompleted, isAutoplay]);
+  }, [isAutoplay, level, dispatch, score, history, cards]);
 
   useEffect(() => {
     if (isGamePaused) {
       handlePause();
     } else {
-      handleResume();
+      handleStart();
     }
-    return () => handlePause();
-  }, [isGamePaused]);
 
-  const saveGameData = () => {
-    if (!isAutoplay) {
+    return () => handlePause();
+  }, [handlePause, handleStart, isGamePaused]);
+
+  useEffect(() => {
+    if (timer && !isAutoplay) {
       updatePlayerData({
         game: {
           cards,
@@ -95,20 +84,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
       });
       dispatch(saveCurrentScore(timer));
     }
-  };
-
-  useEffect(() => {
-    if (timer) {
-      saveGameData();
-    }
-  }, [timer]);
-
-  useEffect(() => {
-    if (!isAutoplay && !score) {
-      handleReset();
-      handlePause();
-    }
-  }, [isAutoplay, score]);
+  }, [cards, dispatch, isAutoplay, level, timer, updatePlayerData]);
 
   const onChangeAudioVolumeHandler = (audio: 'sound' | 'music') => {
     let volume = audio === 'sound' ? soundVolume : musicVolume;
@@ -117,9 +93,8 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
     else volume = 0;
 
     if (audio === 'sound') {
-      menuClickSound.currentTime = 0;
-      menuClickSound.volume = volume;
-      void menuClickSound.play();
+      clickSound.volume = volume;
+      clickSound.replay();
     }
     dispatch(changeVolume({ audio, volume }));
   };
