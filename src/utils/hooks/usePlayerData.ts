@@ -4,7 +4,13 @@ import { getLocalStorageValue, setLocalStorageValue } from 'utils/functions';
 import { IPlayerData } from 'entities/';
 import { selectPlayerName } from 'store/auth/slice';
 
-export const usePlayerData = () => {
+type IUsePlayerData = () => {
+  playerData: IPlayerData;
+  updatePlayerData: (updatedValue: Partial<IPlayerData>) => void;
+  deletePlayerData: (deletedValue: keyof IPlayerData) => void;
+};
+
+export const usePlayerData: IUsePlayerData = () => {
   const player = useSelector(selectPlayerName);
   const playerData = getLocalStorageValue<IPlayerData>(player);
 
