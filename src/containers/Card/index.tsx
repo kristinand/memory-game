@@ -9,19 +9,19 @@ import classes from './classes.module.scss';
 
 interface IProps {
   card: ICard;
-  onCardClick: () => void;
+  onClick: () => void;
 }
 
-const Card: React.FC<IProps> = ({ card, onCardClick }) => {
+const Card: React.FC<IProps> = ({ card, onClick }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { soundVolume, isPatternShown, theme } = useSelector(selectSettings);
   const clickAudio = new Audio(audio);
+  clickAudio.volume = soundVolume;
 
   useEffect(() => {
     if (card.status === ECardStatus.Closed) {
       setIsOpen(false);
     } else {
-      clickAudio.volume = soundVolume;
       void clickAudio.play();
       setIsOpen(true);
     }
@@ -31,7 +31,7 @@ const Card: React.FC<IProps> = ({ card, onCardClick }) => {
     <div className={classNames(classes.card, { [classes.opened]: isOpen })}>
       <button
         type="button"
-        onClick={onCardClick}
+        onClick={onClick}
         className={classNames(classes.innerCard, classes[theme], { [classes.opened]: isOpen })}
       >
         <div className={classes.cardCover} style={{ backgroundColor: card.coverColor }}>

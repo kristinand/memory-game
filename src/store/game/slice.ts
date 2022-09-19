@@ -14,13 +14,6 @@ export interface IGame {
   score: number;
 }
 
-interface IChangeCardStatus {
-  status: ECardStatus;
-  selectedCard: ICard;
-  oldCard?: ICard;
-}
-
-
 const createCards = (level: number): ICard[] => {
   let cards: ICard[] = [];
 
@@ -51,45 +44,23 @@ const createCards = (level: number): ICard[] => {
   return cards;
 };
 
-const updateCardStatus = (state: IGame, action: IChangeCardStatus): ICard[] => {
-  const { selectedCard, oldCard, status } = action;
-  const { cards } = state;
-
-  const selectedCardId = cards.findIndex(({ key }) => key === selectedCard.key);
-
-  if (status !== ECardStatus.Closed) {
-    cards[selectedCardId].count += 1;
-  }
-
-  // in case of all statuses, selected card:
-  cards[selectedCardId].status = status;
-
-  // opened can be only one card
-  if (oldCard && status !== ECardStatus.Opened) {
-    const oldCardId = cards.findIndex(({ key }) => key === oldCard.key);
-    cards[oldCardId].status = status;
-  }
-
-  return cards;
-};
-
-const initialState: IGame = {
+const getInitialState = (): IGame => ({
   isGamePaused: true,
   isAutoplay: false,
   level: 1,
   cards: createCards(1),
   score: 0,
-};
+});
 
 export const slice = createSlice({
   name: 'game',
-  initialState,
+  initialState: getInitialState(),
   reducers: {
     loadLocalGameData(state, { payload }: { payload: Partial<IGame> }) {
       return { ...state, ...payload };
     },
     startGame() {
-      return initialState;
+      return getInitialState();
     },
     loadNextLevel(state) {
       const nextLevel = state.level + 1;
@@ -100,9 +71,14 @@ export const slice = createSlice({
     setIsGamePaused(state, { payload }: { payload: boolean }) {
       state.isGamePaused = payload;
     },
-    changeCardStatus(state, { payload }: { payload: IChangeCardStatus }) {
-      state.cards = updateCardStatus(state, payload);
-      state.isGamePaused = false;
+    updateCards(state, { payload }: { payload: { status: ECardStatus; indexes: number[] } }) {
+      const { status, indexes } = payload;
+      indexes.forEach((index) => {
+        state.cards[index].status = status;
+      });
+    },
+    increaseCountBy1(state, { payload }: { payload: number }) {
+      state.cards[payload].count += 1;
     },
     saveCurrentScore(state, { payload }: { payload: number }) {
       state.score = payload;
@@ -123,7 +99,8 @@ export const {
   startGame,
   loadNextLevel,
   setIsGamePaused,
-  changeCardStatus,
+  updateCards,
+  increaseCountBy1,
   saveCurrentScore,
   setAutoplay,
 } = slice.actions;

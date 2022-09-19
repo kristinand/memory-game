@@ -30,7 +30,8 @@
     "import/prefer-default-export": "off",
     "react/require-default-props": "off",
     "no-void": "off",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "@typescript-eslint/no-use-before-define": "warn"
   },
   "overrides": [
     {

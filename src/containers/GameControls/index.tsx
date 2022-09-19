@@ -40,7 +40,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   const { cards, score, level, isAutoplay, isGamePaused } = useSelector(selectGameData);
   const { soundVolume, musicVolume, keys } = useSelector(selectSettings);
   const [isLevelCompleted, setIsLevelCompleted] = useState(false);
-  const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer(score);
+  const { timer, isPaused, handleStart, handlePause, handleResume, handleReset } = useTimer({ initTimer: score });
   const { updatePlayerData } = useLocalStorage();
 
   const menuClickSound = new Audio(menuSound);
@@ -61,7 +61,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
 
   useEffect(() => {
     let timeoutTimer;
-    if (isLevelCompleted) {
+    if (isLevelCompleted && !isAutoplay) {
       if (level < LAST_LEVEL) {
         timeoutTimer = setTimeout(() => {
           dispatch(loadNextLevel());
@@ -73,7 +73,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
     }
 
     return () => clearTimeout(timeoutTimer);
-  }, [isLevelCompleted]);
+  }, [isLevelCompleted, isAutoplay]);
 
   useEffect(() => {
     if (isGamePaused) {
@@ -85,28 +85,30 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   }, [isGamePaused]);
 
   const saveGameData = () => {
-    updatePlayerData({
-      game: {
-        cards,
-        level,
-        score: timer,
-      },
-    });
+    if (!isAutoplay) {
+      updatePlayerData({
+        game: {
+          cards,
+          level,
+          score: timer,
+        },
+      });
+      dispatch(saveCurrentScore(timer));
+    }
   };
 
   useEffect(() => {
-    if (!isAutoplay && timer) {
+    if (timer) {
       saveGameData();
-      dispatch(saveCurrentScore(timer));
     }
   }, [timer]);
 
   useEffect(() => {
-    if (!score) {
+    if (!isAutoplay && !score) {
       handleReset();
       handlePause();
     }
-  }, [isAutoplay]);
+  }, [isAutoplay, score]);
 
   const onChangeAudioVolumeHandler = (audio: 'sound' | 'music') => {
     let volume = audio === 'sound' ? soundVolume : musicVolume;
@@ -116,6 +118,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
 
     if (audio === 'sound') {
       menuClickSound.currentTime = 0;
+      menuClickSound.volume = volume;
       void menuClickSound.play();
     }
     dispatch(changeVolume({ audio, volume }));
@@ -131,10 +134,8 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
 
   const onGamePauseHandler = () => dispatch(setIsGamePaused(!isPaused));
   const onGameReloadHandler = () => {
-    if (!isAutoplay) {
-      handleReset();
-      dispatch(startGame());
-    }
+    handleReset();
+    dispatch(startGame());
   };
 
   const handleKeyPress = ({ code }: React.KeyboardEvent<HTMLInputElement>) => {

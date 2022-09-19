@@ -4,6 +4,7 @@ interface CssExports {
   'centered': string;
   'fullWidth': string;
   'layout': string;
+  'noBottomPadding': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
