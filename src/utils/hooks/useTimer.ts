@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 
-type IUseTimer = (initialState?: number) => {
+type IUseTimer = ({ delay, initTimer }: { delay?: number; initTimer?: number }) => {
   timer: number;
   isActive: boolean;
   isPaused: boolean;
@@ -12,8 +12,8 @@ type IUseTimer = (initialState?: number) => {
   handleReset: () => void;
 };
 
-export const useTimer: IUseTimer = (initialState = 0) => {
-  const [timer, setTimer] = useState(initialState);
+export const useTimer: IUseTimer = ({ delay = 1000, initTimer = 0 }) => {
+  const [timer, setTimer] = useState(initTimer);
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const countRef = useRef(null);
@@ -23,7 +23,7 @@ export const useTimer: IUseTimer = (initialState = 0) => {
     setIsPaused(false);
     countRef.current = setInterval(() => {
       setTimer((prevTimer) => prevTimer + 1);
-    }, 1000);
+    }, delay);
   };
 
   const handlePause = () => {
@@ -35,7 +35,7 @@ export const useTimer: IUseTimer = (initialState = 0) => {
     setIsPaused(false);
     countRef.current = setInterval(() => {
       setTimer((prevTimer) => prevTimer + 1);
-    }, 1000);
+    }, delay);
   };
 
   const handleReset = () => {

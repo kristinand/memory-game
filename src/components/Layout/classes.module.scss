@@ -13,4 +13,8 @@
   &.fullWidth {
     width: 100%;
   }
+
+  &.noBottomPadding {
+    padding-bottom: 0;
+  }
 }
