@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAutoplay, selectGameData, startGame, setIsGamePaused } from 'store/game/slice';
-import { ICard, ECardStatus } from 'entities/';
+import { ICard, ECardStatus } from 'types/';
 import { getRandomNumber } from 'utils/functions';
 import { useTimer } from 'utils/hooks';
 import { usePlay } from './usePlay';

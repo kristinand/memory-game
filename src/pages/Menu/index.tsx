@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Layout from 'components/Layout';
 import Login from 'assets/icons/right.svg';
 import Logout from 'assets/icons/left.svg';
+import Layout from 'components/Layout';
 import MenuButton from 'components/MenuButton';
 import Button from 'components/Button';
 import Input from 'components/Input';
+import Footer from 'components/Footer';
 
 import { usePlayerData } from 'utils/hooks';
-import { removeCookie } from 'utils/functions';
+import { removeCookie, setCookie } from 'utils/functions';
 import { login, logout, selectPlayerName } from 'store/auth/slice';
 import { startGame } from 'store/game/slice';
 import { setDefaultSettings } from 'store/settings/slice';
-import Footer from 'components/Footer';
-import { setCookie } from 'utils/functions/setCookie';
 import classes from './classes.module.scss';
 
 const Menu: React.FC = () => {

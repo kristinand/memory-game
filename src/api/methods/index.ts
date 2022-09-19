@@ -5,7 +5,7 @@ import {
   ISuccessResponse,
   IGetRatingsRequest,
   ISavePlayerScoreRequest,
-} from '../entities';
+} from '../types';
 
 export const getRatings = (params: IGetRatingsRequest): Promise<ISuccessResponse<IGetRatingsResponse>> =>
   request<ISuccessResponse<IGetRatingsResponse>>({

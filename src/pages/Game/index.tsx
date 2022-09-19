@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { ECardStatus, ICard } from 'entities/';
+import { ECardStatus, ICard } from 'types/';
 import { listToArray } from 'utils/functions';
+import { usePlayerData, useAudio } from 'utils/hooks';
 import { selectGameData, setIsGamePaused, startGame } from 'store/game/slice';
 import { selectSettings } from 'store/settings/slice';
-import { usePlayerData, useAudio } from 'utils/hooks';
 
 import Layout from 'components/Layout';
 import Button from 'components/Button';
-import Card from '../Card';
-import GameControls from '../GameControls';
+import Card from '../../components/Card';
+import GameControls from '../../components/GameControls';
 import { usePlay } from './usePlay';
 import { useAutoplay } from './useAutoplay';
 import classes from './classes.module.scss';

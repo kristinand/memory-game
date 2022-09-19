@@ -12,9 +12,7 @@ import Button from 'components/Button';
 import { formatTime } from 'utils/functions';
 import { selectPlayerName } from 'store/auth/slice';
 import { selectAllRatings, selectPlayerRating } from 'store/rating/slice';
-import { getRating } from 'store/rating/thunks/getPlayerRatings';
-import { getAllRatings } from 'store/rating/thunks/getRatings';
-
+import { getRating, getAllRatings } from 'store/rating/thunks/';
 import classes from './classes.module.scss';
 
 const limit = 10;

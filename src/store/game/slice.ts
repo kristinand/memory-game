@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { ECardStatus, ICard } from 'entities/';
-import { CARD_PATTERNS } from 'constants/';
+import { ECardStatus, ICard } from 'types/';
+import { CARD_PATTERNS } from 'utils/constants';
 import { shuffleList, getRandomNumber, getRandomColor } from 'utils/functions';
 import { RootState } from '..';
 import { saveScore } from './thunks/saveScore';

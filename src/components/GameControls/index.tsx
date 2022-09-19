@@ -16,8 +16,8 @@ import Music2 from 'assets/icons/music2.svg';
 
 import Button from 'components/Button';
 
-import { LAST_LEVEL } from 'constants/';
-import { ECardStatus } from 'entities';
+import { LAST_LEVEL } from 'utils/constants';
+import { ECardStatus } from 'types';
 import { selectGameData, loadNextLevel, saveCurrentScore, startGame, setIsGamePaused } from 'store/game/slice';
 import { saveScore } from 'store/game/thunks/saveScore';
 import { selectSettings, changeVolume } from 'store/settings/slice';

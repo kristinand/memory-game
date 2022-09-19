@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
-import { ECardStatus, ICard } from 'entities/';
+import { ECardStatus, ICard } from 'types/';
 import { selectSettings } from 'store/settings/slice';
 import classes from './classes.module.scss';
 

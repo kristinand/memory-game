@@ -8,7 +8,7 @@ import Footer from 'components/Footer';
 import Button from 'components/Button';
 import SettingsElement from 'components/SettingsElement';
 
-import { IKeys } from 'entities/';
+import { IKeys } from 'types/';
 import {
   selectSettings,
   ISettings,
