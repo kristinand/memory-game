@@ -4,14 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import Login from 'assets/icons/right.svg';
 import Logout from 'assets/icons/left.svg';
 import Layout from 'components/Layout';
-import MenuButton from 'components/MenuButton';
+import MenuLink from 'components/MenuLink';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
 import { usePlayerData } from 'utils/hooks';
 import { removeCookie, setCookie } from 'utils/functions';
 import { login, logout, selectPlayerName } from 'store/auth/slice';
-import { startGame } from 'store/game/slice';
 import { setDefaultSettings } from 'store/settings/slice';
 import classes from './classes.module.scss';
 
@@ -20,17 +19,12 @@ const Menu: React.FC = () => {
   const storedPlayer = useSelector(selectPlayerName);
   const [helperText, setHelperText] = useState('');
   const [player, setPlayer] = useState(storedPlayer);
-  const { playerData, deletePlayerData } = usePlayerData();
+  const { playerData } = usePlayerData();
 
   const onInputValueChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
     if (!storedPlayer) {
       setPlayer((event.target as HTMLInputElement).value.trim());
     }
-  };
-
-  const onStartGame = () => {
-    deletePlayerData('game');
-    dispatch(startGame());
   };
 
   const onLogin = () => {
@@ -87,12 +81,12 @@ const Menu: React.FC = () => {
 
       <div className={classes.separator}>♥ ☀ ♦</div>
 
-      <div className={classes.buttonGroup}>
-        <MenuButton onClick={onStartGame} disabled={!storedPlayer} path="/game" title="New Game" />
-        <MenuButton path="/game" disabled={!storedPlayer || !playerData?.game} title="Continue" />
-        <MenuButton path="/rating" title="Rating" />
-        <MenuButton disabled={!storedPlayer} path={!storedPlayer ? '' : '/settings'} title="Settings" />
-        <MenuButton path="/about" title="About" />
+      <div className={classes.menu}>
+        <MenuLink to="/game" state={{ isNew: true }} disabled={!storedPlayer} title="New Game" />
+        <MenuLink to="/game" state={{ isNew: false }} disabled={!storedPlayer || !playerData?.game} title="Continue" />
+        <MenuLink to="/rating" title="Rating" />
+        <MenuLink to="/settings" disabled={!storedPlayer} title="Settings" />
+        <MenuLink to="/about" title="About" />
       </div>
     </Layout>
   );

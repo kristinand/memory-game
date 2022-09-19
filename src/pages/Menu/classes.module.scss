@@ -22,12 +22,13 @@
   margin-bottom: 42px;
 }
 
-.buttonGroup {
+.menu {
   display: flex;
   width: 300px;
   flex-direction: column;
   align-items: center;
   font-weight: normal;
+  color: $textLight;
 
   & > *:not(:last-child) {
     margin-bottom: 1em;

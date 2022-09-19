@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 import { ECardStatus, ICard } from 'types/';
 import { listToArray } from 'utils/functions';
@@ -16,11 +17,12 @@ import { useAutoplay } from './useAutoplay';
 import classes from './classes.module.scss';
 
 const Game: React.FC = () => {
+  const { state } = useLocation() as { state: { isNew: boolean } };
   const dispatch = useDispatch();
   const { cards, level, isAutoplay, isGamePaused, score } = useSelector(selectGameData);
   const { musicVolume, soundVolume } = useSelector(selectSettings);
   const [focusRef, setFocusRef] = useState<HTMLDivElement>();
-  const { deletePlayerData } = usePlayerData();
+  const { deletePlayerData, playerData } = usePlayerData();
   const { onSelectCard } = usePlay();
   const { start: startAutoplay, stop: stopAutoplay } = useAutoplay();
   const sound = useAudio('sound', { volume: soundVolume });
@@ -30,14 +32,12 @@ const Game: React.FC = () => {
     music.volume = musicVolume;
   }, [musicVolume, music]);
 
-  // TODO:
-  // useEffect(() => {
-  //   if (!cards.length) {
-  //     console.log(cards.length);
-  //     deletePlayerData('game');
-  //     dispatch(startGame());
-  //   }
-  // }, [cards.length, deletePlayerData, dispatch]);
+  useEffect(() => {
+    if (state.isNew && playerData.game && !score) {
+      deletePlayerData('game');
+      dispatch(startGame());
+    }
+  }, [deletePlayerData, dispatch, state.isNew, playerData.game, score]);
 
   const onCardSelectHandler = (selectedCard: ICard) => {
     focusRef.focus();
