@@ -52,7 +52,7 @@ const Game: React.FC = () => {
   return (
     <>
       <GameControls getFocusRef={setFocusRef} />
-      <Layout fullWidth noBottomPadding>
+      <Layout fullWidth noBottomPadding showFooter={false}>
         <div className={classes.game}>
           {listToArray(cards, 4).map((cardsRow: ICard[]) => (
             <div key={cardsRow[0].key}>

@@ -7,7 +7,6 @@ import Layout from 'components/Layout';
 import MenuButton from 'components/MenuButton';
 import Button from 'components/Button';
 import Input from 'components/Input';
-import Footer from 'components/Footer';
 
 import { usePlayerData } from 'utils/hooks';
 import { removeCookie, setCookie } from 'utils/functions';
@@ -58,48 +57,44 @@ const Menu: React.FC = () => {
   };
 
   return (
-    <>
-      <Layout centered>
-        <div className={classes.loginContainer}>
-          {storedPlayer ? (
-            <div className={classes.playerName}>Hello, {storedPlayer}!</div>
-          ) : (
-            <Input
-              onChange={onInputValueChangeHandler}
-              onKeyPress={(event) => {
-                if (event.key === 'Enter') onLogin();
-              }}
-              withHelperText
-              helperText={helperText}
-              placeholder="Your name"
-              value={player}
-              autoFocus
-              type="text"
-              className={classes.input}
-            />
-          )}
-
-          <Button
-            className={classes.loginButton}
-            icon={storedPlayer ? <Logout /> : <Login />}
-            onClick={storedPlayer ? onLogout : onLogin}
-            title={storedPlayer ? 'Logout' : 'Login'}
+    <Layout centered>
+      <div className={classes.loginContainer}>
+        {storedPlayer ? (
+          <div className={classes.playerName}>Hello, {storedPlayer}!</div>
+        ) : (
+          <Input
+            onChange={onInputValueChangeHandler}
+            onKeyPress={(event) => {
+              if (event.key === 'Enter') onLogin();
+            }}
+            withHelperText
+            helperText={helperText}
+            placeholder="Your name"
+            value={player}
+            autoFocus
+            type="text"
+            className={classes.input}
           />
-        </div>
+        )}
 
-        <div className={classes.separator}>♥ ☀ ♦</div>
+        <Button
+          className={classes.loginButton}
+          icon={storedPlayer ? <Logout /> : <Login />}
+          onClick={storedPlayer ? onLogout : onLogin}
+          title={storedPlayer ? 'Logout' : 'Login'}
+        />
+      </div>
 
-        <div className={classes.buttonGroup}>
-          <MenuButton onClick={onStartGame} disabled={!storedPlayer} path="/game" title="New Game" />
-          <MenuButton path="/game" disabled={!storedPlayer || !playerData?.game} title="Continue" />
-          <MenuButton path="/rating" title="Rating" />
-          <MenuButton disabled={!storedPlayer} path={!storedPlayer ? '' : '/settings'} title="Settings" />
-          <MenuButton path="/about" title="About" />
-        </div>
-      </Layout>
+      <div className={classes.separator}>♥ ☀ ♦</div>
 
-      <Footer />
-    </>
+      <div className={classes.buttonGroup}>
+        <MenuButton onClick={onStartGame} disabled={!storedPlayer} path="/game" title="New Game" />
+        <MenuButton path="/game" disabled={!storedPlayer || !playerData?.game} title="Continue" />
+        <MenuButton path="/rating" title="Rating" />
+        <MenuButton disabled={!storedPlayer} path={!storedPlayer ? '' : '/settings'} title="Settings" />
+        <MenuButton path="/about" title="About" />
+      </div>
+    </Layout>
   );
 };
 
