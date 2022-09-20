@@ -3,8 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import Reset from 'assets/icons/reset.svg';
 import Layout from 'components/Layout';
-import Header from 'components/Header';
-import Footer from 'components/Footer';
 import Button from 'components/Button';
 import SettingsElement from 'components/SettingsElement';
 
@@ -45,7 +43,7 @@ const Settings: React.FC = () => {
 
   const onVolumeChangeHandler = (audio: string, volume: number) => {
     if (volume >= 0 && volume <= 1) {
-      sound.volume =volume;
+      sound.volume = volume;
       sound.replay();
 
       dispatch(changeVolume({ audio, volume }));
@@ -85,58 +83,54 @@ const Settings: React.FC = () => {
   };
 
   return (
-    <>
-      <Header title="Game Settings" />
-      <Layout>
-        <div className={classes.table}>
-          <SettingsElement
-            title="Music Volume"
-            onChange={(event) => onVolumeChangeHandler('music', (event.target as HTMLInputElement).valueAsNumber)}
-            val={musicVolume}
-          />
-          <SettingsElement
-            title="Sounds Volume"
-            onChange={(event) => onVolumeChangeHandler('sound', (event.target as HTMLInputElement).valueAsNumber)}
-            val={soundVolume}
-          />
-          <SettingsElement
-            title="Pause Hotkey"
-            onKeyPress={(event) => onHotkeyChangeHandler('pause', event)}
-            val={keys.pause}
-          />
-          <SettingsElement
-            title="Reload Game Hotkey"
-            onKeyPress={(event) => onHotkeyChangeHandler('reload', event)}
-            val={keys.reload}
-          />
-          <SettingsElement
-            title="Toggle Fullscreen Hotkey"
-            onKeyPress={(event) => onHotkeyChangeHandler('fullscreen', event)}
-            val={keys.fullscreen}
-          />
-          <SettingsElement
-            title="Music Volume Hotkey"
-            onKeyPress={(event) => onHotkeyChangeHandler('music', event)}
-            val={keys.music}
-          />
-          <SettingsElement
-            title="Sounds Volume Hotkey"
-            onKeyPress={(event) => onHotkeyChangeHandler('sounds', event)}
-            val={keys.sounds}
-          />
-          <SettingsElement title="Show Card Pattern" val={isPatternShown} onChange={onToggleCardPatternHandler} />
-          <SettingsElement title="System Theme" val={isSystemTheme} onChange={onApplySystemThemeHandler} />
-          {!isSystemTheme && (
-            <SettingsElement title="Dark Theme" val={theme === ETheme.dark} onChange={onThemeChangeHandler} />
-          )}
-        </div>
+    <Layout title="Game Settings">
+      <div className={classes.table}>
+        <SettingsElement
+          title="Music Volume"
+          onChange={(event) => onVolumeChangeHandler('music', (event.target as HTMLInputElement).valueAsNumber)}
+          val={musicVolume}
+        />
+        <SettingsElement
+          title="Sounds Volume"
+          onChange={(event) => onVolumeChangeHandler('sound', (event.target as HTMLInputElement).valueAsNumber)}
+          val={soundVolume}
+        />
+        <SettingsElement
+          title="Pause Hotkey"
+          onKeyPress={(event) => onHotkeyChangeHandler('pause', event)}
+          val={keys.pause}
+        />
+        <SettingsElement
+          title="Reload Game Hotkey"
+          onKeyPress={(event) => onHotkeyChangeHandler('reload', event)}
+          val={keys.reload}
+        />
+        <SettingsElement
+          title="Toggle Fullscreen Hotkey"
+          onKeyPress={(event) => onHotkeyChangeHandler('fullscreen', event)}
+          val={keys.fullscreen}
+        />
+        <SettingsElement
+          title="Music Volume Hotkey"
+          onKeyPress={(event) => onHotkeyChangeHandler('music', event)}
+          val={keys.music}
+        />
+        <SettingsElement
+          title="Sounds Volume Hotkey"
+          onKeyPress={(event) => onHotkeyChangeHandler('sounds', event)}
+          val={keys.sounds}
+        />
+        <SettingsElement title="Show Card Pattern" val={isPatternShown} onChange={onToggleCardPatternHandler} />
+        <SettingsElement title="System Theme" val={isSystemTheme} onChange={onApplySystemThemeHandler} />
+        {!isSystemTheme && (
+          <SettingsElement title="Dark Theme" val={theme === ETheme.dark} onChange={onThemeChangeHandler} />
+        )}
+      </div>
 
-        <Button className={classes.button} onClick={setDefaultSettingsHandler} icon={<Reset />}>
-          Set Default
-        </Button>
-      </Layout>
-      <Footer />
-    </>
+      <Button className={classes.button} onClick={setDefaultSettingsHandler} icon={<Reset />}>
+        Set Default
+      </Button>
+    </Layout>
   );
 };
 

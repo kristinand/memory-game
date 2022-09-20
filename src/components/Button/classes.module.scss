@@ -12,7 +12,7 @@
   transition: all 0.3s ease-in-out;
 
   &:hover {
-    background-color: $danger;
+    background-color: $primary;
   }
 
   &.light {
@@ -28,7 +28,7 @@
   }
 
   &:active {
-    background-color: rgba($danger, 0.7);
+    background-color: rgba($primary, 0.7);
   }
 
   & > svg {

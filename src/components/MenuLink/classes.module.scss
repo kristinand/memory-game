@@ -2,16 +2,14 @@
 @import 'styles';
 
 .link {
-  width: 100%;
-  color: inherit;
-}
-
-.button {
   margin: 0.3em 0;
   padding: 1em 2em;
   width: 100%;
   position: relative;
   display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
   vertical-align: middle;
   border-radius: 0.3em;
   transform-style: preserve-3d;
@@ -31,7 +29,7 @@
     transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
   }
 
-  &:hover {
+  &:hover:not(.disabled) {
     transform: translate(0, 0.25em);
 
     &::before {
@@ -65,7 +63,7 @@
     }
   }
 
-  &:active {
+  &:active:not(.disabled) {
     transform: translate(0em, 0.75em);
 
     &::before {
@@ -74,7 +72,8 @@
     }
   }
 
-  &:disabled {
+  &.disabled {
+    color: rgba(0, 0, 0, 0.5);
     cursor: not-allowed;
   }
 }

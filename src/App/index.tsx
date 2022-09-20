@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { HandleResponseErrors } from 'api/HandleResponseErrors';
@@ -29,18 +29,24 @@ const App: React.FC = () => {
     }
   }, [dispatch, playerData]);
 
+  const renderPrivateRoutes = () => (
+    <>
+      <Route path="/game" element={<Game />} />
+      <Route path="/settings" element={<Settings />} />
+    </>
+  );
+
   return (
     <div className={classNames(classes.App, classes[theme])}>
       <BrowserRouter>
         <HandleResponseErrors />
-        <Switch>
-          <Route path="/about" component={About} />
-          {player && <Route path="/game" component={Game} />}
-          <Route path="/rating" component={Rating} />
-          {player && <Route path="/settings" component={Settings} />}
-          <Route path="/" component={Menu} />
-          <Redirect to="/" />
-        </Switch>
+        <Routes>
+          {player && renderPrivateRoutes()}
+          <Route path="/about" element={<About />} />
+          <Route path="/rating" element={<Rating />} />
+          <Route path="/" element={<Menu />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </BrowserRouter>
     </div>
   );
