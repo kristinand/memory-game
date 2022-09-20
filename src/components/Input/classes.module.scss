@@ -17,7 +17,6 @@
   font-weight: inherit;
   border-radius: 3px;
   border: none;
-  outline: none;
 
   &.light {
     background-color: $inputLight;
@@ -38,6 +37,10 @@
   margin-bottom: 0;
   opacity: 0;
   cursor: pointer;
+
+  &:focus-visible~.checkmark {
+    outline: -webkit-focus-ring-color auto 1px;
+  }
 }
 
 .checkmark {
@@ -48,6 +51,7 @@
   width: 70px;
   color: $textLight;
   text-align: center;
+  pointer-events: none;
 }
 
 .helperText {

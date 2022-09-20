@@ -17,9 +17,6 @@ const Input: React.FC<IProps> = ({ withHelperText = false, helperText, Conatiner
 
   return (
     <div className={classNames(classes.inputContainer, ConatinerClassName, { [classes.withHT]: withHelperText })}>
-      {other.type === 'checkbox' && (
-        <span className={classNames(classes.checkmark, classes[theme])}>{other.checked ? 'ON' : 'OFF'}</span>
-      )}
       <input
         className={classNames(className, classes.input, classes[theme], {
           [classes.danger]: helperText,
@@ -27,6 +24,9 @@ const Input: React.FC<IProps> = ({ withHelperText = false, helperText, Conatiner
         autoComplete="off"
         {...other}
       />
+      {other.type === 'checkbox' && (
+        <span className={classNames(classes.checkmark, classes[theme])}>{other.checked ? 'ON' : 'OFF'}</span>
+      )}
       {helperText && <p className={classes.helperText}>{helperText}</p>}
     </div>
   );
