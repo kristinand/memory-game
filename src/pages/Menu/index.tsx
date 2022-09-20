@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
+import { ValidationError } from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
-
 import Login from 'assets/icons/right.svg';
 import Logout from 'assets/icons/left.svg';
 import Layout from 'components/Layout';
 import MenuLink from 'components/MenuLink';
 import Button from 'components/Button';
 import Input from 'components/Input';
-
 import { usePlayerData } from 'utils/hooks';
 import { removeCookie, setCookie } from 'utils/functions';
 import { login, logout, selectPlayerName } from 'store/auth/slice';
 import { setDefaultSettings } from 'store/settings/slice';
+import { validationSchema } from './validation';
 import classes from './classes.module.scss';
 
 const Menu: React.FC = () => {
@@ -27,18 +27,18 @@ const Menu: React.FC = () => {
     }
   };
 
-  const onLogin = () => {
-    const playerRegEx = new RegExp(/^[a-zA-Z]{3,10}$/);
-    if (!player.length) {
-      setHelperText('Please, enter your name');
-    } else if (player.length < 3) {
-      setHelperText('Your name should contain at least 3 characters');
-    } else if (playerRegEx.exec(player) === null) {
-      setHelperText('Only latin characters allowed');
-    } else {
-      setCookie('player', player, 1);
+  const onLogin = async () => {
+    try {
+      await validationSchema.validate(player);
+      setCookie('player', player);
       dispatch(login(player));
       setHelperText('');
+    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (err?.name === 'ValidationError') {
+        const { message } = err as ValidationError;
+        setHelperText(message);
+      }
     }
   };
 
@@ -58,8 +58,8 @@ const Menu: React.FC = () => {
         ) : (
           <Input
             onChange={onInputValueChangeHandler}
-            onKeyPress={(event) => {
-              if (event.key === 'Enter') onLogin();
+            onKeyPress={async (event) => {
+              if (event.key === 'Enter') await onLogin();
             }}
             withHelperText
             helperText={helperText}
