@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { IErrorResponse, ServerResponse, ServerError } from './types';
 import instance from './instance';
 
@@ -12,8 +13,13 @@ export const HandleResponseErrors: React.FC = () => {
       (res: ServerResponse<IErrorResponse>) => res,
       (err: ServerError<IErrorResponse>) => {
         const message = err.response?.data?.message || err.message || 'Something went wrong';
-        // TODO: заменить
-        alert(message);
+        toast.error(message, {
+          theme: 'colored',
+          position: 'bottom-right',
+          hideProgressBar: true,
+          closeOnClick: true,
+          draggable: false,
+        });
       },
     );
 
@@ -24,5 +30,5 @@ export const HandleResponseErrors: React.FC = () => {
     };
   }, [dispatch]);
 
-  return <></>;
+  return <ToastContainer limit={1} style={{ marginBottom: '50px' }} />;
 };

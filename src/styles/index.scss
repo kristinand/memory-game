@@ -18,3 +18,7 @@ button {
   border: none;
   cursor: pointer;
 }
+
+:root {
+  --toastify-color-error: #{$primary} !important;
+}

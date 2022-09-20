@@ -29,12 +29,18 @@ export const slice = createSlice({
       state.allRatings = payload.content;
       state.isLoading = false;
     });
+    builder.addCase(getAllRatings.rejected, (state) => {
+      state.isLoading = false;
+    });
 
     builder.addCase(getRating.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(getRating.fulfilled, (state, { payload }) => {
       state.playerRating = payload.content;
+      state.isLoading = false;
+    });
+    builder.addCase(getRating.rejected, (state) => {
       state.isLoading = false;
     });
   },

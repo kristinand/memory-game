@@ -27,7 +27,7 @@
   }
 
   &.danger::placeholder {
-    color: $danger;
+    color: $primary;
   }
 }
 
@@ -57,5 +57,5 @@
 .helperText {
   margin: 0;
   padding: 0.3em;
-  color: $danger;
+  color: $primary;
 }
