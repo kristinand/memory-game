@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { HandleResponseErrors } from 'api/HandleResponseErrors';
@@ -45,6 +45,7 @@ const App: React.FC = () => {
           <Route path="/about" element={<About />} />
           <Route path="/rating" element={<Rating />} />
           <Route path="/" element={<Menu />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </div>
