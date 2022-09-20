@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Refresh from 'assets/icons/refresh.svg';
 import Pause from 'assets/icons/pause.svg';
@@ -26,17 +26,18 @@ import { formatTime } from 'utils/functions';
 import classes from './classes.module.scss';
 
 interface IProps {
+  isContinue?: boolean;
   getFocusRef: (ref: HTMLDivElement) => void;
 }
 
-const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
+const GameControls: React.FC<IProps> = ({ getFocusRef, isContinue }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const focusRef = useRef<HTMLDivElement>();
 
   const { cards, score, level, isAutoplay, isGamePaused } = useSelector(selectGameData);
   const { soundVolume, musicVolume, keys } = useSelector(selectSettings);
-  const { timer, isPaused, handleStart, handlePause, handleReset } = useTimer({ initTimer: score });
+  const { timer, isPaused, handleStart, handlePause, handleReset } = useTimer({ initTimer: isContinue ? score : 0 });
   const { updatePlayerData } = usePlayerData();
   const clickSound = useAudio('sound', { volume: musicVolume });
 
@@ -49,7 +50,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   useEffect(() => {
     let timeoutTimer;
 
-    if (!isAutoplay && cards.every(card => card.status === ECardStatus.Guessed)) {
+    if (!isAutoplay && cards.every((card) => card.status === ECardStatus.Guessed)) {
       if (level < LAST_LEVEL) {
         timeoutTimer = setTimeout(() => {
           dispatch(loadNextLevel());
@@ -74,7 +75,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
   }, [handlePause, handleStart, isGamePaused]);
 
   useEffect(() => {
-    if (timer && !isAutoplay) {
+    if (timer && !isAutoplay && !isGamePaused) {
       updatePlayerData({
         game: {
           cards,
@@ -84,7 +85,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef }) => {
       });
       dispatch(saveCurrentScore(timer));
     }
-  }, [cards, dispatch, isAutoplay, level, timer, updatePlayerData]);
+  }, [cards, dispatch, isAutoplay, isGamePaused, level, timer, updatePlayerData]);
 
   const onChangeAudioVolumeHandler = (audio: 'sound' | 'music') => {
     let volume = audio === 'sound' ? soundVolume : musicVolume;

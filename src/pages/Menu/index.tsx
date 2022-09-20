@@ -82,8 +82,8 @@ const Menu: React.FC = () => {
       <div className={classes.separator}>♥ ☀ ♦</div>
 
       <div className={classes.menu}>
-        <MenuLink to="/game" state={{ isNew: true }} disabled={!storedPlayer} title="New Game" />
-        <MenuLink to="/game" state={{ isNew: false }} disabled={!storedPlayer || !playerData?.game} title="Continue" />
+        <MenuLink to="/game" state={{ isContinue: false }} disabled={!storedPlayer} title="New Game" />
+        <MenuLink to="/game" state={{ isContinue: true }} disabled={!playerData?.game} title="Continue" />
         <MenuLink to="/rating" title="Rating" />
         <MenuLink to="/settings" disabled={!storedPlayer} title="Settings" />
         <MenuLink to="/about" title="About" />
