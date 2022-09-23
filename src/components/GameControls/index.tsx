@@ -2,18 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import Refresh from 'assets/icons/refresh.svg';
-import Pause from 'assets/icons/pause.svg';
-import Play from 'assets/icons/play.svg';
-import Back from 'assets/icons/left.svg';
-import Screen from 'assets/icons/screen.svg';
-import Sound0 from 'assets/icons/sound0.svg';
-import Sound1 from 'assets/icons/sound1.svg';
-import Sound2 from 'assets/icons/sound2.svg';
-import Music0 from 'assets/icons/music0.svg';
-import Music1 from 'assets/icons/music1.svg';
-import Music2 from 'assets/icons/music2.svg';
-
 import Button from 'components/Button';
 
 import { LAST_LEVEL } from 'utils/constants';
@@ -23,6 +11,19 @@ import { saveScore } from 'store/game/thunks/saveScore';
 import { selectSettings, changeVolume } from 'store/settings/slice';
 import { useTimer, usePlayerData, useAudio } from 'utils/hooks';
 import { formatTime } from 'utils/functions';
+
+import Refresh from '../../assets/icons/refresh.svg';
+import Pause from '../../assets/icons/pause.svg';
+import Play from '../../assets/icons/play.svg';
+import Back from '../../assets/icons/left.svg';
+import Screen from '../../assets/icons/screen.svg';
+import Sound0 from '../../assets/icons/sound0.svg';
+import Sound1 from '../../assets/icons/sound1.svg';
+import Sound2 from '../../assets/icons/sound2.svg';
+import Music0 from '../../assets/icons/music0.svg';
+import Music1 from '../../assets/icons/music1.svg';
+import Music2 from '../../assets/icons/music2.svg';
+
 import classes from './classes.module.scss';
 
 interface IProps {

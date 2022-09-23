@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 
-import soundFile from 'assets/menu-click.opus';
 import { MUSIC_URL } from 'utils/constants';
+import soundFile from '../../assets/menu-click.opus';
 
 type IUseAudio = (
   type: 'music' | 'sound',

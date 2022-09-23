@@ -1,3 +1,5 @@
 export const removeCookie = (name: string, value: string): void => {
-  document.cookie = `${name}=${value};max-age=0`;
+  if (typeof window !== 'undefined') {
+    document.cookie = `${name}=${value};max-age=0`;
+  }
 };

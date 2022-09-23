@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { IGetRatingsResponse } from 'api/types';
-import Back from 'assets/icons/left.svg';
-import Forth from 'assets/icons/right.svg';
 import Button from 'components/Button';
 import { formatTime } from 'utils/functions';
+import Forth from '../../assets/icons/right.svg';
+import Back from '../../assets/icons/left.svg';
 import classes from './classes.module.scss';
 
 interface IProps {

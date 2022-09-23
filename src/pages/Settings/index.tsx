@@ -1,11 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
-import Reset from 'assets/icons/reset.svg';
 import Layout from 'components/Layout';
 import Button from 'components/Button';
 import SettingsElement from 'components/SettingsElement';
-
 import { IKeys } from 'types/';
 import {
   selectSettings,
@@ -19,6 +16,7 @@ import {
   togglePattern,
 } from 'store/settings/slice';
 import { useAudio, usePlayerData } from 'utils/hooks';
+import Reset from '../../assets/icons/reset.svg';
 import classes from './classes.module.scss';
 
 const Settings: React.FC = () => {

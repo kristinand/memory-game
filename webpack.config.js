@@ -1,14 +1,14 @@
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
-  entry: ['@babel/polyfill', './index.tsx'],
+  mode: isProd ? 'production' : 'development',
+  entry: ['@babel/polyfill', isProd ? './index.prod.tsx' : './index.dev.tsx'],
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: '[name].[hash].js',
@@ -47,7 +47,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
     }),
-    new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [
         { from: path.resolve(__dirname, 'src/assets/favicon.png'), to: path.resolve(__dirname, 'public/assets') },
@@ -60,6 +59,9 @@ module.exports = {
     historyApiFallback: true,
     contentBase: './',
     hot: true,
+  },
+  externals: {
+    react: 'react',
   },
   devtool: 'eval-cheap-module-source-map',
   module: {
@@ -84,10 +86,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader',
-        ],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|jpg|gif|opus)$/,

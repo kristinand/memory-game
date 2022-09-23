@@ -14,7 +14,7 @@ const reducers = combineReducers({
   ratings: ratingsReducer,
 });
 
-const rootReducer: Reducer = (state: RootState, action: AnyAction) => reducers(state, action);
+export const rootReducer: Reducer = (state: RootState, action: AnyAction) => reducers(state, action);
 
 export const store = configureStore({
   reducer: rootReducer,

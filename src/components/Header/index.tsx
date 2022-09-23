@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Back from 'assets/icons/left.svg';
+import Back from '../../assets/icons/left.svg';
 import Button from '../Button';
 import classes from './classes.module.scss';
 
