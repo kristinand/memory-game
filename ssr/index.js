@@ -1,6 +1,10 @@
-require('ignore-styles');
+import express from 'express';
+import path from 'path';
+import babelRegister from '@babel/register';
+import 'ignore-styles';
+import renderer from './renderReact';
 
-require('@babel/register')({
+babelRegister({
   ignore: [/(node_module)/],
   presets: [
     '@babel/preset-typescript',
@@ -28,4 +32,11 @@ require('@babel/register')({
   ],
 });
 
-require('./renderReact.js');
+const app = express();
+app.get(/\.(js|css|map|ico|png|opus|gif)$/, express.static(path.resolve('public')));
+
+app.use('*', renderer);
+
+app.listen('9000', () => {
+  console.log('Express server started at <http://localhost:9000>');
+});

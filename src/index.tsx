@@ -7,7 +7,7 @@ import { createStore } from 'redux';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
-import { store, rootReducer } from './store';
+import { rootReducer } from './store';
 
 // Create Redux store with state injected by the server
 // @ts-ignore
