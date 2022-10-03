@@ -7,13 +7,6 @@ const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
-  mode: isProd ? 'production' : 'development',
-  entry: ['@babel/polyfill', isProd ? './index.prod.tsx' : './index.dev.tsx'],
-  output: {
-    path: path.resolve(__dirname, 'public'),
-    filename: '[name].[hash].js',
-    publicPath: '',
-  },
   optimization: {
     splitChunks: {
       cacheGroups: {
@@ -53,17 +46,6 @@ module.exports = {
       ],
     }),
   ],
-  devServer: {
-    port: 3000,
-    open: false,
-    historyApiFallback: true,
-    contentBase: './',
-    hot: true,
-  },
-  externals: {
-    react: 'react',
-  },
-  devtool: 'eval-cheap-module-source-map',
   module: {
     rules: [
       {

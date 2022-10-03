@@ -4,13 +4,13 @@
   "description": "Memo — Memory Card Game",
   "main": "index.tsx",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "ssr": "node server/ssr",
-    "start": "node server/server",
-    "server": "nodemon server/server",
+    "dev": "nodemon --watch build --exec \"node build/bundle.js\"",
+    "dev:build-server": "webpack --config webpack.server.js --watch",
+    "dev:build-client": "webpack --config webpack.client.js --watch",
+    "start": "node server/index",
+    "server": "nodemon server/index",
     "client": "webpack serve --mode development",
     "build": "webpack --mode production",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build",
     "prepare": "husky install",
     "precommit": "lint-staged",
     "lint": "eslint --debug src/",
@@ -67,7 +67,9 @@
     "typescript": "^4.4.3",
     "webpack": "^5.57.1",
     "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.8.0",
+    "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
