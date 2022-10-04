@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import babelRegister from '@babel/register';
+import cookieParser from 'cookie-parser';
 import 'ignore-styles';
 import renderer from './renderReact';
 
@@ -33,6 +34,7 @@ babelRegister({
 });
 
 const app = express();
+app.use(cookieParser())
 app.get(/\.(js|css|map|ico|png|opus|gif)$/, express.static(path.resolve('public')));
 
 app.use('*', renderer);

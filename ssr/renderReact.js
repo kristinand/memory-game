@@ -9,7 +9,10 @@ import { rootReducer } from '../src/store';
 import { template } from './htmlTemplate';
 
 const renderer = (req, res) => {
-  const store = configureStore({ reducer: rootReducer });
+  const store = configureStore({
+    reducer: rootReducer,
+    preloadedState: { auth: { player: req.cookies?.player || '' } },
+  });
   const preloadedState = store.getState();
 
   const appHTML = ReactDOMServer.renderToString(
