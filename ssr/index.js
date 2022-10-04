@@ -1,7 +1,9 @@
 import express from 'express';
 import path from 'path';
+import dotenv from 'dotenv';
 import babelRegister from '@babel/register';
 import cookieParser from 'cookie-parser';
+import proxy from 'express-http-proxy';
 import 'ignore-styles';
 import renderer from './renderReact';
 
@@ -33,8 +35,16 @@ babelRegister({
   ],
 });
 
+dotenv.config({ path: path.resolve('.env') });
+
 const app = express();
-app.use(cookieParser())
+if (process.env.NODE_ENV === 'development') {
+  app.use(
+    '/api',
+    proxy(`http://localhost:${process.env.PORT}}/api`),
+  );
+}
+app.use(cookieParser());
 app.get(/\.(js|css|map|ico|png|opus|gif)$/, express.static(path.resolve('public')));
 
 app.use('*', renderer);

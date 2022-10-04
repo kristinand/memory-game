@@ -13,7 +13,7 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from this IP',
 });
-app.use('/api', limiter);
+app.use('/', limiter);
 
 // Bode parser: reading data from body into req.body
 app.use(
@@ -29,7 +29,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/rating', scoreRouter);
+app.use('/rating', scoreRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.resolve('public')));
