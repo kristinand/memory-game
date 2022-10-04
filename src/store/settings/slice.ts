@@ -28,7 +28,9 @@ interface IChangeVolume {
 }
 
 const systemTheme =
-  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? ETheme.dark : ETheme.light;
+  typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? ETheme.dark
+    : ETheme.light;
 
 const initialState: ISettings = {
   isSystemTheme: true,

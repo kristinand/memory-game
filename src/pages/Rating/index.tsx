@@ -19,7 +19,9 @@ const Rating: React.FC = () => {
   const isLoading = useSelector(selectIsLoading);
 
   useEffect(() => {
-    void dispatch(getRating(player));
+    if (player) {
+      void dispatch(getRating(player));
+    }
   }, [dispatch, player]);
 
   useEffect(() => {

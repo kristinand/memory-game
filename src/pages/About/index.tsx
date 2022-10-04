@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 
-import AboutGif from 'assets/about.gif';
 import Layout from 'components/Layout';
+import AboutGif from '../../assets/about.gif';
 import classes from './classes.module.scss';
 
 const About: React.FC = () => (

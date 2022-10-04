@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { ValidationError } from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
-import Login from 'assets/icons/right.svg';
-import Logout from 'assets/icons/left.svg';
 import Layout from 'components/Layout';
 import MenuLink from 'components/MenuLink';
 import Button from 'components/Button';
@@ -11,6 +9,8 @@ import { usePlayerData } from 'utils/hooks';
 import { removeCookie, setCookie } from 'utils/functions';
 import { login, logout, selectPlayerName } from 'store/auth/slice';
 import { setDefaultSettings } from 'store/settings/slice';
+import Logout from '../../assets/icons/left.svg';
+import Login from '../../assets/icons/right.svg';
 import { validationSchema } from './validation';
 import classes from './classes.module.scss';
 
