@@ -35,6 +35,7 @@
     "react/jsx-props-no-spreading": "off",
     "@typescript-eslint/no-use-before-define": "warn",
     "import/no-cycle": "warn",
+    "import/extensions": "off",
     "no-param-reassign": "warn",
     "react-hooks/exhaustive-deps": "error"
   },

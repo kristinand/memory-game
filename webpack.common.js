@@ -1,24 +1,10 @@
 const path = require('path');
-const HTMLWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-
-const isProd = process.env.NODE_ENV === 'production';
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          name: 'vendors',
-          test: /node_modules/,
-          chunks: 'all',
-          enforce: true,
-        },
-      },
-    },
-  },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],
     alias: {
@@ -33,16 +19,11 @@ module.exports = {
     },
   },
   plugins: [
-    new HTMLWebpackPlugin({
-      template: 'index.html',
-      collapseWhitespace: isProd,
-    }),
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-    }),
+    new MiniCssExtractPlugin(),
+    new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [
-        { from: path.resolve(__dirname, 'src/assets/favicon.png'), to: path.resolve(__dirname, 'public/assets') },
+        { from: path.resolve(__dirname, 'src/assets/favicon.png'), to: path.resolve(__dirname, 'public') },
       ],
     }),
   ],
@@ -56,11 +37,6 @@ module.exports = {
           'css-modules-typescript-loader',
           {
             loader: 'css-loader',
-            options: {
-              modules: {
-                localIdentName: '[name]__[local]--[hash:base64:5]',
-              },
-            },
           },
           'postcss-loader',
           'sass-loader',

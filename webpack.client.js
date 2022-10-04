@@ -6,8 +6,7 @@ const config = {
   entry: ['@babel/polyfill', './index.tsx'],
   output: {
     path: path.resolve(__dirname, 'public'),
-    filename: '[name].[hash].js',
-    publicPath: '',
+    filename: 'bundle.js',
   },
   devServer: {
     port: 3000,
