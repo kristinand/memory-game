@@ -1,10 +1,11 @@
 import { useEffect, useMemo } from 'react';
 
-import soundFile from 'assets/menu-click.opus';
+import cardClick from 'assets/card-click.opus';
+import menuClick from 'assets/menu-click.opus';
 import { MUSIC_URL } from 'utils/constants';
 
 type IUseAudio = (
-  type: 'music' | 'sound',
+  type: 'music' | 'sound' | 'game-sound',
   config: Partial<HTMLAudioElement>,
   isPlay?: boolean,
 ) => HTMLAudioElement & {
@@ -12,7 +13,16 @@ type IUseAudio = (
 };
 
 export const useAudio: IUseAudio = (type, { volume, loop }, isPlay = false) => {
-  const audio = useMemo(() => new Audio(type === 'music' ? MUSIC_URL : soundFile), [type]);
+  const audio = useMemo(() => {
+    switch (type) {
+      case 'music':
+        return new Audio(MUSIC_URL);
+      case 'game-sound':
+        return new Audio(cardClick);
+      default:
+        return new Audio(menuClick);
+    }
+  }, [type]);
   audio.volume = volume;
   audio.loop = loop;
 

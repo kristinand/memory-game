@@ -4,7 +4,6 @@ interface CssExports {
   'buttonGroup': string;
   'gameControls': string;
   'level': string;
-  'screen': string;
   'timer': string;
 }
 export const cssExports: CssExports;
