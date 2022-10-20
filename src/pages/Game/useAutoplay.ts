@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAutoplay, selectGameData, startGame, setIsGamePaused } from 'store/game/slice';
+import { setAutoplay, selectGameData, startGame } from 'store/game/slice';
 import { ICard, ECardStatus } from 'types/';
 import { getRandomNumber } from 'utils/functions';
 import { useTimer } from 'utils/hooks';
@@ -14,7 +14,7 @@ type IUseAutoplay = () => {
 export const useAutoplay: IUseAutoplay = () => {
   const [prevCard, setPrevCard] = useState<ICard>();
   const [nextCard, setNextCard] = useState<ICard>();
-  const { cards, isAutoplay, isGamePaused, level } = useSelector(selectGameData);
+  const { cards, isAutoplay, level } = useSelector(selectGameData);
   const { handleStart, handleReset, timer } = useTimer({ delay: 800 });
   const dispatch = useDispatch();
   const { onSelectCard } = usePlay();
@@ -26,19 +26,18 @@ export const useAutoplay: IUseAutoplay = () => {
       handleReset();
     }
     return () => handleReset();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAutoplay]);
 
   useEffect(() => {
     if (isAutoplay) {
       autoplay();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timer]);
 
   const start = () => {
     dispatch(setAutoplay(true));
-    if (isGamePaused) dispatch(setIsGamePaused(false));
   };
 
   const stop = () => {

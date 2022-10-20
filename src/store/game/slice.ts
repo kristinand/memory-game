@@ -7,7 +7,6 @@ import { RootState } from '..';
 import { saveScore } from './thunks/saveScore';
 
 export interface IGame {
-  isGamePaused: boolean;
   isAutoplay: boolean;
   level: number;
   cards: ICard[];
@@ -45,7 +44,6 @@ const createCards = (level: number): ICard[] => {
 };
 
 const getInitialState = (): IGame => ({
-  isGamePaused: true,
   isAutoplay: false,
   level: 1,
   cards: createCards(1),
@@ -66,10 +64,6 @@ export const slice = createSlice({
       const nextLevel = state.level + 1;
       state.cards = createCards(nextLevel);
       state.level = nextLevel;
-      state.isGamePaused = true;
-    },
-    setIsGamePaused(state, { payload }: { payload: boolean }) {
-      state.isGamePaused = payload;
     },
     updateCards(state, { payload }: { payload: { status: ECardStatus; indexes: number[] } }) {
       const { status, indexes } = payload;
@@ -98,7 +92,6 @@ export const {
   loadLocalGameData,
   startGame,
   loadNextLevel,
-  setIsGamePaused,
   updateCards,
   increaseCountBy1,
   saveCurrentScore,

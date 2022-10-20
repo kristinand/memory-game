@@ -18,7 +18,7 @@ import Button from 'components/Button';
 
 import { LAST_LEVEL } from 'utils/constants';
 import { ECardStatus } from 'types';
-import { selectGameData, loadNextLevel, saveCurrentScore, startGame, setIsGamePaused } from 'store/game/slice';
+import { selectGameData, loadNextLevel, saveCurrentScore, startGame } from 'store/game/slice';
 import { saveScore } from 'store/game/thunks/saveScore';
 import { selectSettings, changeVolume } from 'store/settings/slice';
 import { useTimer, usePlayerData, useAudio } from 'utils/hooks';
@@ -26,20 +26,28 @@ import { formatTime } from 'utils/functions';
 import classes from './classes.module.scss';
 
 interface IProps {
+  isGameStarted: boolean;
   isContinue?: boolean;
   getFocusRef: (ref: HTMLDivElement) => void;
 }
 
-const GameControls: React.FC<IProps> = ({ getFocusRef, isContinue }) => {
+const GameControls: React.FC<IProps> = ({ getFocusRef, isContinue, isGameStarted }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const focusRef = useRef<HTMLDivElement>();
 
-  const { cards, score, level, isAutoplay, isGamePaused } = useSelector(selectGameData);
+  const { cards, score, level, isAutoplay } = useSelector(selectGameData);
   const { soundVolume, musicVolume, keys } = useSelector(selectSettings);
   const { timer, isPaused, handleStart, handlePause, handleReset } = useTimer({ initTimer: isContinue ? score : 0 });
   const { updatePlayerData } = usePlayerData();
   const clickSound = useAudio('sound', { volume: musicVolume });
+
+  useEffect(() => {
+    if (isGameStarted) {
+      handleStart();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isGameStarted]);
 
   useEffect(() => {
     const screen = focusRef.current;
@@ -65,17 +73,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef, isContinue }) => {
   }, [isAutoplay, level, dispatch, score, navigate, cards]);
 
   useEffect(() => {
-    if (isGamePaused) {
-      handlePause();
-    } else {
-      handleStart();
-    }
-
-    return () => handlePause();
-  }, [handlePause, handleStart, isGamePaused]);
-
-  useEffect(() => {
-    if (timer && !isAutoplay && !isGamePaused) {
+    if (timer && !isAutoplay && !isPaused) {
       updatePlayerData({
         game: {
           cards,
@@ -85,7 +83,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef, isContinue }) => {
       });
       dispatch(saveCurrentScore(timer));
     }
-  }, [cards, dispatch, isAutoplay, isGamePaused, level, timer, updatePlayerData]);
+  }, [cards, dispatch, isAutoplay, isPaused, level, timer, updatePlayerData]);
 
   const onChangeAudioVolumeHandler = (audio: 'sound' | 'music') => {
     let volume = audio === 'sound' ? soundVolume : musicVolume;
@@ -108,7 +106,14 @@ const GameControls: React.FC<IProps> = ({ getFocusRef, isContinue }) => {
     }
   };
 
-  const onGamePauseHandler = () => dispatch(setIsGamePaused(!isPaused));
+  const onGamePauseHandler = () => {
+    if (isPaused) {
+      handleStart();
+    } else {
+      handlePause();
+    }
+  };
+
   const onGameReloadHandler = () => {
     handleReset();
     dispatch(startGame());

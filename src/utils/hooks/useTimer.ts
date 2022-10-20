@@ -12,7 +12,7 @@ type IUseTimer = ({ delay, initTimer }: { delay?: number; initTimer?: number }) 
 
 export const useTimer: IUseTimer = ({ delay = 1000, initTimer = 0 }) => {
   const [timer, setTimer] = useState(initTimer);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isPaused, setIsPaused] = useState(true);
   const countRef = useRef(null);
 
   const handleStart = () => {
