@@ -6,7 +6,7 @@ import { HandleResponseErrors } from 'api/HandleResponseErrors';
 import { selectPlayerName } from 'store/auth/slice';
 import { loadLocalGameData } from 'store/game/slice';
 import { selectTheme, loadLocalSettingsData } from 'store/settings/slice';
-import { usePlayerData } from 'utils/hooks';
+import { useLocalPlayerData } from 'utils/hooks';
 import Game from 'pages/Game';
 import Menu from 'pages/Menu';
 import Rating from 'pages/Rating';
@@ -19,7 +19,7 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const player = useSelector(selectPlayerName);
   const theme = useSelector(selectTheme);
-  const { playerData } = usePlayerData();
+  const { playerData } = useLocalPlayerData();
 
   useEffect(() => {
     if (playerData) {

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { ECardStatus, ICard } from 'types/';
 import { listToArray } from 'utils/functions';
-import { useAudio } from 'utils/hooks';
+import { useAudio, useLocalPlayerData } from 'utils/hooks';
 import { selectGameData } from 'store/game/slice';
 import { selectSettings } from 'store/settings/slice';
 import Layout from 'components/Layout';
@@ -19,21 +19,25 @@ const Game: React.FC = () => {
   const { onSelectCard, isGameStarted } = usePlay();
   const { start: startAutoplay, stop: stopAutoplay } = useAutoplay();
   const sound = useAudio('sound', { volume: soundVolume });
+  const { updatePlayerData } = useLocalPlayerData();
 
   const onCardSelectHandler = (selectedCard: ICard) => {
     if (selectedCard.status === ECardStatus.Closed && !isAutoplay) {
       sound.replay();
       onSelectCard(cards, selectedCard);
+
+      updatePlayerData({
+        game: {
+          cards,
+          level,
+          score,
+        },
+      });
     }
   };
 
   return (
-    <Layout
-      fullWidth
-      noBottomPadding
-      showFooter={false}
-      header={<GameControls isGameStarted={isGameStarted} />}
-    >
+    <Layout fullWidth noBottomPadding showFooter={false} header={<GameControls isGameStarted={isGameStarted} />}>
       <div className={classes.game}>
         {listToArray(cards, 4).map((cardsRow: ICard[]) => (
           <div key={cardsRow[0].key}>

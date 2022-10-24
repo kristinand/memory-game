@@ -17,12 +17,12 @@ import {
   changeVolume,
   applySystemTheme,
 } from 'store/settings/slice';
-import { useAudio, usePlayerData } from 'utils/hooks';
+import { useAudio, useLocalPlayerData } from 'utils/hooks';
 import classes from './classes.module.scss';
 
 const Settings: React.FC = () => {
   const dispatch = useDispatch();
-  const { playerData, updatePlayerData, deletePlayerData } = usePlayerData();
+  const { playerData, updatePlayerData, deletePlayerData } = useLocalPlayerData();
   const { keys, isSystemTheme, musicVolume, soundVolume, theme } = useSelector(selectSettings);
   const sound = useAudio('sound', { volume: soundVolume });
 

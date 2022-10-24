@@ -4,13 +4,13 @@ import { getLocalStorageValue, setLocalStorageValue } from 'utils/functions';
 import { IPlayerData } from 'types/';
 import { selectPlayerName } from 'store/auth/slice';
 
-interface IUsePlayerData {
+interface IuseLocalPlayerData {
   playerData: IPlayerData;
   updatePlayerData: (updatedValue: Partial<IPlayerData>) => void;
   deletePlayerData: (deletedValue: keyof IPlayerData) => void;
 }
 
-export const usePlayerData = (): IUsePlayerData => {
+export const useLocalPlayerData = (): IuseLocalPlayerData => {
   const player = useSelector(selectPlayerName);
   const playerData = getLocalStorageValue<IPlayerData>(player);
 

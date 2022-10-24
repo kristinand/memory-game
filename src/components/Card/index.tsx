@@ -19,6 +19,7 @@ const Card: React.FC<IProps> = ({ card, onClick }) => {
     <div className={classNames(classes.card, isOpen && classes.opened)}>
       <button
         type="button"
+        disabled={isOpen}
         onClick={onClick}
         className={classNames(classes.innerCard, classes[theme], isOpen && classes.opened)}
       >
