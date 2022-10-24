@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateCards, increaseCountBy1 } from 'store/game/slice';
+import { IDS_SUM } from 'utils/constants';
 import { ICard, ECardStatus } from 'types/';
 
-const getCardsStatus = (selectedCardKey: string, oldCardKey?: string): ECardStatus => {
-  switch (oldCardKey) {
+const getCardsStatus = (selectedCardId: number, oldCardId?: number): ECardStatus => {
+  switch (oldCardId) {
     case undefined:
       return ECardStatus.Opened;
-    case selectedCardKey:
+    case IDS_SUM - selectedCardId:
       return ECardStatus.Guessed;
     default: {
       return ECardStatus.NotGuessed;
@@ -28,14 +29,14 @@ export const usePlay: IUsePlay = () => {
     if (selectedCard.status !== ECardStatus.Closed) return;
     if (!isGameStarted) setIsGameStarted(true);
 
-    const selectedCardIndex = cards.findIndex(({ key }) => key === selectedCard.key);
+    const selectedCardIndex = cards.findIndex(({ id }) =>  id === selectedCard.id);
     const openedCardIndex = cards.findIndex(({ status }) => status === ECardStatus.Opened);
 
     if (selectedCardIndex < 0) return;
 
     dispatch(increaseCountBy1(selectedCardIndex));
 
-    const status = getCardsStatus(selectedCard.key, cards[openedCardIndex]?.pairKey);
+    const status = getCardsStatus(selectedCard.id, cards[openedCardIndex]?.id);
     const indexes = openedCardIndex >= 0 ? [selectedCardIndex, openedCardIndex] : [selectedCardIndex];
 
     dispatch(updateCards({ status, indexes }));

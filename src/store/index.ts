@@ -18,4 +18,5 @@ const rootReducer: Reducer = (state: RootState, action: AnyAction) => reducers(s
 
 export const store = configureStore({
   reducer: rootReducer,
+  devTools: process.env.NODE_ENV === 'development'
 });

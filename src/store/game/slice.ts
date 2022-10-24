@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { ECardStatus, ICard } from 'types/';
-import { CARD_PATTERNS } from 'utils/constants';
+import { CARD_PATTERNS, IDS_SUM } from 'utils/constants';
 import { shuffleList, getRandomNumber, getRandomColor } from 'utils/functions';
 import { RootState } from '..';
 import { saveScore } from './thunks/saveScore';
@@ -14,33 +14,29 @@ export interface IGame {
 }
 
 const createCards = (level: number): ICard[] => {
-  let cards: ICard[] = [];
-
-  let patterns = CARD_PATTERNS;
+  const cards: ICard[] = [];
   const coverColor = getRandomColor();
+  const cardsLength = level * 2 + 2;
+  let patterns = CARD_PATTERNS;
 
-  for (let i = 0; i < level * 2 + 2; i++) {
-    const key1 = `${level}${i}${Math.ceil(Math.random() * 100000)}`;
-    const key2 = `${level}${i}${Math.ceil(Math.random() * 100000)}`;
+  for (let i = 0; i < cardsLength; i++) {
+    const id = +`${Math.ceil(Math.random() * 9)}${i}${Math.ceil(Math.random() * 9)}`;
     const color = getRandomColor();
     const patternNumber = getRandomNumber(0, patterns.length);
     const pattern = patterns[patternNumber];
     patterns = [...patterns.slice(0, patternNumber), ...patterns.slice(patternNumber + 1)];
     const card = { color, pattern, coverColor, status: ECardStatus.Closed, count: 0 };
     cards.push({
-      key: key1,
-      pairKey: key2,
+      id,
       ...card,
     });
     cards.push({
-      key: key2,
-      pairKey: key1,
+      id: IDS_SUM - id,
       ...card,
     });
   }
 
-  cards = shuffleList(cards);
-  return cards;
+  return shuffleList(cards);
 };
 
 const getInitialState = (): IGame => ({

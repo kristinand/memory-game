@@ -40,9 +40,9 @@ const Game: React.FC = () => {
     <Layout fullWidth noBottomPadding showFooter={false} header={<GameControls isGameStarted={isGameStarted} />}>
       <div className={classes.game}>
         {listToArray(cards, 4).map((cardsRow: ICard[]) => (
-          <div key={cardsRow[0].key}>
+          <div key={cardsRow[0].id}>
             {cardsRow.map((card) => (
-              <Card onClick={() => onCardSelectHandler(card)} key={card.key} card={card} />
+              <Card onClick={() => onCardSelectHandler(card)} key={card.id} card={card} />
             ))}
           </div>
         ))}

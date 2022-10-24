@@ -4,6 +4,7 @@ import { setAutoplay, selectGameData, startGame } from 'store/game/slice';
 import { ICard, ECardStatus } from 'types/';
 import { getRandomNumber } from 'utils/functions';
 import { useTimer } from 'utils/hooks';
+import { IDS_SUM } from 'utils/constants';
 import { usePlay } from './usePlay';
 
 type IUseAutoplay = () => {
@@ -53,12 +54,12 @@ export const useAutoplay: IUseAutoplay = () => {
     }
 
     const chosenCard = nextCard || closedCards[getRandomNumber(0, closedCards.length)];
-    const pairCard = cards.find(({ key }) => key === chosenCard.pairKey);
+    const pairCard = cards.find(({ id }) => id === IDS_SUM - chosenCard.id);
 
     onSelectCard(cards, chosenCard);
 
     const newNextCard =
-      (pairCard?.count >= level || pairCard?.key === prevCard?.key) && pairCard?.status === ECardStatus.Closed
+      (pairCard?.count >= level || pairCard?.id === prevCard?.id) && pairCard?.status === ECardStatus.Closed
         ? pairCard
         : null;
 
