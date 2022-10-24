@@ -39,7 +39,7 @@ const GameControls: React.FC<IProps> = ({ isGameStarted }) => {
   const { timer, isPaused, handleStart, handlePause, handleReset } = useTimer({
     initTimer: score,
   });
-  const { deletePlayerData } = useLocalPlayerData();
+  const { deletePlayerData, updatePlayerSettingsData } = useLocalPlayerData();
   const clickSound = useAudio('sound', { volume: soundVolume });
   const musicSound = useAudio('music', { volume: musicVolume, loop: true }, true);
 
@@ -113,8 +113,9 @@ const GameControls: React.FC<IProps> = ({ isGameStarted }) => {
       }
 
       dispatch(changeVolume({ audio, volume }));
+      updatePlayerSettingsData({ [audio.concat('Volume')]: volume });
     },
-    [clickSound, dispatch, musicVolume, soundVolume],
+    [clickSound, dispatch, musicVolume, soundVolume, updatePlayerSettingsData],
   );
 
   const toggleFullscreenHandler = () => {
