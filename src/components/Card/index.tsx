@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 import { ECardStatus, ICard } from 'types/';
-import { selectSettings } from 'store/settings/slice';
+import { selectTheme } from 'store/settings/slice';
 import classes from './classes.module.scss';
 
 interface IProps {
@@ -13,7 +13,7 @@ interface IProps {
 
 const Card: React.FC<IProps> = ({ card, onClick }) => {
   const isOpen = card.status !== ECardStatus.Closed;
-  const { isPatternShown, theme } = useSelector(selectSettings);
+  const theme = useSelector(selectTheme);
 
   return (
     <div className={classNames(classes.card, isOpen && classes.opened)}>
@@ -26,7 +26,7 @@ const Card: React.FC<IProps> = ({ card, onClick }) => {
           <span>?</span>
         </div>
         <div className={classes.cardFace} style={{ backgroundColor: card.color }}>
-          {isPatternShown && <span className={classes.pattern}>{card.pattern}</span>}
+          <span className={classes.pattern}>{card.pattern}</span>
         </div>
       </button>
     </div>
