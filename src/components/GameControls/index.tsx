@@ -40,7 +40,7 @@ const GameControls: React.FC<IProps> = ({ isGameStarted }) => {
     initTimer: score,
   });
   const { deletePlayerData } = useLocalPlayerData();
-  const clickSound = useAudio('sound', { volume: musicVolume });
+  const clickSound = useAudio('sound', { volume: soundVolume });
   const musicSound = useAudio('music', { volume: musicVolume, loop: true }, true);
 
   useEffect(() => {
@@ -54,6 +54,10 @@ const GameControls: React.FC<IProps> = ({ isGameStarted }) => {
   useEffect(() => {
     musicSound.volume = musicVolume;
   }, [musicVolume, musicSound]);
+
+  useEffect(() => {
+    clickSound.volume = soundVolume;
+  }, [clickSound, soundVolume]);
 
   useEffect(() => {
     if (isGameStarted) {
