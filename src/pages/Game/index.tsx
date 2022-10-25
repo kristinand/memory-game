@@ -16,7 +16,7 @@ import classes from './classes.module.scss';
 const Game: React.FC = () => {
   const { cards, level, isAutoplay, score } = useSelector(selectGameData);
   const { soundVolume } = useSelector(selectSettings);
-  const { onSelectCard, isGameStarted } = usePlay();
+  const { onSelectCard } = usePlay();
   const { start: startAutoplay, stop: stopAutoplay } = useAutoplay();
   const sound = useAudio('sound', { volume: soundVolume });
   const { updatePlayerData } = useLocalPlayerData();
@@ -37,7 +37,7 @@ const Game: React.FC = () => {
   };
 
   return (
-    <Layout fullWidth noBottomPadding showFooter={false} header={<GameControls isGameStarted={isGameStarted} />}>
+    <Layout fullWidth noBottomPadding showFooter={false} header={<GameControls />}>
       <div className={classes.game}>
         {listToArray(cards, 4).map((cardsRow: ICard[]) => (
           <div key={cardsRow[0].id}>

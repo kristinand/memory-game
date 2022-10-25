@@ -25,11 +25,7 @@ import { useTimer, useLocalPlayerData, useAudio } from 'utils/hooks';
 import { formatTime } from 'utils/functions';
 import classes from './classes.module.scss';
 
-interface IProps {
-  isGameStarted: boolean;
-}
-
-const GameControls: React.FC<IProps> = ({ isGameStarted }) => {
+const GameControls: React.FC = () => {
   const { state } = useLocation() as { state: { isNewGame: boolean } };
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,19 +33,19 @@ const GameControls: React.FC<IProps> = ({ isGameStarted }) => {
   const { cards, score, level, isAutoplay } = useSelector(selectGameData);
   const { soundVolume, musicVolume, keys } = useSelector(selectSettings);
   const { timer, isPaused, handleStart, handlePause, handleReset } = useTimer({
-    initTimer: score,
+    initTimer: state.isNewGame ? 0 : score,
   });
   const { deletePlayerData, updatePlayerSettingsData } = useLocalPlayerData();
   const clickSound = useAudio('sound', { volume: soundVolume });
   const musicSound = useAudio('music', { volume: musicVolume, loop: true }, true);
 
   useEffect(() => {
-    if (state?.isNewGame) {
+    if (state.isNewGame) {
       deletePlayerData('game');
       dispatch(startGame());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state?.isNewGame, dispatch]);
+  }, [state.isNewGame, dispatch]);
 
   useEffect(() => {
     musicSound.volume = musicVolume;
@@ -60,17 +56,17 @@ const GameControls: React.FC<IProps> = ({ isGameStarted }) => {
   }, [clickSound, soundVolume]);
 
   useEffect(() => {
-    if (isGameStarted) {
+    if (isPaused && cards) {
       handleStart();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isGameStarted]);
+  }, [cards]);
 
   useEffect(() => {
-    if (timer && !state?.isNewGame) {
+    if (timer) {
       dispatch(saveCurrentScore(timer));
     }
-  }, [dispatch, timer, state?.isNewGame]);
+  }, [dispatch, timer]);
 
   useEffect(() => {
     const hasNotGuessed = cards.some(({ status }) => status !== ECardStatus.Guessed);
@@ -93,7 +89,8 @@ const GameControls: React.FC<IProps> = ({ isGameStarted }) => {
     }
 
     return () => clearTimeout(timeoutTimer);
-  }, [isAutoplay, level, dispatch, score, navigate, cards]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, cards]);
 
   const onChangeAudioVolumeHandler = useCallback(
     (audio: 'sound' | 'music') => {

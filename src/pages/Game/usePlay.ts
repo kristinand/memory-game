@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { updateCards, increaseCountBy1 } from 'store/game/slice';
 import { IDS_SUM } from 'utils/constants';
@@ -17,17 +16,14 @@ const getCardsStatus = (selectedCardId: number, oldCardId?: number): ECardStatus
 };
 
 type IUsePlay = () => {
-  isGameStarted: boolean;
   onSelectCard: (cards: ICard[], selectedCard: ICard) => void;
 };
 
 export const usePlay: IUsePlay = () => {
   const dispatch = useDispatch();
-  const [isGameStarted, setIsGameStarted] = useState(false);
 
   const onSelectCard = (cards: ICard[], selectedCard: ICard) => {
     if (selectedCard.status !== ECardStatus.Closed) return;
-    if (!isGameStarted) setIsGameStarted(true);
 
     const selectedCardIndex = cards.findIndex(({ id }) =>  id === selectedCard.id);
     const openedCardIndex = cards.findIndex(({ status }) => status === ECardStatus.Opened);
@@ -49,7 +45,6 @@ export const usePlay: IUsePlay = () => {
   };
 
   return {
-    onSelectCard,
-    isGameStarted,
+    onSelectCard
   };
 };

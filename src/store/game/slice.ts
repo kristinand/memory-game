@@ -16,10 +16,10 @@ export interface IGame {
 const createCards = (level: number): ICard[] => {
   const cards: ICard[] = [];
   const coverColor = getRandomColor();
-  const cardsLength = level * 2 + 2;
+  const cardPairsNumber = level * 2 + 2;
   let patterns = CARD_PATTERNS;
 
-  for (let i = 0; i < cardsLength; i++) {
+  for (let i = 0; i < cardPairsNumber; i++) {
     const id = +`${Math.ceil(Math.random() * 9)}${i}${Math.ceil(Math.random() * 9)}`;
     const color = getRandomColor();
     const patternNumber = getRandomNumber(0, patterns.length);
