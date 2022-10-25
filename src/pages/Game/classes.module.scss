@@ -10,7 +10,7 @@
   & > div {
     display: flex;
     flex: 1;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   @media (max-width: $screen-md) {

@@ -3,6 +3,7 @@
 .card {
   margin: 0.1em;
   font-size: 60px;
+  max-height: 230px;
   flex: 1;
   transform: scale(1);
   animation: appear 0.5s ease-in;
