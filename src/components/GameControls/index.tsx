@@ -89,7 +89,7 @@ const GameControls: React.FC = () => {
     }
 
     return () => clearTimeout(timeoutTimer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, cards]);
 
   const onChangeAudioVolumeHandler = useCallback(
@@ -164,10 +164,11 @@ const GameControls: React.FC = () => {
 
   return (
     <header className={classes.gameControls}>
-      <span className={classes.level}>
+      <div>
         level: {level}/{LAST_LEVEL}
-      </span>
-      <span className={classes.timer}>{formatTime(timer)}</span>
+        <span className={classes.divider}>|</span>
+        {formatTime(timer)}
+      </div>
       <div className={classes.buttonGroup}>
         <Button
           title={isPaused ? 'Play' : 'Pause'}

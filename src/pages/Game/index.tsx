@@ -47,11 +47,11 @@ const Game: React.FC = () => {
           </div>
         ))}
       </div>
-      {((level === 1 && !score && !isAutoplay) || isAutoplay) && (
+      {/* {((level === 1 && !score && !isAutoplay) || isAutoplay) && (
         <Button className={classes.autoplay} onClick={isAutoplay ? stopAutoplay : startAutoplay}>
           {isAutoplay ? 'Stop autoplay' : 'Watch how to play'}
         </Button>
-      )}
+      )} */}
     </Layout>
   );
 };

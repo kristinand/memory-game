@@ -1,7 +1,8 @@
 @import 'styles/';
 
 .card {
-  margin: 0.3em;
+  margin: 0.1em;
+  font-size: 60px;
   flex: 1;
   transform: scale(1);
   animation: appear 0.5s ease-in;
@@ -10,15 +11,22 @@
   &:hover:not(.opened) {
     transform: scale(1.05);
   }
+
+  @media (max-width: $screen-lg) {
+    font-size: 5vmax;
+  }
+
+  @media (max-width: $screen-md) and (orientation: landscape) {
+    font-size: 3vmax;
+  }
 }
 
 .innerCard {
   width: 100%;
   height: 100%;
-  font-size: 7vw;
-  padding: 0.2em;
+  padding: 0.15em;
   position: relative;
-  border-radius: 0.1em;
+  border-radius: 0.15em;
   transform-style: preserve-3d;
   transform: rotateY(0deg);
   transition: transform 0.5s ease-in-out;
@@ -48,20 +56,13 @@
   }
 }
 
-@media (min-width: 720px) {
-  .innerCard {
-    font-size: 50px;
-  }
-}
-
 .cardCover,
 .cardFace {
   display: flex;
   align-items: center;
   justify-content: center;
   backface-visibility: hidden;
-  border-radius: 0.14em;
-  font-size: 1em;
+  border-radius: 0.2em;
 }
 
 .cardCover {
@@ -80,7 +81,6 @@
 
   & .pattern {
     font-family: $notoSansJS;
-    font-size: 1.4em;
   }
 }
 

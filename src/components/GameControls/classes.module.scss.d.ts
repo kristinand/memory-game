@@ -2,9 +2,8 @@
 // Please do not change this file!
 interface CssExports {
   'buttonGroup': string;
+  'divider': string;
   'gameControls': string;
-  'level': string;
-  'timer': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

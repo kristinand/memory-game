@@ -1,5 +1,7 @@
+@import 'styles/';
+
 .game {
-  height: calc(100vh - 135px);
+  height: calc(100vh - 100px);
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -8,11 +10,19 @@
   & > div {
     display: flex;
     flex: 1;
-    max-height: 250px;
     justify-content: space-between;
+  }
 
-    @media (max-width: 600px) {
-      max-height: 150px;
+  @media (max-width: $screen-md) {
+    height: calc(100vh - 130px);
+  }
+
+  @media (orientation: landscape) {
+    flex-direction: row;
+    align-items: stretch;
+
+    & > div {
+      flex-direction: column;
     }
   }
 }

@@ -13,7 +13,7 @@ export interface IGame {
   score: number;
 }
 
-const createCards = (level: number): ICard[] => {
+const createCards = (level = 1): ICard[] => {
   const cards: ICard[] = [];
   const coverColor = getRandomColor();
   const cardPairsNumber = level * 2 + 2;
@@ -42,7 +42,7 @@ const createCards = (level: number): ICard[] => {
 const getInitialState = (): IGame => ({
   isAutoplay: false,
   level: 1,
-  cards: createCards(1),
+  cards: createCards(),
   score: 0,
 });
 
