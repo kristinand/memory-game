@@ -1,52 +1,35 @@
+@import 'styles/';
+
 .gameControls {
-  padding: 0 10px;
+  padding: 15px 10px 0;
   width: 100%;
   max-width: 1024px;
   position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  font-size: 1.6rem;
-  height: 70px;
-  width: 100%;
-}
+  flex-wrap: wrap;
+  font-size: 32px;
 
-@media (max-width: 600px) {
-  .gameControls {
-    flex-direction: column;
-    gap: 0.5rem;
+  @media (max-width: $screen-md) {
+    font-size: 24px;
   }
-}
-
-.screen {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  &:focus {
-    outline: none;
-  }
-}
-
-.level {
-  margin: 0 0.5rem;
-}
-
-.timer {
-  position: relative;
-  top: 0.2em;
-  margin-right: 0.5rem;
 }
 
 .buttonGroup {
-  display: flex;
-  gap: 0.5rem;
+  margin-left: auto;
+
+  & > *:not(:last-child) {
+    margin-right: 10px;
+  }
+
+  @media (max-width: $screen-md) and (orientation: portrait) {
+    margin-top: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
-@media (max-width: 600px) {
-  .buttonGroup {
-    align-self: flex-end;
-  }
+.divider {
+  margin: 0 10px;
 }

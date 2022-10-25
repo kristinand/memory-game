@@ -11,7 +11,6 @@ export enum ETheme {
 export interface ISettings {
   isSystemTheme: boolean;
   theme: ETheme;
-  isPatternShown: boolean;
   musicVolume: number;
   soundVolume: number;
   keys: IKeys;
@@ -33,7 +32,6 @@ const systemTheme =
 const initialState: ISettings = {
   isSystemTheme: true,
   theme: systemTheme,
-  isPatternShown: true,
   musicVolume: 0.5,
   soundVolume: 0.5,
   keys: {
@@ -61,9 +59,6 @@ export const slice = createSlice({
     changeTheme(state, { payload }: { payload: ETheme }) {
       state.theme = payload;
     },
-    togglePattern(state) {
-      state.isPatternShown = !state.isPatternShown;
-    },
     applySystemTheme(state) {
       state.isSystemTheme = !state.isSystemTheme;
       state.theme = systemTheme;
@@ -79,7 +74,6 @@ export const {
   changeVolume,
   changeHotkey,
   changeTheme,
-  togglePattern,
   applySystemTheme,
   setDefaultSettings,
 } = slice.actions;

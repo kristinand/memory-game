@@ -3,14 +3,16 @@ import { useSelector } from 'react-redux';
 import { getLocalStorageValue, setLocalStorageValue } from 'utils/functions';
 import { IPlayerData } from 'types/';
 import { selectPlayerName } from 'store/auth/slice';
+import { ISettings } from 'store/settings/slice';
 
-interface IUsePlayerData {
+interface IuseLocalPlayerData {
   playerData: IPlayerData;
   updatePlayerData: (updatedValue: Partial<IPlayerData>) => void;
+  updatePlayerSettingsData: (updatedValue: Partial<ISettings>) => void;
   deletePlayerData: (deletedValue: keyof IPlayerData) => void;
 }
 
-export const usePlayerData = (): IUsePlayerData => {
+export const useLocalPlayerData = (): IuseLocalPlayerData => {
   const player = useSelector(selectPlayerName);
   const playerData = getLocalStorageValue<IPlayerData>(player);
 
@@ -18,6 +20,15 @@ export const usePlayerData = (): IUsePlayerData => {
     setLocalStorageValue(player, {
       ...playerData,
       ...updatedValue,
+    });
+  };
+
+  const updatePlayerSettingsData = (obj: Partial<ISettings>) => {
+    updatePlayerData({
+      settings: {
+        ...playerData?.settings,
+        ...obj,
+      },
     });
   };
 
@@ -32,6 +43,7 @@ export const usePlayerData = (): IUsePlayerData => {
   return {
     playerData,
     updatePlayerData,
+    updatePlayerSettingsData,
     deletePlayerData,
   };
 };

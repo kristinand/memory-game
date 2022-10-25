@@ -1,3 +1,3 @@
 export * from './useTimer';
-export * from './usePlayerData';
+export * from './useLocalPlayerData';
 export * from './useAudio';

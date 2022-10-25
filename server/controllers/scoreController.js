@@ -42,6 +42,7 @@ exports.saveRating = catchAsync(async (req, res) => {
 
   if (doc) {
     doc.score = req.body.score;
+    doc.date = Date.now();
     await doc.save();
   } else {
     await Score.create(req.body);

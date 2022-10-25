@@ -11,6 +11,7 @@ interface IProps {
   noBottomPadding?: boolean;
   showFooter?: boolean;
   title?: string;
+  header?: React.ReactNode;
 }
 
 const Layout: React.FC<IProps> = ({
@@ -20,20 +21,35 @@ const Layout: React.FC<IProps> = ({
   noBottomPadding = false,
   showFooter = true,
   title,
-}) => (
-  <>
-    {title && <Header title={title} />}
-    <main
-      className={classNames(classes.layout, {
-        [classes.centered]: centered,
-        [classes.fullWidth]: fullWidth,
-        [classes.noBottomPadding]: noBottomPadding,
-      })}
-    >
-      <>{children}</>
-    </main>
-    {showFooter && <Footer />}
-  </>
-);
+  header,
+}) => {
+  const renderHeader = () => {
+    if (header) {
+      return header;
+    } 
+    
+    if (title) {
+      return <Header title={title} />;
+    }
+
+    return null;
+  };
+
+  return (
+    <>
+      {renderHeader()}
+      <main
+        className={classNames(classes.layout, {
+          [classes.centered]: centered,
+          [classes.fullWidth]: fullWidth,
+          [classes.noBottomPadding]: noBottomPadding,
+        })}
+      >
+        <>{children}</>
+      </main>
+      {showFooter && <Footer />}
+    </>
+  );
+};
 
 export default Layout;

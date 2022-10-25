@@ -2,11 +2,11 @@ import { useDispatch } from 'react-redux';
 import { updateCards, increaseCountBy1 } from 'store/game/slice';
 import { ICard, ECardStatus } from 'types/';
 
-const getCardsStatus = (selectedCardKey: string, oldCardKey?: string): ECardStatus => {
-  switch (oldCardKey) {
+const getCardsStatus = (selectedCardId: string, oldCardId?: string): ECardStatus => {
+  switch (oldCardId?.charAt(0)) {
     case undefined:
       return ECardStatus.Opened;
-    case selectedCardKey:
+    case selectedCardId.charAt(0):
       return ECardStatus.Guessed;
     default: {
       return ECardStatus.NotGuessed;
@@ -15,8 +15,8 @@ const getCardsStatus = (selectedCardKey: string, oldCardKey?: string): ECardStat
 };
 
 type IUsePlay = () => {
-  onSelectCard: (cards: ICard[], selectedCard: ICard) => void
-}
+  onSelectCard: (cards: ICard[], selectedCard: ICard) => void;
+};
 
 export const usePlay: IUsePlay = () => {
   const dispatch = useDispatch();
@@ -24,14 +24,14 @@ export const usePlay: IUsePlay = () => {
   const onSelectCard = (cards: ICard[], selectedCard: ICard) => {
     if (selectedCard.status !== ECardStatus.Closed) return;
 
-    const selectedCardIndex = cards.findIndex(({ key }) => key === selectedCard.key);
+    const selectedCardIndex = cards.findIndex(({ id }) =>  id === selectedCard.id);
     const openedCardIndex = cards.findIndex(({ status }) => status === ECardStatus.Opened);
 
     if (selectedCardIndex < 0) return;
 
     dispatch(increaseCountBy1(selectedCardIndex));
 
-    const status = getCardsStatus(selectedCard.key, cards[openedCardIndex]?.pairKey);
+    const status = getCardsStatus(selectedCard.id, cards[openedCardIndex]?.id);
     const indexes = openedCardIndex >= 0 ? [selectedCardIndex, openedCardIndex] : [selectedCardIndex];
 
     dispatch(updateCards({ status, indexes }));
@@ -44,6 +44,6 @@ export const usePlay: IUsePlay = () => {
   };
 
   return {
-    onSelectCard,
+    onSelectCard
   };
 };

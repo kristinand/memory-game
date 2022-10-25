@@ -7,7 +7,7 @@ import Layout from 'components/Layout';
 import MenuLink from 'components/MenuLink';
 import Button from 'components/Button';
 import Input from 'components/Input';
-import { usePlayerData } from 'utils/hooks';
+import { useLocalPlayerData } from 'utils/hooks';
 import { removeCookie, setCookie } from 'utils/functions';
 import { login, logout, selectPlayerName } from 'store/auth/slice';
 import { setDefaultSettings } from 'store/settings/slice';
@@ -19,7 +19,7 @@ const Menu: React.FC = () => {
   const storedPlayer = useSelector(selectPlayerName);
   const [helperText, setHelperText] = useState('');
   const [player, setPlayer] = useState(storedPlayer);
-  const { playerData } = usePlayerData();
+  const { playerData } = useLocalPlayerData();
 
   const onInputValueChangeHandler = (event: React.FormEvent<HTMLInputElement>) => {
     if (!storedPlayer) {
@@ -82,8 +82,8 @@ const Menu: React.FC = () => {
       <div className={classes.separator}>♥ ☀ ♦</div>
 
       <div className={classes.menu}>
-        <MenuLink to="/game" state={{ isContinue: false }} disabled={!storedPlayer} title="New Game" />
-        <MenuLink to="/game" state={{ isContinue: true }} disabled={!playerData?.game} title="Continue" />
+        <MenuLink to="/game" state={{ isNewGame: true }} disabled={!storedPlayer} title="New Game" />
+        <MenuLink to="/game" state={{ isNewGame: false }} disabled={!playerData?.game} title="Continue" />
         <MenuLink to="/rating" title="Rating" />
         <MenuLink to="/settings" disabled={!storedPlayer} title="Settings" />
         <MenuLink to="/about" title="About" />

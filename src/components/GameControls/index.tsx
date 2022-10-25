@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import Refresh from 'assets/icons/refresh.svg';
 import Pause from 'assets/icons/pause.svg';
@@ -16,89 +16,104 @@ import Music2 from 'assets/icons/music2.svg';
 
 import Button from 'components/Button';
 
-import { LAST_LEVEL } from 'utils/constants';
+import { LAST_LEVEL, DELAY } from 'utils/constants';
 import { ECardStatus } from 'types';
-import { selectGameData, loadNextLevel, saveCurrentScore, startGame, setIsGamePaused } from 'store/game/slice';
+import { selectGameData, loadNextLevel, saveCurrentScore, startGame } from 'store/game/slice';
 import { saveScore } from 'store/game/thunks/saveScore';
 import { selectSettings, changeVolume } from 'store/settings/slice';
-import { useTimer, usePlayerData, useAudio } from 'utils/hooks';
+import { useTimer, useLocalPlayerData, useAudio } from 'utils/hooks';
 import { formatTime } from 'utils/functions';
 import classes from './classes.module.scss';
 
-interface IProps {
-  isContinue?: boolean;
-  getFocusRef: (ref: HTMLDivElement) => void;
-}
-
-const GameControls: React.FC<IProps> = ({ getFocusRef, isContinue }) => {
+const GameControls: React.FC = () => {
+  const { state } = useLocation() as { state: { isNewGame: boolean } };
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const focusRef = useRef<HTMLDivElement>();
 
-  const { cards, score, level, isAutoplay, isGamePaused } = useSelector(selectGameData);
+  const { cards, score, level, isAutoplay } = useSelector(selectGameData);
   const { soundVolume, musicVolume, keys } = useSelector(selectSettings);
-  const { timer, isPaused, handleStart, handlePause, handleReset } = useTimer({ initTimer: isContinue ? score : 0 });
-  const { updatePlayerData } = usePlayerData();
-  const clickSound = useAudio('sound', { volume: musicVolume });
+  const { timer, isPaused, handleStart, handlePause, handleReset } = useTimer({
+    initTimer: state.isNewGame ? 0 : score,
+  });
+  const { deletePlayerData, updatePlayerSettingsData } = useLocalPlayerData();
+  const clickSound = useAudio('sound', { volume: soundVolume });
+  const musicSound = useAudio('music', { volume: musicVolume, loop: true }, true);
 
   useEffect(() => {
-    const screen = focusRef.current;
-    getFocusRef(focusRef.current);
-    screen.focus();
-  }, [getFocusRef]);
+    if (state.isNewGame) {
+      deletePlayerData('game');
+      dispatch(startGame());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.isNewGame, dispatch]);
 
   useEffect(() => {
+    musicSound.volume = musicVolume;
+  }, [musicVolume, musicSound]);
+
+  useEffect(() => {
+    clickSound.volume = soundVolume;
+  }, [clickSound, soundVolume]);
+
+  useEffect(() => {
+    if (isPaused && cards) {
+      handleStart();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cards]);
+
+  useEffect(() => {
+    if (timer) {
+      dispatch(saveCurrentScore(timer));
+    }
+  }, [dispatch, timer]);
+
+  useEffect(() => {
+    const hasNotGuessed = cards.some(({ status }) => status !== ECardStatus.Guessed);
+
+    if (isAutoplay || hasNotGuessed) {
+      return null;
+    }
+
     let timeoutTimer;
-
-    if (!isAutoplay && cards.every((card) => card.status === ECardStatus.Guessed)) {
-      if (level < LAST_LEVEL) {
-        timeoutTimer = setTimeout(() => {
-          dispatch(loadNextLevel());
-        }, 1000);
-      } else {
-        void dispatch(saveScore(score));
+    // TODO: Show modal instead of redirect
+    if (level === LAST_LEVEL) {
+      void dispatch(saveScore(score));
+      timeoutTimer = setTimeout(() => {
         navigate('/rating');
-      }
+      }, DELAY);
+    } else {
+      timeoutTimer = setTimeout(() => {
+        dispatch(loadNextLevel());
+      }, DELAY);
     }
 
     return () => clearTimeout(timeoutTimer);
-  }, [isAutoplay, level, dispatch, score, navigate, cards]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, cards]);
 
-  useEffect(() => {
-    if (isGamePaused) {
-      handlePause();
-    } else {
-      handleStart();
-    }
+  const onChangeAudioVolumeHandler = useCallback(
+    (audio: 'sound' | 'music') => {
+      let volume = audio === 'sound' ? soundVolume : musicVolume;
 
-    return () => handlePause();
-  }, [handlePause, handleStart, isGamePaused]);
+      if (volume < 0.5) {
+        volume = 0.5;
+      } else if (volume >= 0.5 && volume < 1) {
+        volume = 1;
+      } else {
+        volume = 0;
+      }
 
-  useEffect(() => {
-    if (timer && !isAutoplay && !isGamePaused) {
-      updatePlayerData({
-        game: {
-          cards,
-          level,
-          score: timer,
-        },
-      });
-      dispatch(saveCurrentScore(timer));
-    }
-  }, [cards, dispatch, isAutoplay, isGamePaused, level, timer, updatePlayerData]);
+      if (audio === 'sound') {
+        clickSound.volume = volume;
+        clickSound.replay();
+      }
 
-  const onChangeAudioVolumeHandler = (audio: 'sound' | 'music') => {
-    let volume = audio === 'sound' ? soundVolume : musicVolume;
-    if (volume < 0.5) volume = 0.5;
-    else if (volume >= 0.5 && volume < 1) volume = 1;
-    else volume = 0;
-
-    if (audio === 'sound') {
-      clickSound.volume = volume;
-      clickSound.replay();
-    }
-    dispatch(changeVolume({ audio, volume }));
-  };
+      dispatch(changeVolume({ audio, volume }));
+      updatePlayerSettingsData({ [audio.concat('Volume')]: volume });
+    },
+    [clickSound, dispatch, musicVolume, soundVolume, updatePlayerSettingsData],
+  );
 
   const toggleFullscreenHandler = () => {
     if (!document.fullscreenElement) {
@@ -108,38 +123,53 @@ const GameControls: React.FC<IProps> = ({ getFocusRef, isContinue }) => {
     }
   };
 
-  const onGamePauseHandler = () => dispatch(setIsGamePaused(!isPaused));
-  const onGameReloadHandler = () => {
-    handleReset();
-    dispatch(startGame());
-  };
-
-  const handleKeyPress = ({ code }: React.KeyboardEvent<HTMLInputElement>) => {
-    const pressedKey = code.slice(3);
-    const { fullscreen, reload, sounds, music, pause } = keys;
-    switch (pressedKey) {
-      case fullscreen:
-        return toggleFullscreenHandler();
-      case reload:
-        return onGameReloadHandler();
-      case sounds:
-        return onChangeAudioVolumeHandler('sound');
-      case music:
-        return onChangeAudioVolumeHandler('music');
-      case pause:
-        return onGamePauseHandler();
-      default:
-        return null;
+  const onGamePauseHandler = useCallback(() => {
+    if (isPaused) {
+      handleStart();
+    } else {
+      handlePause();
     }
-  };
+  }, [handlePause, handleStart, isPaused]);
+
+  const onGameReloadHandler = useCallback(() => {
+    handleReset();
+    deletePlayerData('game');
+    dispatch(startGame());
+  }, [deletePlayerData, dispatch, handleReset]);
+
+  useEffect(() => {
+    const handleKeyPress = ({ code }: KeyboardEvent) => {
+      const pressedKey = code.slice(3);
+      const { fullscreen, reload, sounds, music, pause } = keys;
+
+      switch (pressedKey) {
+        case fullscreen:
+          return toggleFullscreenHandler();
+        case reload:
+          return onGameReloadHandler();
+        case sounds:
+          return onChangeAudioVolumeHandler('sound');
+        case music:
+          return onChangeAudioVolumeHandler('music');
+        case pause:
+          return onGamePauseHandler();
+        default:
+          return null;
+      }
+    };
+
+    window.addEventListener('keypress', handleKeyPress);
+    return window.removeEventListener('keypress', handleKeyPress);
+  }, [keys, onChangeAudioVolumeHandler, onGamePauseHandler, onGameReloadHandler]);
 
   return (
     <header className={classes.gameControls}>
-      <div role="menu" ref={focusRef} className={classes.screen} tabIndex={0} onKeyPress={handleKeyPress} />
-      <span className={classes.level}>level: {level}</span>
-
-      <span className={classes.buttonGroup}>
-        <span className={classes.timer}>{formatTime(timer)}</span>
+      <div>
+        level: {level}/{LAST_LEVEL}
+        <span className={classes.divider}>|</span>
+        {formatTime(timer)}
+      </div>
+      <div className={classes.buttonGroup}>
         <Button
           title={isPaused ? 'Play' : 'Pause'}
           onClick={onGamePauseHandler}
@@ -164,7 +194,7 @@ const GameControls: React.FC<IProps> = ({ getFocusRef, isContinue }) => {
           }
         />
         <Button title="Back to Menu" onClick={() => navigate('/')} icon={<Back />} />
-      </span>
+      </div>
     </header>
   );
 };

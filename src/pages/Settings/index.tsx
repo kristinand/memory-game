@@ -16,25 +16,15 @@ import {
   changeTheme,
   changeVolume,
   applySystemTheme,
-  togglePattern,
 } from 'store/settings/slice';
-import { useAudio, usePlayerData } from 'utils/hooks';
+import { useAudio, useLocalPlayerData } from 'utils/hooks';
 import classes from './classes.module.scss';
 
 const Settings: React.FC = () => {
   const dispatch = useDispatch();
-  const { playerData, updatePlayerData, deletePlayerData } = usePlayerData();
-  const { keys, isPatternShown, isSystemTheme, musicVolume, soundVolume, theme } = useSelector(selectSettings);
+  const { updatePlayerSettingsData, deletePlayerData } = useLocalPlayerData();
+  const { keys, isSystemTheme, musicVolume, soundVolume, theme } = useSelector(selectSettings);
   const sound = useAudio('sound', { volume: soundVolume });
-
-  const setLocalStorageSettingsItem = (obj: Partial<ISettings>) => {
-    updatePlayerData({
-      settings: {
-        ...playerData?.settings,
-        ...obj,
-      },
-    });
-  };
 
   const setDefaultSettingsHandler = () => {
     dispatch(setDefaultSettings());
@@ -47,7 +37,7 @@ const Settings: React.FC = () => {
       sound.replay();
 
       dispatch(changeVolume({ audio, volume }));
-      setLocalStorageSettingsItem({ [audio.concat('Volume')]: volume });
+      updatePlayerSettingsData({ [audio.concat('Volume')]: volume });
     }
   };
 
@@ -55,7 +45,7 @@ const Settings: React.FC = () => {
     const key = code.slice(3);
     if (!Object.values(keys).includes(key) && code.startsWith('Key')) {
       dispatch(changeHotkey({ keyType, key }));
-      setLocalStorageSettingsItem({
+      updatePlayerSettingsData({
         keys: {
           ...keys,
           [keyType]: key,
@@ -68,18 +58,13 @@ const Settings: React.FC = () => {
     if (!isSystemTheme) {
       const selectedTheme = event.target.checked ? ETheme.dark : ETheme.light;
       dispatch(changeTheme(selectedTheme));
-      setLocalStorageSettingsItem({ theme: selectedTheme });
+      updatePlayerSettingsData({ theme: selectedTheme });
     }
-  };
-
-  const onToggleCardPatternHandler = () => {
-    dispatch(togglePattern());
-    setLocalStorageSettingsItem({ isPatternShown: !isPatternShown });
   };
 
   const onApplySystemThemeHandler = () => {
     dispatch(applySystemTheme());
-    setLocalStorageSettingsItem({ isSystemTheme: !isSystemTheme, theme: undefined });
+    updatePlayerSettingsData({ isSystemTheme: !isSystemTheme, theme: undefined });
   };
 
   return (
@@ -120,7 +105,6 @@ const Settings: React.FC = () => {
           onKeyPress={(event) => onHotkeyChangeHandler('sounds', event)}
           val={keys.sounds}
         />
-        <SettingsElement title="Show Card Pattern" val={isPatternShown} onChange={onToggleCardPatternHandler} />
         <SettingsElement title="System Theme" val={isSystemTheme} onChange={onApplySystemThemeHandler} />
         {!isSystemTheme && (
           <SettingsElement title="Dark Theme" val={theme === ETheme.dark} onChange={onThemeChangeHandler} />

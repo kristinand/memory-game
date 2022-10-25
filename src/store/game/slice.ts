@@ -7,48 +7,41 @@ import { RootState } from '..';
 import { saveScore } from './thunks/saveScore';
 
 export interface IGame {
-  isGamePaused: boolean;
   isAutoplay: boolean;
   level: number;
   cards: ICard[];
   score: number;
 }
 
-const createCards = (level: number): ICard[] => {
-  let cards: ICard[] = [];
-
-  let patterns = CARD_PATTERNS;
+const createCards = (level = 1): ICard[] => {
+  const cards: ICard[] = [];
   const coverColor = getRandomColor();
+  const cardPairsNumber = level * 2 + 2;
+  let patterns = CARD_PATTERNS;
 
-  for (let i = 0; i < level * 2 + 2; i++) {
-    const key1 = `${level}${i}${Math.ceil(Math.random() * 100000)}`;
-    const key2 = `${level}${i}${Math.ceil(Math.random() * 100000)}`;
+  for (let i = 0; i < cardPairsNumber; i++) {
     const color = getRandomColor();
     const patternNumber = getRandomNumber(0, patterns.length);
     const pattern = patterns[patternNumber];
     patterns = [...patterns.slice(0, patternNumber), ...patterns.slice(patternNumber + 1)];
     const card = { color, pattern, coverColor, status: ECardStatus.Closed, count: 0 };
     cards.push({
-      key: key1,
-      pairKey: key2,
+      id: `${i}${level}1`,
       ...card,
     });
     cards.push({
-      key: key2,
-      pairKey: key1,
+      id: `${i}${level}2`,
       ...card,
     });
   }
 
-  cards = shuffleList(cards);
-  return cards;
+  return shuffleList(cards);
 };
 
 const getInitialState = (): IGame => ({
-  isGamePaused: true,
   isAutoplay: false,
   level: 1,
-  cards: createCards(1),
+  cards: createCards(),
   score: 0,
 });
 
@@ -66,10 +59,6 @@ export const slice = createSlice({
       const nextLevel = state.level + 1;
       state.cards = createCards(nextLevel);
       state.level = nextLevel;
-      state.isGamePaused = true;
-    },
-    setIsGamePaused(state, { payload }: { payload: boolean }) {
-      state.isGamePaused = payload;
     },
     updateCards(state, { payload }: { payload: { status: ECardStatus; indexes: number[] } }) {
       const { status, indexes } = payload;
@@ -98,7 +87,6 @@ export const {
   loadLocalGameData,
   startGame,
   loadNextLevel,
-  setIsGamePaused,
   updateCards,
   increaseCountBy1,
   saveCurrentScore,

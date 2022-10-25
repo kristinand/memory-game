@@ -1,16 +1,17 @@
-// [] 1xK -> [[],[],[]] PxM
-export function listToArray(list: unknown[], m: number): unknown[] {
-  let k = list.length / m;
-  let p = m;
+export function listToArray<T>(list: T[], column: number): T[][] {
+  let col = column;
+  let row = list.length / col;
+  const storedRow = row;
 
-  if (k < m) {
-    k = m;
-    p = list.length / m;
-  } 
-
-  if (Number.isInteger(k)) {
-    const array = new Array(p).fill([]);
-    return array.map((_, i) => list.slice(Number(i) * k, Number(i) * k + k));
+  if (col > row) {
+    row = col;
+    col = storedRow;
   }
-  return list;
+
+  if (Number.isInteger(row)) {
+    const array = new Array(row).fill([]);
+    return array.map((_, i) => list.slice(i * col, i * col + col));
+  }
+
+  return [list];
 }

@@ -11,8 +11,7 @@ export interface IKeys {
 }
 
 export interface ICard {
-  key: string;
-  pairKey: string;
+  id: string;
   color: string;
   pattern: string;
   coverColor: string;
