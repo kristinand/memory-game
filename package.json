@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Memo — Memory Card Game",
   "main": "index.tsx",
-  "homepage": "https://kristinand.github.io/react-game",
+  "homepage": "https://kristinand.github.io/memory-game",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d public",
