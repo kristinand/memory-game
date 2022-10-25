@@ -1,13 +1,12 @@
 import { useDispatch } from 'react-redux';
 import { updateCards, increaseCountBy1 } from 'store/game/slice';
-import { IDS_SUM } from 'utils/constants';
 import { ICard, ECardStatus } from 'types/';
 
-const getCardsStatus = (selectedCardId: number, oldCardId?: number): ECardStatus => {
-  switch (oldCardId) {
+const getCardsStatus = (selectedCardId: string, oldCardId?: string): ECardStatus => {
+  switch (oldCardId?.charAt(0)) {
     case undefined:
       return ECardStatus.Opened;
-    case IDS_SUM - selectedCardId:
+    case selectedCardId.charAt(0):
       return ECardStatus.Guessed;
     default: {
       return ECardStatus.NotGuessed;

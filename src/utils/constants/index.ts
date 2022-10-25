@@ -5,4 +5,3 @@ export const MY_GITHUB_LINK = `https://github.com/${MY_GITHUB_NICK}`;
 export const RSSCHOOL_LINK = 'https://rs.school';
 export const LAST_LEVEL = 5;
 export const DELAY = 1000;
-export const IDS_SUM = 1000;

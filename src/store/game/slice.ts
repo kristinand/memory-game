@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { ECardStatus, ICard } from 'types/';
-import { CARD_PATTERNS, IDS_SUM } from 'utils/constants';
+import { CARD_PATTERNS } from 'utils/constants';
 import { shuffleList, getRandomNumber, getRandomColor } from 'utils/functions';
 import { RootState } from '..';
 import { saveScore } from './thunks/saveScore';
@@ -20,18 +20,17 @@ const createCards = (level = 1): ICard[] => {
   let patterns = CARD_PATTERNS;
 
   for (let i = 0; i < cardPairsNumber; i++) {
-    const id = +`${Math.ceil(Math.random() * 9)}${i}${Math.ceil(Math.random() * 9)}`;
     const color = getRandomColor();
     const patternNumber = getRandomNumber(0, patterns.length);
     const pattern = patterns[patternNumber];
     patterns = [...patterns.slice(0, patternNumber), ...patterns.slice(patternNumber + 1)];
     const card = { color, pattern, coverColor, status: ECardStatus.Closed, count: 0 };
     cards.push({
-      id,
+      id: `${i}${level}1`,
       ...card,
     });
     cards.push({
-      id: IDS_SUM - id,
+      id: `${i}${level}2`,
       ...card,
     });
   }
